@@ -5,39 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Minutnik oddechowy</title>
   <style>
+    :root{
+      --bg: #111;
+      --card: #171717;
+      --accent: #9aa0a6;
+      --accentSoft: rgba(154,160,166,0.18);
+      --text: #fff;
+    }
+
     body {
       font-family: Arial, sans-serif;
-      background: #111;
-      color: #fff;
+      background: var(--bg);
+      color: var(--text);
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
       margin: 0;
+      transition: background 220ms ease;
     }
 
     .container {
       text-align: center;
       padding: 24px;
       width: min(520px, 92vw);
+      background: var(--card);
+      border-radius: 18px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+      border: 2px solid var(--accentSoft);
+      transition: border-color 220ms ease, transform 220ms ease;
     }
 
     .cycle {
-      font-size: 24px;
+      font-size: 20px;
       margin-bottom: 10px;
-      color: #aaa;
+      color: #c7c7c7;
+      opacity: 0.9;
     }
 
     .phase {
-      font-size: 48px;
+      font-size: 46px;
       margin-bottom: 10px;
+      color: var(--accent);
+      transition: color 220ms ease;
     }
 
     .time {
-      font-size: 72px;
-      font-weight: bold;
+      font-size: 76px;
+      font-weight: 800;
       line-height: 1;
       margin-bottom: 18px;
+      color: var(--accent);
+      transition: color 220ms ease;
     }
 
     .controls {
@@ -53,7 +72,7 @@
       font-size: 18px;
       padding: 12px 18px;
       border: 0;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
       background: #2b2b2b;
       color: #fff;
@@ -78,6 +97,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      opacity: 0.95;
     }
 
     .runningDot {
@@ -86,10 +106,21 @@
       height: 10px;
       border-radius: 50%;
       background: #f44336; /* red when stopped */
+      transition: background 220ms ease;
     }
 
     .running .runningDot {
       background: #4caf50; /* green when running */
+    }
+
+    /* Mały pasek-akcent pod timerem (opcjonalnie, wygląda fajnie) */
+    .accentBar {
+      height: 6px;
+      width: 180px;
+      margin: 0 auto 6px auto;
+      border-radius: 999px;
+      background: var(--accentSoft);
+      transition: background 220ms ease;
     }
   </style>
 </head>
@@ -99,6 +130,7 @@
     <div class="cycle" id="cycle">Powtórzenie: 1</div>
     <div class="phase" id="phase">Przerwa</div>
     <div class="time" id="time">2</div>
+    <div class="accentBar" id="accentBar"></div>
 
     <div class="controls">
       <button id="toggleBtn">Start</button>
@@ -112,11 +144,12 @@
   </div>
 
   <script>
+    // Konfiguracja faz
     const phases = [
-      { name: "Przerwa", duration: 2 },
-      { name: "Wdech", duration: 4 },
-      { name: "Przerwa", duration: 2 },
-      { name: "Wydech", duration: 8 }
+      { name: "Przerwa", duration: 2, theme: { bg: "#101010", accent: "#9aa0a6" } },
+      { name: "Wdech",   duration: 4, theme: { bg: "#07160a", accent: "#34d399" } }, // zielony
+      { name: "Przerwa", duration: 2, theme: { bg: "#101010", accent: "#9aa0a6" } },
+      { name: "Wydech",  duration: 8, theme: { bg: "#06121d", accent: "#60a5fa" } }  // niebieski
     ];
 
     let currentPhaseIndex = 0;
@@ -133,11 +166,37 @@
     const toggleBtn = document.getElementById("toggleBtn");
     const resetBtn = document.getElementById("resetBtn");
     const statusText = document.getElementById("statusText");
+    const accentBar = document.getElementById("accentBar");
+
+    function applyThemeForCurrentPhase() {
+      const { bg, accent } = phases[currentPhaseIndex].theme;
+
+      // Kolor tła strony + akcenty
+      document.body.style.setProperty("--bg", bg);
+      document.documentElement.style.setProperty("--accent", accent);
+      document.documentElement.style.setProperty("--accentSoft", hexToRgba(accent, 0.22));
+
+      // Pasek akcentu
+      accentBar.style.background = hexToRgba(accent, 0.22);
+      // Obramowanie karty (delikatne)
+      appEl.style.borderColor = hexToRgba(accent, 0.22);
+    }
+
+    function hexToRgba(hex, alpha) {
+      // Obsługa skrótu #abc i pełnego #aabbcc
+      const h = hex.replace("#", "");
+      const full = h.length === 3 ? h.split("").map(c => c + c).join("") : h;
+      const r = parseInt(full.slice(0, 2), 16);
+      const g = parseInt(full.slice(2, 4), 16);
+      const b = parseInt(full.slice(4, 6), 16);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
 
     function updateDisplay() {
       phaseEl.textContent = phases[currentPhaseIndex].name;
       timeEl.textContent = timeLeft;
       cycleEl.textContent = "Powtórzenie: " + cycleCount;
+      applyThemeForCurrentPhase();
     }
 
     function updateStatusUI() {
@@ -190,7 +249,6 @@
     }
 
     function resetTimer() {
-      // Reset zawsze zatrzymuje licznik i wraca do startu
       stopTimer();
       currentPhaseIndex = 0;
       cycleCount = 1;
