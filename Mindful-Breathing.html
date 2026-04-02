@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Minutnik oddechowy</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .cycle {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+
+        .phase {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .time {
+            font-size: 64px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="cycle" id="cycle">Powtórzenie: 1</div>
+    <div class="phase" id="phase">Przerwa</div>
+    <div class="time" id="time">2</div>
+</div>
+
+<script>
+    const phases = [
+        { name: "Przerwa", duration: 2 },
+        { name: "Wdech", duration: 4 },
+        { name: "Przerwa", duration: 2 },
+        { name: "Wydech", duration: 8 }
+    ];
+
+    let currentPhaseIndex = 0;
+    let timeLeft = phases[0].duration;
+    let cycleCount = 1;
+
+    const phaseEl = document.getElementById("phase");
+    const timeEl = document.getElementById("time");
+    const cycleEl = document.getElementById("cycle");
+
+    function updateDisplay() {
+        phaseEl.textContent = phases[currentPhaseIndex].name;
+        timeEl.textContent = timeLeft;
+        cycleEl.textContent = "Powtórzenie: " + cycleCount;
+    }
+
+    function nextPhase() {
+        currentPhaseIndex++;
+
+        if (currentPhaseIndex >= phases.length) {
+            currentPhaseIndex = 0;
+            cycleCount++;
+        }
+
+        timeLeft = phases[currentPhaseIndex].duration;
+        updateDisplay();
+    }
+
+    updateDisplay();
+
+    setInterval(() => {
+        timeLeft--;
+
+        if (timeLeft <= 0) {
+            nextPhase();
+        } else {
+            timeEl.textContent = timeLeft;
+        }
+    }, 1000);
+</script>
+
+</body>
+</html>
