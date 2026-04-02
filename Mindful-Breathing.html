@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Minutnik oddechowy</title>
+  <title>Minutnik oddechowy (smooth)</title>
   <style>
     :root{
       --bg: #111;
@@ -74,8 +74,8 @@
     .ringProgress {
       stroke: var(--accent);
       filter: drop-shadow(0 0 10px rgba(0,0,0,0.35));
-      transition: stroke-dashoffset 300ms linear, stroke 220ms ease;
       stroke-linecap: round;
+      transition: stroke 220ms ease;
     }
 
     .ringContent {
@@ -162,24 +162,10 @@
     <div class="cycle" id="cycle">Powtórzenie: 1</div>
     <div class="phase" id="phase">Przerwa</div>
 
-    <!-- Progress ring + time inside -->
     <div class="ringWrap">
       <svg class="ringSvg" viewBox="0 0 220 220" aria-hidden="true">
-        <!-- tło ringu -->
-        <circle
-          class="ringBg"
-          cx="110" cy="110" r="92"
-          fill="transparent"
-          stroke-width="14"
-        />
-        <!-- progres ringu -->
-        <circle
-          id="ringProgress"
-          class="ringProgress"
-          cx="110" cy="110" r="92"
-          fill="transparent"
-          stroke-width="14"
-        />
+        <circle class="ringBg" cx="110" cy="110" r="92" fill="transparent" stroke-width="14" />
+        <circle id="ringProgress" class="ringProgress" cx="110" cy="110" r="92" fill="transparent" stroke-width="14" />
       </svg>
 
       <div class="ringContent">
@@ -202,7 +188,7 @@
   </div>
 
   <script>
-    // Konfiguracja faz
+    // Fazy i kolory
     const phases = [
       { name: "Przerwa", duration: 2, theme: { bg: "#101010", accent: "#9aa0a6" } },
       { name: "Wdech",   duration: 4, theme: { bg: "#07160a", accent: "#34d399" } }, // zielony
@@ -210,14 +196,16 @@
       { name: "Wydech",  duration: 8, theme: { bg: "#06121d", accent: "#60a5fa" } }  // niebieski
     ];
 
+    // Stan
     let currentPhaseIndex = 0;
     let cycleCount = 1;
 
-    // Zamiast timeLeft liczymy "elapsed" w ramach fazy.
-    // Dzięki temu łatwo zsynchronizować progress ring.
-    let elapsed = 0;
+    // Płynny czas w fazie (ms)
+    let elapsedMs = 0;          // ile już minęło w aktualnej fazie (przy pauzie zostaje)
+    let phaseStartTs = null;    // timestamp startu fazy (performance.now() - elapsedMs)
 
-    let timerId = null;
+    // requestAnimationFrame
+    let rafId = null;
     let isRunning = false;
 
     // DOM
@@ -233,10 +221,8 @@
     // Ring geometry
     const RADIUS = 92;
     const CIRC = 2 * Math.PI * RADIUS;
-
-    // Init ring stroke values
     ringProgressEl.style.strokeDasharray = `${CIRC}`;
-    ringProgressEl.style.strokeDashoffset = `${CIRC}`; // 0% na starcie (pusty)
+    ringProgressEl.style.strokeDashoffset = `${CIRC}`; // 0% na starcie (pusto)
 
     function hexToRgba(hex, alpha) {
       const h = hex.replace("#", "");
@@ -255,27 +241,71 @@
       appEl.style.borderColor = hexToRgba(accent, 0.22);
     }
 
-    function updateRing() {
-      const duration = phases[currentPhaseIndex].duration;
-
-      // progress: 0..1, ile sekund fazy już minęło
-      const progress = Math.min(elapsed / duration, 1);
-
-      // dashoffset: CIRC (pusto) -> 0 (pełne)
-      const offset = CIRC * (1 - progress);
+    function render(progress01, secondsLeftInt) {
+      // Ring: CIRC (pusto) -> 0 (pełne)
+      const offset = CIRC * (1 - progress01);
       ringProgressEl.style.strokeDashoffset = `${offset}`;
-    }
 
-    function updateDisplay() {
-      const duration = phases[currentPhaseIndex].duration;
-      const timeLeft = duration - elapsed; // pokazujemy: duration, duration-1, ... 1
-
-      phaseEl.textContent = phases[currentPhaseIndex].name;
-      timeEl.textContent = timeLeft;
+      // Teksty
       cycleEl.textContent = "Powtórzenie: " + cycleCount;
+      phaseEl.textContent = phases[currentPhaseIndex].name;
+
+      // Uaktualniaj licznik tylko gdy wartość się zmienia (mniej "mrugania")
+      if (timeEl.textContent !== String(secondsLeftInt)) {
+        timeEl.textContent = secondsLeftInt;
+      }
 
       applyThemeForCurrentPhase();
-      updateRing();
+    }
+
+    function goToNextPhase(nowTs) {
+      currentPhaseIndex++;
+      if (currentPhaseIndex >= phases.length) {
+        currentPhaseIndex = 0;
+        cycleCount++;
+      }
+
+      // Reset czasu fazy
+      elapsedMs = 0;
+      phaseStartTs = nowTs; // nowy start fazy od teraz
+    }
+
+    function loop(nowTs) {
+      if (!isRunning) return;
+
+      const durationSec = phases[currentPhaseIndex].duration;
+      const durationMs = durationSec * 1000;
+
+      if (phaseStartTs == null) {
+        // zabezpieczenie
+        phaseStartTs = nowTs - elapsedMs;
+      }
+
+      // Aktualny upływ ms od startu fazy (+ uwzględnia pauzę)
+      elapsedMs = nowTs - phaseStartTs;
+
+      // Progres 0..1
+      let progress = elapsedMs / durationMs;
+
+      if (progress >= 1) {
+        // Domknij ring, pokaż 1 jeszcze przez ułamek chwili
+        render(1, 1);
+
+        // Przejdź do następnej fazy (bez opóźnień, ale płynnie)
+        goToNextPhase(nowTs);
+        // Po przejściu ustaw progress dla nowej fazy na 0
+        render(0, phases[currentPhaseIndex].duration);
+
+        rafId = requestAnimationFrame(loop);
+        return;
+      }
+
+      // Sekundy w dół: 4,3,2,1 (bez 0)
+      const secondsLeft = Math.max(1, Math.ceil((durationMs - elapsedMs) / 1000));
+
+      render(progress, secondsLeft);
+
+      rafId = requestAnimationFrame(loop);
     }
 
     function updateStatusUI() {
@@ -290,70 +320,50 @@
       }
     }
 
-    function goToNextPhase() {
-      currentPhaseIndex++;
-
-      if (currentPhaseIndex >= phases.length) {
-        currentPhaseIndex = 0;
-        cycleCount++;
-      }
-
-      elapsed = 0;
-      // Ustaw ring od razu na "pusto" dla nowej fazy
-      ringProgressEl.style.strokeDashoffset = `${CIRC}`;
-      updateDisplay();
-    }
-
-    function tick() {
-      const duration = phases[currentPhaseIndex].duration;
-
-      elapsed++;
-
-      // Jeśli faza się skończyła, przechodzimy do następnej
-      if (elapsed >= duration) {
-        // (opcjonalnie) dokończ ring na 100% przed skokiem (efekt "domknięcia")
-        ringProgressEl.style.strokeDashoffset = `0`;
-        // krótka pauza wizualna, żeby zobaczyć 100% domknięcia
-        setTimeout(goToNextPhase, 120);
-        return;
-      }
-
-      updateDisplay();
-    }
-
-    function startTimer() {
-      if (timerId) return;
+    function start() {
+      if (isRunning) return;
       isRunning = true;
+
+      // Wznawianie: ustawiamy start tak, by elapsedMs było zachowane
+      const now = performance.now();
+      phaseStartTs = now - elapsedMs;
+
       updateStatusUI();
-      timerId = setInterval(tick, 1000);
+      rafId = requestAnimationFrame(loop);
     }
 
-    function stopTimer() {
-      if (!timerId) return;
-      clearInterval(timerId);
-      timerId = null;
+    function stop() {
+      if (!isRunning) return;
       isRunning = false;
+
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = null;
+
+      // elapsedMs zostaje (żeby wznowić w tym samym miejscu)
       updateStatusUI();
     }
 
-    function resetTimer() {
-      stopTimer();
+    function reset() {
+      stop();
       currentPhaseIndex = 0;
       cycleCount = 1;
-      elapsed = 0;
-      ringProgressEl.style.strokeDashoffset = `${CIRC}`;
-      updateDisplay();
+      elapsedMs = 0;
+      phaseStartTs = null;
+
+      // UI do stanu początkowego
+      const duration = phases[0].duration;
+      render(0, duration);
     }
 
     toggleBtn.addEventListener("click", () => {
-      if (timerId) stopTimer();
-      else startTimer();
+      if (isRunning) stop();
+      else start();
     });
 
-    resetBtn.addEventListener("click", resetTimer);
+    resetBtn.addEventListener("click", reset);
 
-    // Initial render (stopped)
-    updateDisplay();
+    // Init
+    render(0, phases[0].duration);
     updateStatusUI();
   </script>
 </body>
