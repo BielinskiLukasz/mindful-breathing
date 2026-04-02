@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Minutnik oddechowy (smooth)</title>
+  <title>Minutnik oddechowy (smooth + cue)</title>
   <style>
     :root{
       --bg: #111;
@@ -28,7 +28,7 @@
     .container {
       text-align: center;
       padding: 24px;
-      width: min(520px, 92vw);
+      width: min(560px, 92vw);
       background: var(--card);
       border-radius: 18px;
       box-shadow: 0 12px 30px rgba(0,0,0,0.35);
@@ -55,7 +55,7 @@
       position: relative;
       width: 240px;
       height: 240px;
-      margin: 8px auto 18px auto;
+      margin: 8px auto 14px auto;
       display: grid;
       place-items: center;
     }
@@ -125,15 +125,19 @@
     button:hover { background: #3a3a3a; }
     button:active { transform: scale(0.98); }
 
-    .resetBtn {
-      background: #3a1f1f;
-    }
-    .resetBtn:hover {
-      background: #4a2a2a;
+    .resetBtn { background: #3a1f1f; }
+    .resetBtn:hover { background: #4a2a2a; }
+
+    .statusRow{
+      margin-top: 12px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
     .status {
-      margin-top: 14px;
       font-size: 14px;
       color: #9aa0a6;
       display: inline-flex;
@@ -151,8 +155,36 @@
       transition: background 220ms ease;
     }
 
-    .running .runningDot {
-      background: #4caf50; /* green when running */
+    .running .runningDot { background: #4caf50; }
+
+    .toggles{
+      display: inline-flex;
+      gap: 12px;
+      align-items: center;
+      color: rgba(255,255,255,0.75);
+      font-size: 14px;
+      user-select: none;
+    }
+
+    .toggles label{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    input[type="checkbox"]{
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .hint {
+      margin-top: 8px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.35;
     }
   </style>
 </head>
@@ -181,34 +213,49 @@
       <button id="resetBtn" class="resetBtn">Reset</button>
     </div>
 
-    <div class="status">
-      <span class="runningDot"></span>
-      <span id="statusText">Zatrzymany</span>
+    <div class="statusRow">
+      <div class="status">
+        <span class="runningDot"></span>
+        <span id="statusText">Zatrzymany</span>
+      </div>
+
+      <div class="toggles">
+        <label><input type="checkbox" id="soundToggle" checked> Dźwięk</label>
+        <label><input type="checkbox" id="vibeToggle" checked> Wibracja</label>
+      </div>
+    </div>
+
+    <div class="hint">
+      Jeśli dźwięk nie działa: kliknij Start (przeglądarki wymagają interakcji).<br/>
+      Wibracja działa tylko na wspieranych urządzeniach (często Android/Chrome) i zwykle na HTTPS.
     </div>
   </div>
 
   <script>
-    // Fazy i kolory
+    // ====== Konfiguracja faz ======
     const phases = [
-      { name: "Przerwa", duration: 2, theme: { bg: "#101010", accent: "#9aa0a6" } },
-      { name: "Wdech",   duration: 4, theme: { bg: "#07160a", accent: "#34d399" } }, // zielony
-      { name: "Przerwa", duration: 2, theme: { bg: "#101010", accent: "#9aa0a6" } },
-      { name: "Wydech",  duration: 8, theme: { bg: "#06121d", accent: "#60a5fa" } }  // niebieski
+      { name: "Przerwa", duration: 2, theme: { bg: "#101010", accent: "#9aa0a6" }, cue: { freq: 440 } },
+      { name: "Wdech",   duration: 4, theme: { bg: "#07160a", accent: "#34d399" }, cue: { freq: 660 } },
+      { name: "Przerwa", duration: 2, theme: { bg: "#101010", accent: "#9aa0a6" }, cue: { freq: 440 } },
+      { name: "Wydech",  duration: 8, theme: { bg: "#06121d", accent: "#60a5fa" }, cue: { freq: 330 } }
     ];
 
-    // Stan
+    // ====== Stan ======
     let currentPhaseIndex = 0;
     let cycleCount = 1;
 
     // Płynny czas w fazie (ms)
-    let elapsedMs = 0;          // ile już minęło w aktualnej fazie (przy pauzie zostaje)
-    let phaseStartTs = null;    // timestamp startu fazy (performance.now() - elapsedMs)
+    let elapsedMs = 0;          // ile minęło w aktualnej fazie
+    let phaseStartTs = null;    // performance.now() - elapsedMs
 
     // requestAnimationFrame
     let rafId = null;
     let isRunning = false;
 
-    // DOM
+    // Audio
+    let audioCtx = null;        // AudioContext inicjalizowany po kliknięciu Start
+
+    // ====== DOM ======
     const appEl = document.getElementById("app");
     const phaseEl = document.getElementById("phase");
     const timeEl = document.getElementById("time");
@@ -218,11 +265,14 @@
     const statusText = document.getElementById("statusText");
     const ringProgressEl = document.getElementById("ringProgress");
 
-    // Ring geometry
+    const soundToggle = document.getElementById("soundToggle");
+    const vibeToggle = document.getElementById("vibeToggle");
+
+    // ====== Ring geometry ======
     const RADIUS = 92;
     const CIRC = 2 * Math.PI * RADIUS;
     ringProgressEl.style.strokeDasharray = `${CIRC}`;
-    ringProgressEl.style.strokeDashoffset = `${CIRC}`; // 0% na starcie (pusto)
+    ringProgressEl.style.strokeDashoffset = `${CIRC}`; // pusty start
 
     function hexToRgba(hex, alpha) {
       const h = hex.replace("#", "");
@@ -241,16 +291,72 @@
       appEl.style.borderColor = hexToRgba(accent, 0.22);
     }
 
+    // ====== Dźwięk / wibracja ======
+    async function ensureAudio() {
+      if (!soundToggle.checked) return;
+      if (audioCtx) {
+        // czasem po pauzie/lock screen może być "suspended"
+        if (audioCtx.state === "suspended") {
+          try { await audioCtx.resume(); } catch (e) {}
+        }
+        return;
+      }
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      audioCtx = new AC();
+      if (audioCtx.state === "suspended") {
+        try { await audioCtx.resume(); } catch (e) {}
+      }
+    }
+
+    function playBeep(freq = 520, ms = 110, volume = 0.12) {
+      if (!soundToggle.checked) return;
+      if (!audioCtx) return;
+
+      const t0 = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, t0);
+
+      // envelope: szybkie wejście + wyciszenie
+      gain.gain.setValueAtTime(0.0001, t0);
+      gain.gain.exponentialRampToValueAtTime(volume, t0 + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t0 + ms / 1000);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start(t0);
+      osc.stop(t0 + ms / 1000 + 0.02);
+    }
+
+    function vibrate(pattern = [60]) {
+      if (!vibeToggle.checked) return;
+      if (!("vibrate" in navigator)) return;
+      try { navigator.vibrate(pattern); } catch(e) {}
+    }
+
+    function cueOnPhaseChange(nextPhaseIndex) {
+      // cue dla fazy, do której wchodzimy
+      const cue = phases[nextPhaseIndex]?.cue || { freq: 520 };
+
+      // dźwięk + wibracja
+      playBeep(cue.freq, 120, 0.12);
+
+      // krótki, przyjemny pattern
+      vibrate([55, 40, 55]);
+    }
+
+    // ====== Render ======
     function render(progress01, secondsLeftInt) {
-      // Ring: CIRC (pusto) -> 0 (pełne)
       const offset = CIRC * (1 - progress01);
       ringProgressEl.style.strokeDashoffset = `${offset}`;
 
-      // Teksty
       cycleEl.textContent = "Powtórzenie: " + cycleCount;
       phaseEl.textContent = phases[currentPhaseIndex].name;
 
-      // Uaktualniaj licznik tylko gdy wartość się zmienia (mniej "mrugania")
       if (timeEl.textContent !== String(secondsLeftInt)) {
         timeEl.textContent = secondsLeftInt;
       }
@@ -258,16 +364,28 @@
       applyThemeForCurrentPhase();
     }
 
-    function goToNextPhase(nowTs) {
-      currentPhaseIndex++;
-      if (currentPhaseIndex >= phases.length) {
-        currentPhaseIndex = 0;
+    function computeNextPhaseIndex() {
+      let idx = currentPhaseIndex + 1;
+      if (idx >= phases.length) idx = 0;
+      return idx;
+    }
+
+    function advanceToNextPhase(nowTs) {
+      // Ustal, do jakiej fazy przechodzimy
+      const nextIdx = computeNextPhaseIndex();
+
+      // Zwiększ powtórzenie, jeśli domknęliśmy cały cykl
+      if (currentPhaseIndex === phases.length - 1) {
         cycleCount++;
       }
 
-      // Reset czasu fazy
+      // Przejście
+      currentPhaseIndex = nextIdx;
       elapsedMs = 0;
-      phaseStartTs = nowTs; // nowy start fazy od teraz
+      phaseStartTs = nowTs;
+
+      // Cue na wejściu w nową fazę
+      cueOnPhaseChange(currentPhaseIndex);
     }
 
     function loop(nowTs) {
@@ -277,23 +395,20 @@
       const durationMs = durationSec * 1000;
 
       if (phaseStartTs == null) {
-        // zabezpieczenie
         phaseStartTs = nowTs - elapsedMs;
       }
 
-      // Aktualny upływ ms od startu fazy (+ uwzględnia pauzę)
       elapsedMs = nowTs - phaseStartTs;
-
-      // Progres 0..1
       let progress = elapsedMs / durationMs;
 
       if (progress >= 1) {
-        // Domknij ring, pokaż 1 jeszcze przez ułamek chwili
+        // domknij ring do 100% na ten frame
         render(1, 1);
 
-        // Przejdź do następnej fazy (bez opóźnień, ale płynnie)
-        goToNextPhase(nowTs);
-        // Po przejściu ustaw progress dla nowej fazy na 0
+        // przejdź do następnej fazy
+        advanceToNextPhase(nowTs);
+
+        // od razu pokaż początek nowej fazy (0% i pełne sekundy)
         render(0, phases[currentPhaseIndex].duration);
 
         rafId = requestAnimationFrame(loop);
@@ -302,7 +417,6 @@
 
       // Sekundy w dół: 4,3,2,1 (bez 0)
       const secondsLeft = Math.max(1, Math.ceil((durationMs - elapsedMs) / 1000));
-
       render(progress, secondsLeft);
 
       rafId = requestAnimationFrame(loop);
@@ -320,11 +434,13 @@
       }
     }
 
-    function start() {
+    async function start() {
       if (isRunning) return;
       isRunning = true;
 
-      // Wznawianie: ustawiamy start tak, by elapsedMs było zachowane
+      // Audio init/resume po interakcji użytkownika
+      await ensureAudio();
+
       const now = performance.now();
       phaseStartTs = now - elapsedMs;
 
@@ -339,7 +455,6 @@
       if (rafId) cancelAnimationFrame(rafId);
       rafId = null;
 
-      // elapsedMs zostaje (żeby wznowić w tym samym miejscu)
       updateStatusUI();
     }
 
@@ -350,9 +465,9 @@
       elapsedMs = 0;
       phaseStartTs = null;
 
-      // UI do stanu początkowego
-      const duration = phases[0].duration;
-      render(0, duration);
+      render(0, phases[0].duration);
+      // opcjonalnie cue przy resecie: odkomentuj jeśli chcesz
+      // cueOnPhaseChange(0);
     }
 
     toggleBtn.addEventListener("click", () => {
@@ -362,7 +477,7 @@
 
     resetBtn.addEventListener("click", reset);
 
-    // Init
+    // Init (bez cue na starcie)
     render(0, phases[0].duration);
     updateStatusUI();
   </script>
