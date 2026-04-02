@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Minutnik oddechowy (smooth + cue)</title>
+  <title>Breathing Timer (smooth + cues)</title>
   <style>
     :root{
       --bg: #111;
@@ -191,8 +191,8 @@
 
 <body>
   <div class="container" id="app">
-    <div class="cycle" id="cycle">Powtórzenie: 1</div>
-    <div class="phase" id="phase">Przerwa</div>
+    <div class="cycle" id="cycle">Cycle: 1</div>
+    <div class="phase" id="phase">Pause</div>
 
     <div class="ringWrap">
       <svg class="ringSvg" viewBox="0 0 220 220" aria-hidden="true">
@@ -203,7 +203,7 @@
       <div class="ringContent">
         <div>
           <div class="time" id="time">2</div>
-          <div class="subHint">sekundy</div>
+          <div class="subHint">seconds</div>
         </div>
       </div>
     </div>
@@ -216,36 +216,37 @@
     <div class="statusRow">
       <div class="status">
         <span class="runningDot"></span>
-        <span id="statusText">Zatrzymany</span>
+        <span id="statusText">Stopped</span>
       </div>
 
       <div class="toggles">
-        <label><input type="checkbox" id="soundToggle" checked> Dźwięk</label>
-        <label><input type="checkbox" id="vibeToggle" checked> Wibracja</label>
+        <label><input type="checkbox" id="soundToggle" checked> Sound</label>
+        <label><input type="checkbox" id="vibeToggle" checked> Vibration</label>
       </div>
     </div>
 
     <div class="hint">
-      Jeśli dźwięk nie działa: kliknij Start (przeglądarki wymagają interakcji).<br/>
-      Wibracja działa tylko na wspieranych urządzeniach (często Android/Chrome) i zwykle na HTTPS.
+      If sound doesn’t play: press Start (browsers require a user gesture).<br/>
+      Vibration works only on supported devices (often Android/Chrome) and usually over HTTPS.
     </div>
   </div>
 
   <script>
-    // ====== Konfiguracja faz ======
+    // ====== Phase configuration ======
+    // Cycle: 2s Pause -> 4s Inhale -> 2s Pause -> 8s Exhale
     const phases = [
-      { name: "Przerwa", duration: 2, theme: { bg: "#101010", accent: "#9aa0a6" }, cue: { freq: 440 } },
-      { name: "Wdech",   duration: 4, theme: { bg: "#07160a", accent: "#34d399" }, cue: { freq: 660 } },
-      { name: "Przerwa", duration: 2, theme: { bg: "#101010", accent: "#9aa0a6" }, cue: { freq: 440 } },
-      { name: "Wydech",  duration: 8, theme: { bg: "#06121d", accent: "#60a5fa" }, cue: { freq: 330 } }
+      { name: "Pause",  duration: 2, theme: { bg: "#101010", accent: "#9aa0a6" }, cue: { freq: 440 } },
+      { name: "Inhale", duration: 4, theme: { bg: "#07160a", accent: "#34d399" }, cue: { freq: 660 } },
+      { name: "Pause",  duration: 2, theme: { bg: "#101010", accent: "#9aa0a6" }, cue: { freq: 440 } },
+      { name: "Exhale", duration: 8, theme: { bg: "#06121d", accent: "#60a5fa" }, cue: { freq: 330 } }
     ];
 
-    // ====== Stan ======
+    // ====== State ======
     let currentPhaseIndex = 0;
     let cycleCount = 1;
 
-    // Płynny czas w fazie (ms)
-    let elapsedMs = 0;          // ile minęło w aktualnej fazie
+    // Smooth phase time (ms)
+    let elapsedMs = 0;          // elapsed within current phase (kept on pause)
     let phaseStartTs = null;    // performance.now() - elapsedMs
 
     // requestAnimationFrame
@@ -253,7 +254,7 @@
     let isRunning = false;
 
     // Audio
-    let audioCtx = null;        // AudioContext inicjalizowany po kliknięciu Start
+    let audioCtx = null;        // created on first Start click
 
     // ====== DOM ======
     const appEl = document.getElementById("app");
@@ -272,7 +273,7 @@
     const RADIUS = 92;
     const CIRC = 2 * Math.PI * RADIUS;
     ringProgressEl.style.strokeDasharray = `${CIRC}`;
-    ringProgressEl.style.strokeDashoffset = `${CIRC}`; // pusty start
+    ringProgressEl.style.strokeDashoffset = `${CIRC}`; // empty at start
 
     function hexToRgba(hex, alpha) {
       const h = hex.replace("#", "");
@@ -291,11 +292,10 @@
       appEl.style.borderColor = hexToRgba(accent, 0.22);
     }
 
-    // ====== Dźwięk / wibracja ======
+    // ====== Sound / vibration ======
     async function ensureAudio() {
       if (!soundToggle.checked) return;
       if (audioCtx) {
-        // czasem po pauzie/lock screen może być "suspended"
         if (audioCtx.state === "suspended") {
           try { await audioCtx.resume(); } catch (e) {}
         }
@@ -320,7 +320,7 @@
       osc.type = "sine";
       osc.frequency.setValueAtTime(freq, t0);
 
-      // envelope: szybkie wejście + wyciszenie
+      // Envelope: quick attack + decay
       gain.gain.setValueAtTime(0.0001, t0);
       gain.gain.exponentialRampToValueAtTime(volume, t0 + 0.01);
       gain.gain.exponentialRampToValueAtTime(0.0001, t0 + ms / 1000);
@@ -338,14 +338,9 @@
       try { navigator.vibrate(pattern); } catch(e) {}
     }
 
-    function cueOnPhaseChange(nextPhaseIndex) {
-      // cue dla fazy, do której wchodzimy
-      const cue = phases[nextPhaseIndex]?.cue || { freq: 520 };
-
-      // dźwięk + wibracja
+    function cueOnPhaseChange(phaseIndex) {
+      const cue = phases[phaseIndex]?.cue || { freq: 520 };
       playBeep(cue.freq, 120, 0.12);
-
-      // krótki, przyjemny pattern
       vibrate([55, 40, 55]);
     }
 
@@ -354,7 +349,7 @@
       const offset = CIRC * (1 - progress01);
       ringProgressEl.style.strokeDashoffset = `${offset}`;
 
-      cycleEl.textContent = "Powtórzenie: " + cycleCount;
+      cycleEl.textContent = "Cycle: " + cycleCount;
       phaseEl.textContent = phases[currentPhaseIndex].name;
 
       if (timeEl.textContent !== String(secondsLeftInt)) {
@@ -371,20 +366,18 @@
     }
 
     function advanceToNextPhase(nowTs) {
-      // Ustal, do jakiej fazy przechodzimy
       const nextIdx = computeNextPhaseIndex();
 
-      // Zwiększ powtórzenie, jeśli domknęliśmy cały cykl
+      // Increase cycle count only after the last phase finishes
       if (currentPhaseIndex === phases.length - 1) {
         cycleCount++;
       }
 
-      // Przejście
       currentPhaseIndex = nextIdx;
       elapsedMs = 0;
       phaseStartTs = nowTs;
 
-      // Cue na wejściu w nową fazę
+      // Cue when entering the new phase
       cueOnPhaseChange(currentPhaseIndex);
     }
 
@@ -402,20 +395,20 @@
       let progress = elapsedMs / durationMs;
 
       if (progress >= 1) {
-        // domknij ring do 100% na ten frame
+        // Close the ring for the final frame of this phase
         render(1, 1);
 
-        // przejdź do następnej fazy
+        // Move to next phase
         advanceToNextPhase(nowTs);
 
-        // od razu pokaż początek nowej fazy (0% i pełne sekundy)
+        // Show the beginning of the new phase immediately
         render(0, phases[currentPhaseIndex].duration);
 
         rafId = requestAnimationFrame(loop);
         return;
       }
 
-      // Sekundy w dół: 4,3,2,1 (bez 0)
+      // Countdown: 4,3,2,1 (no 0)
       const secondsLeft = Math.max(1, Math.ceil((durationMs - elapsedMs) / 1000));
       render(progress, secondsLeft);
 
@@ -425,11 +418,11 @@
     function updateStatusUI() {
       if (isRunning) {
         toggleBtn.textContent = "Stop";
-        statusText.textContent = "W trakcie";
+        statusText.textContent = "Running";
         appEl.classList.add("running");
       } else {
         toggleBtn.textContent = "Start";
-        statusText.textContent = "Zatrzymany";
+        statusText.textContent = "Stopped";
         appEl.classList.remove("running");
       }
     }
@@ -438,7 +431,7 @@
       if (isRunning) return;
       isRunning = true;
 
-      // Audio init/resume po interakcji użytkownika
+      // Initialize/resume audio on user gesture
       await ensureAudio();
 
       const now = performance.now();
@@ -466,8 +459,6 @@
       phaseStartTs = null;
 
       render(0, phases[0].duration);
-      // opcjonalnie cue przy resecie: odkomentuj jeśli chcesz
-      // cueOnPhaseChange(0);
     }
 
     toggleBtn.addEventListener("click", () => {
@@ -477,7 +468,7 @@
 
     resetBtn.addEventListener("click", reset);
 
-    // Init (bez cue na starcie)
+    // Init (no cue on load)
     render(0, phases[0].duration);
     updateStatusUI();
   </script>
