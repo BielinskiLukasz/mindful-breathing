@@ -33,7 +33,7 @@
       border-radius: 18px;
       box-shadow: 0 12px 30px rgba(0,0,0,0.35);
       border: 2px solid var(--accentSoft);
-      transition: border-color 220ms ease, transform 220ms ease;
+      transition: border-color 220ms ease;
     }
 
     .cycle {
@@ -50,15 +50,57 @@
       transition: color 220ms ease;
     }
 
+    /* ====== PROGRESS RING ====== */
+    .ringWrap {
+      position: relative;
+      width: 240px;
+      height: 240px;
+      margin: 8px auto 18px auto;
+      display: grid;
+      place-items: center;
+    }
+
+    .ringSvg {
+      width: 240px;
+      height: 240px;
+      transform: rotate(-90deg); /* start at 12 o'clock */
+      overflow: visible;
+    }
+
+    .ringBg {
+      stroke: rgba(255,255,255,0.12);
+    }
+
+    .ringProgress {
+      stroke: var(--accent);
+      filter: drop-shadow(0 0 10px rgba(0,0,0,0.35));
+      transition: stroke-dashoffset 300ms linear, stroke 220ms ease;
+      stroke-linecap: round;
+    }
+
+    .ringContent {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+    }
+
     .time {
-      font-size: 76px;
+      font-size: 78px;
       font-weight: 800;
       line-height: 1;
-      margin-bottom: 18px;
       color: var(--accent);
       transition: color 220ms ease;
     }
 
+    .subHint {
+      margin-top: 8px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.55);
+    }
+
+    /* ====== CONTROLS ====== */
     .controls {
       display: flex;
       gap: 12px;
@@ -112,16 +154,6 @@
     .running .runningDot {
       background: #4caf50; /* green when running */
     }
-
-    /* Mały pasek-akcent pod timerem (opcjonalnie, wygląda fajnie) */
-    .accentBar {
-      height: 6px;
-      width: 180px;
-      margin: 0 auto 6px auto;
-      border-radius: 999px;
-      background: var(--accentSoft);
-      transition: background 220ms ease;
-    }
   </style>
 </head>
 
@@ -129,15 +161,41 @@
   <div class="container" id="app">
     <div class="cycle" id="cycle">Powtórzenie: 1</div>
     <div class="phase" id="phase">Przerwa</div>
-    <div class="time" id="time">2</div>
-    <div class="accentBar" id="accentBar"></div>
+
+    <!-- Progress ring + time inside -->
+    <div class="ringWrap">
+      <svg class="ringSvg" viewBox="0 0 220 220" aria-hidden="true">
+        <!-- tło ringu -->
+        <circle
+          class="ringBg"
+          cx="110" cy="110" r="92"
+          fill="transparent"
+          stroke-width="14"
+        />
+        <!-- progres ringu -->
+        <circle
+          id="ringProgress"
+          class="ringProgress"
+          cx="110" cy="110" r="92"
+          fill="transparent"
+          stroke-width="14"
+        />
+      </svg>
+
+      <div class="ringContent">
+        <div>
+          <div class="time" id="time">2</div>
+          <div class="subHint">sekundy</div>
+        </div>
+      </div>
+    </div>
 
     <div class="controls">
       <button id="toggleBtn">Start</button>
       <button id="resetBtn" class="resetBtn">Reset</button>
     </div>
 
-    <div class="status" id="status">
+    <div class="status">
       <span class="runningDot"></span>
       <span id="statusText">Zatrzymany</span>
     </div>
@@ -153,12 +211,16 @@
     ];
 
     let currentPhaseIndex = 0;
-    let timeLeft = phases[0].duration;
     let cycleCount = 1;
+
+    // Zamiast timeLeft liczymy "elapsed" w ramach fazy.
+    // Dzięki temu łatwo zsynchronizować progress ring.
+    let elapsed = 0;
 
     let timerId = null;
     let isRunning = false;
 
+    // DOM
     const appEl = document.getElementById("app");
     const phaseEl = document.getElementById("phase");
     const timeEl = document.getElementById("time");
@@ -166,24 +228,17 @@
     const toggleBtn = document.getElementById("toggleBtn");
     const resetBtn = document.getElementById("resetBtn");
     const statusText = document.getElementById("statusText");
-    const accentBar = document.getElementById("accentBar");
+    const ringProgressEl = document.getElementById("ringProgress");
 
-    function applyThemeForCurrentPhase() {
-      const { bg, accent } = phases[currentPhaseIndex].theme;
+    // Ring geometry
+    const RADIUS = 92;
+    const CIRC = 2 * Math.PI * RADIUS;
 
-      // Kolor tła strony + akcenty
-      document.body.style.setProperty("--bg", bg);
-      document.documentElement.style.setProperty("--accent", accent);
-      document.documentElement.style.setProperty("--accentSoft", hexToRgba(accent, 0.22));
-
-      // Pasek akcentu
-      accentBar.style.background = hexToRgba(accent, 0.22);
-      // Obramowanie karty (delikatne)
-      appEl.style.borderColor = hexToRgba(accent, 0.22);
-    }
+    // Init ring stroke values
+    ringProgressEl.style.strokeDasharray = `${CIRC}`;
+    ringProgressEl.style.strokeDashoffset = `${CIRC}`; // 0% na starcie (pusty)
 
     function hexToRgba(hex, alpha) {
-      // Obsługa skrótu #abc i pełnego #aabbcc
       const h = hex.replace("#", "");
       const full = h.length === 3 ? h.split("").map(c => c + c).join("") : h;
       const r = parseInt(full.slice(0, 2), 16);
@@ -192,11 +247,35 @@
       return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     }
 
+    function applyThemeForCurrentPhase() {
+      const { bg, accent } = phases[currentPhaseIndex].theme;
+      document.body.style.setProperty("--bg", bg);
+      document.documentElement.style.setProperty("--accent", accent);
+      document.documentElement.style.setProperty("--accentSoft", hexToRgba(accent, 0.22));
+      appEl.style.borderColor = hexToRgba(accent, 0.22);
+    }
+
+    function updateRing() {
+      const duration = phases[currentPhaseIndex].duration;
+
+      // progress: 0..1, ile sekund fazy już minęło
+      const progress = Math.min(elapsed / duration, 1);
+
+      // dashoffset: CIRC (pusto) -> 0 (pełne)
+      const offset = CIRC * (1 - progress);
+      ringProgressEl.style.strokeDashoffset = `${offset}`;
+    }
+
     function updateDisplay() {
+      const duration = phases[currentPhaseIndex].duration;
+      const timeLeft = duration - elapsed; // pokazujemy: duration, duration-1, ... 1
+
       phaseEl.textContent = phases[currentPhaseIndex].name;
       timeEl.textContent = timeLeft;
       cycleEl.textContent = "Powtórzenie: " + cycleCount;
+
       applyThemeForCurrentPhase();
+      updateRing();
     }
 
     function updateStatusUI() {
@@ -211,7 +290,7 @@
       }
     }
 
-    function nextPhase() {
+    function goToNextPhase() {
       currentPhaseIndex++;
 
       if (currentPhaseIndex >= phases.length) {
@@ -219,22 +298,31 @@
         cycleCount++;
       }
 
-      timeLeft = phases[currentPhaseIndex].duration;
+      elapsed = 0;
+      // Ustaw ring od razu na "pusto" dla nowej fazy
+      ringProgressEl.style.strokeDashoffset = `${CIRC}`;
       updateDisplay();
     }
 
     function tick() {
-      timeLeft--;
+      const duration = phases[currentPhaseIndex].duration;
 
-      if (timeLeft <= 0) {
-        nextPhase();
-      } else {
-        timeEl.textContent = timeLeft;
+      elapsed++;
+
+      // Jeśli faza się skończyła, przechodzimy do następnej
+      if (elapsed >= duration) {
+        // (opcjonalnie) dokończ ring na 100% przed skokiem (efekt "domknięcia")
+        ringProgressEl.style.strokeDashoffset = `0`;
+        // krótka pauza wizualna, żeby zobaczyć 100% domknięcia
+        setTimeout(goToNextPhase, 120);
+        return;
       }
+
+      updateDisplay();
     }
 
     function startTimer() {
-      if (timerId) return; // already running
+      if (timerId) return;
       isRunning = true;
       updateStatusUI();
       timerId = setInterval(tick, 1000);
@@ -252,7 +340,8 @@
       stopTimer();
       currentPhaseIndex = 0;
       cycleCount = 1;
-      timeLeft = phases[0].duration;
+      elapsed = 0;
+      ringProgressEl.style.strokeDashoffset = `${CIRC}`;
       updateDisplay();
     }
 
