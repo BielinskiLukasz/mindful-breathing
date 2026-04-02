@@ -1,95 +1,195 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <title>Minutnik oddechowy</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #111;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Minutnik oddechowy</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
 
-        .container {
-            text-align: center;
-        }
+    .container {
+      text-align: center;
+      padding: 24px;
+      width: min(520px, 92vw);
+    }
 
-        .cycle {
-            font-size: 24px;
-            margin-bottom: 10px;
-            color: #aaa;
-        }
+    .cycle {
+      font-size: 24px;
+      margin-bottom: 10px;
+      color: #aaa;
+    }
 
-        .phase {
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
+    .phase {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
 
-        .time {
-            font-size: 64px;
-            font-weight: bold;
-        }
-    </style>
+    .time {
+      font-size: 72px;
+      font-weight: bold;
+      line-height: 1;
+      margin-bottom: 18px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #2b2b2b;
+      color: #fff;
+      transition: transform 0.05s ease, background 0.2s ease;
+    }
+
+    button:hover { background: #3a3a3a; }
+    button:active { transform: scale(0.98); }
+
+    .status {
+      margin-top: 14px;
+      font-size: 14px;
+      color: #9aa0a6;
+    }
+
+    .runningDot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 8px;
+      background: #f44336; /* red when stopped */
+      vertical-align: middle;
+    }
+
+    .running .runningDot {
+      background: #4caf50; /* green when running */
+    }
+  </style>
 </head>
-<body>
 
-<div class="container">
+<body>
+  <div class="container" id="app">
     <div class="cycle" id="cycle">Powtórzenie: 1</div>
     <div class="phase" id="phase">Przerwa</div>
     <div class="time" id="time">2</div>
-</div>
 
-<script>
+    <div class="controls">
+      <button id="toggleBtn">Start</button>
+    </div>
+
+    <div class="status" id="status">
+      <span class="runningDot"></span>
+      <span id="statusText">Zatrzymany</span>
+    </div>
+  </div>
+
+  <script>
     const phases = [
-        { name: "Przerwa", duration: 2 },
-        { name: "Wdech", duration: 4 },
-        { name: "Przerwa", duration: 2 },
-        { name: "Wydech", duration: 8 }
+      { name: "Przerwa", duration: 2 },
+      { name: "Wdech", duration: 4 },
+      { name: "Przerwa", duration: 2 },
+      { name: "Wydech", duration: 8 }
     ];
 
     let currentPhaseIndex = 0;
     let timeLeft = phases[0].duration;
     let cycleCount = 1;
 
+    let timerId = null;
+    let isRunning = false;
+
+    const appEl = document.getElementById("app");
     const phaseEl = document.getElementById("phase");
     const timeEl = document.getElementById("time");
     const cycleEl = document.getElementById("cycle");
+    const toggleBtn = document.getElementById("toggleBtn");
+    const statusText = document.getElementById("statusText");
 
     function updateDisplay() {
-        phaseEl.textContent = phases[currentPhaseIndex].name;
-        timeEl.textContent = timeLeft;
-        cycleEl.textContent = "Powtórzenie: " + cycleCount;
+      phaseEl.textContent = phases[currentPhaseIndex].name;
+      timeEl.textContent = timeLeft;
+      cycleEl.textContent = "Powtórzenie: " + cycleCount;
+    }
+
+    function updateStatusUI() {
+      if (isRunning) {
+        toggleBtn.textContent = "Stop";
+        statusText.textContent = "W trakcie";
+        appEl.classList.add("running");
+      } else {
+        toggleBtn.textContent = "Start";
+        statusText.textContent = "Zatrzymany";
+        appEl.classList.remove("running");
+      }
     }
 
     function nextPhase() {
-        currentPhaseIndex++;
+      currentPhaseIndex++;
 
-        if (currentPhaseIndex >= phases.length) {
-            currentPhaseIndex = 0;
-            cycleCount++;
-        }
+      if (currentPhaseIndex >= phases.length) {
+        currentPhaseIndex = 0;
+        cycleCount++;
+      }
 
-        timeLeft = phases[currentPhaseIndex].duration;
-        updateDisplay();
+      timeLeft = phases[currentPhaseIndex].duration;
+      updateDisplay();
     }
 
+    function tick() {
+      timeLeft--;
+
+      if (timeLeft <= 0) {
+        nextPhase();
+      } else {
+        timeEl.textContent = timeLeft;
+      }
+    }
+
+    function startTimer() {
+      if (timerId) return; // already running
+      isRunning = true;
+      updateStatusUI();
+
+      // Tick co 1s
+      timerId = setInterval(tick, 1000);
+    }
+
+    function stopTimer() {
+      if (!timerId) return;
+      clearInterval(timerId);
+      timerId = null;
+      isRunning = false;
+      updateStatusUI();
+    }
+
+    toggleBtn.addEventListener("click", () => {
+      if (timerId) {
+        stopTimer();
+      } else {
+        startTimer();
+      }
+    });
+
+    // Initial render (stopped)
     updateDisplay();
-
-    setInterval(() => {
-        timeLeft--;
-
-        if (timeLeft <= 0) {
-            nextPhase();
-        } else {
-            timeEl.textContent = timeLeft;
-        }
-    }, 1000);
-</script>
-
+    updateStatusUI();
+  </script>
 </body>
 </html>
