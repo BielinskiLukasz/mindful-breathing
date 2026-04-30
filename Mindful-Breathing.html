@@ -301,6 +301,9 @@
     // Audio (created on first Start click)
     let audioCtx = null;
 
+    // Wake lock
+    let wakeLockSentinel = null;
+
     /******************************************************************
      *  DOM
      ******************************************************************/
@@ -354,6 +357,29 @@
       document.documentElement.style.setProperty("--accentSoft", hexToRgba(accent, 0.22));
       appEl.style.borderColor = hexToRgba(accent, 0.22);
     }
+
+    /******************************************************************
+     *  WAKE LOCK
+     ******************************************************************/
+    async function acquireWakeLock() {
+      if (!("wakeLock" in navigator)) return;
+      try {
+        wakeLockSentinel = await navigator.wakeLock.request("screen");
+        wakeLockSentinel.addEventListener("release", () => { wakeLockSentinel = null; });
+      } catch (_) {}
+    }
+
+    function releaseWakeLock() {
+      if (wakeLockSentinel) {
+        wakeLockSentinel.release().catch(() => {});
+        wakeLockSentinel = null;
+      }
+    }
+
+    // Re-acquire after tab becomes visible again (browser releases it on hide)
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible" && isRunning) acquireWakeLock();
+    });
 
     /******************************************************************
      *  SOUND / VIBRATION
@@ -508,6 +534,7 @@
       if (rafId) cancelAnimationFrame(rafId);
       rafId = null;
 
+      releaseWakeLock();
       updateStatusUI();
     }
 
@@ -541,6 +568,7 @@
       }
 
       start();
+      acquireWakeLock();
     });
 
     resetBtn.addEventListener("click", reset);
