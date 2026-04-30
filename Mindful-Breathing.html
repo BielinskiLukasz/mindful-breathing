@@ -399,6 +399,17 @@
       color: rgba(255,255,255,0.25);
     }
 
+    /* ====== NEXT PHASE ====== */
+    .nextPhase {
+      font-size: 12px;
+      color: rgba(255,255,255,0.32);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      min-height: 16px;
+      margin-top: -6px;
+      margin-bottom: 4px;
+    }
+
     /* ====== FULLSCREEN ====== */
     .fullscreenBtn {
       position: absolute;
@@ -466,6 +477,8 @@
         </div>
       </div>
     </div>
+
+    <div class="nextPhase" id="nextPhase"></div>
 
     <div class="presets" id="presets">
       <button class="presetBtn active" data-preset="relax">Relax</button>
@@ -643,6 +656,7 @@
     const doneOverlay = document.getElementById("doneOverlay");
     const breathCircleEl = document.getElementById("breathCircle");
     const elapsedEl = document.getElementById("elapsed");
+    const nextPhaseEl = document.getElementById("nextPhase");
 
     // Apply default toggle states + UI text
     soundToggle.checked = SOUND.enabledByDefault;
@@ -898,6 +912,10 @@
 
       const nextElapsed = getElapsedDisplay();
       if (elapsedEl.textContent !== nextElapsed) elapsedEl.textContent = nextElapsed;
+
+      const nextIdx = (currentPhaseIndex + 1) % activePhases.length;
+      const nextLabel = isRunning ? `Next: ${activePhases[nextIdx].name}` : "";
+      if (nextPhaseEl.textContent !== nextLabel) nextPhaseEl.textContent = nextLabel;
     }
 
     /******************************************************************
