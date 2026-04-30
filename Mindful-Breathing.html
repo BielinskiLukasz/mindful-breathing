@@ -187,6 +187,13 @@
       opacity: 0.95;
     }
 
+    .elapsed {
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.03em;
+    }
+
     .runningDot {
       display: inline-block;
       width: 10px;
@@ -435,6 +442,7 @@
       <div class="status">
         <span class="runningDot"></span>
         <span id="statusText">Stopped</span>
+        <span id="elapsed" class="elapsed">0:00</span>
       </div>
 
       <div class="toggles">
@@ -581,6 +589,7 @@
     const sessionBarFill = document.getElementById("sessionBarFill");
     const doneOverlay = document.getElementById("doneOverlay");
     const breathCircleEl = document.getElementById("breathCircle");
+    const elapsedEl = document.getElementById("elapsed");
 
     // Apply default toggle states + UI text
     soundToggle.checked = SOUND.enabledByDefault;
@@ -789,6 +798,9 @@
       breathCircleEl.style.height = `${bPx}px`;
 
       renderSessionBar();
+
+      const nextElapsed = getElapsedDisplay();
+      if (elapsedEl.textContent !== nextElapsed) elapsedEl.textContent = nextElapsed;
     }
 
     /******************************************************************
@@ -887,6 +899,12 @@
       return m > 0 ? `${m} min ${s % 60} sec` : `${s} sec`;
     }
 
+    function getElapsedDisplay() {
+      const ms = isRunning ? totalSessionMs + (Date.now() - sessionResumeTs) : totalSessionMs;
+      const s = Math.floor(ms / 1000);
+      return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    }
+
     function start() {
       if (isRunning) return;
       isRunning = true;
@@ -908,6 +926,7 @@
       rafId = null;
 
       totalSessionMs += Date.now() - sessionResumeTs;
+      elapsedEl.textContent = getElapsedDisplay();
       releaseWakeLock();
       goalInput.disabled = false;
       updateStatusUI();
