@@ -304,11 +304,46 @@
       color: rgba(255,255,255,0.45);
       line-height: 1.35;
     }
+
+    /* ====== FULLSCREEN ====== */
+    .fullscreenBtn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 34px;
+      height: 34px;
+      min-width: 0;
+      padding: 0;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      color: rgba(255,255,255,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .fullscreenBtn:hover {
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.8);
+      border-color: rgba(255,255,255,0.25);
+    }
   </style>
 </head>
 
 <body>
   <div class="container" id="app">
+    <button class="fullscreenBtn" id="fullscreenBtn" title="Toggle fullscreen" aria-label="Toggle fullscreen">
+      <svg id="fsEnterIcon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="1,6 1,1 6,1"/><polyline points="10,1 15,1 15,6"/>
+        <polyline points="15,10 15,15 10,15"/><polyline points="6,15 1,15 1,10"/>
+      </svg>
+      <svg id="fsExitIcon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+        <polyline points="6,1 6,6 1,6"/><polyline points="10,1 10,6 15,6"/>
+        <polyline points="15,10 10,10 10,15"/><polyline points="1,10 6,10 6,15"/>
+      </svg>
+    </button>
+
     <div class="doneOverlay" id="doneOverlay">
       <div class="doneContent">
         <div class="doneTitle">Session complete</div>
@@ -829,6 +864,32 @@
 
     resetBtn.addEventListener("click", reset);
     document.getElementById("doneRestartBtn").addEventListener("click", reset);
+
+    /******************************************************************
+     *  FULLSCREEN
+     ******************************************************************/
+    const fullscreenBtn = document.getElementById("fullscreenBtn");
+
+    function isFullscreen() {
+      return !!(document.fullscreenElement || document.webkitFullscreenElement);
+    }
+
+    function updateFullscreenIcon() {
+      document.getElementById("fsEnterIcon").style.display = isFullscreen() ? "none" : "";
+      document.getElementById("fsExitIcon").style.display = isFullscreen() ? "" : "none";
+    }
+
+    fullscreenBtn.addEventListener("click", () => {
+      if (!isFullscreen()) {
+        const el = document.documentElement;
+        (el.requestFullscreen || el.webkitRequestFullscreen).call(el).catch(() => {});
+      } else {
+        (document.exitFullscreen || document.webkitExitFullscreen).call(document).catch(() => {});
+      }
+    });
+
+    document.addEventListener("fullscreenchange", updateFullscreenIcon);
+    document.addEventListener("webkitfullscreenchange", updateFullscreenIcon);
 
     // ====== Init (no cue on load) ======
     render(0, getPhase().durationSec);
