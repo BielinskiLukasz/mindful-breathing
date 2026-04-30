@@ -262,6 +262,12 @@
       text-align: center;
     }
 
+    .timeEst {
+      font-size: 13px;
+      color: rgba(255,255,255,0.32);
+      font-variant-numeric: tabular-nums;
+    }
+
     .sessionBar {
       margin-top: 10px;
       height: 6px;
@@ -562,6 +568,7 @@
         <input type="number" id="goalInput" min="1" max="99" value="5" />
         cycles
       </label>
+      <span class="timeEst" id="timeEst"></span>
     </div>
 
     <div class="sessionBar">
@@ -762,6 +769,15 @@
     /******************************************************************
      *  DURATION INPUTS
      ******************************************************************/
+    function updateTimeEst() {
+      const cycleSec = activePhases.reduce((s, p) => s + p.durationSec, 0);
+      const totalSec = cycleSec * getGoal();
+      const m = Math.floor(totalSec / 60);
+      const s = totalSec % 60;
+      const text = m > 0 ? (s > 0 ? `~${m} min ${s} sec` : `~${m} min`) : `~${s} sec`;
+      document.getElementById("timeEst").textContent = text;
+    }
+
     function buildDurationInputs() {
       durationsEl.innerHTML = "";
       activePhases.forEach((phase, i) => {
@@ -788,6 +804,7 @@
         item.append(name, input, unit);
         durationsEl.appendChild(item);
       });
+      updateTimeEst();
     }
 
     durationsEl.addEventListener("change", e => {
@@ -1270,6 +1287,7 @@
     soundToggle.addEventListener("change", saveSettings);
     vibeToggle.addEventListener("change", saveSettings);
     goalInput.addEventListener("change", saveSettings);
+    goalInput.addEventListener("input", updateTimeEst);
 
     /******************************************************************
      *  FULLSCREEN
