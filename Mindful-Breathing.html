@@ -922,6 +922,9 @@
       breathCircleEl.style.width = `${bPx}px`;
       breathCircleEl.style.height = `${bPx}px`;
 
+      const brightnessPct = 100 + Math.round(bT * 14);
+      document.body.style.filter = `brightness(${brightnessPct}%)`;
+
       renderSessionBar();
 
       const nextElapsed = getElapsedDisplay();
@@ -1101,6 +1104,7 @@
       breathCircleEl.style.width = "";
       breathCircleEl.style.height = "";
       breathCircleEl.classList.add("idle");
+      document.body.style.filter = "";
       updateStatusUI();
     }
 
