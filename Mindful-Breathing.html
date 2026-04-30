@@ -556,6 +556,26 @@
       try { navigator.vibrate(pattern); } catch (_) {}
     }
 
+    function playCompletionChime() {
+      if (!soundToggle.checked || !audioCtx) return;
+      const notes = [880, 698, 523];
+      const dur = 0.45;
+      notes.forEach((freq, i) => {
+        const t0 = audioCtx.currentTime + i * 0.38;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, t0);
+        gain.gain.setValueAtTime(0.0001, t0);
+        gain.gain.exponentialRampToValueAtTime(0.09, t0 + 0.015);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(t0);
+        osc.stop(t0 + dur + 0.05);
+      });
+    }
+
     function cueOnPhaseEnter(phaseIndex) {
       const phase = activePhases[phaseIndex];
       const freqHz = phase?.cue?.freqHz ?? 520;
@@ -624,6 +644,7 @@
     }
 
     function finishSession() {
+      playCompletionChime();
       stop();
       renderSessionBar();
       doneOverlay.classList.add("visible");
