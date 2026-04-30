@@ -26,6 +26,7 @@
     }
 
     .container {
+      position: relative;
       text-align: center;
       padding: 24px;
       width: min(560px, 92vw);
@@ -180,6 +181,62 @@
       cursor: pointer;
     }
 
+    /* ====== SESSION GOAL ====== */
+    .goalRow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 14px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      user-select: none;
+    }
+
+    .goalRow label { display: flex; align-items: center; gap: 6px; }
+
+    .goalRow input[type="number"] {
+      width: 52px;
+      padding: 4px 6px;
+      background: #2b2b2b;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .sessionBar {
+      margin-top: 10px;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255,255,255,0.1);
+      overflow: hidden;
+    }
+
+    .sessionBarFill {
+      height: 100%;
+      border-radius: 3px;
+      background: var(--accent);
+      transition: width 400ms ease, background 220ms ease;
+      width: 0%;
+    }
+
+    .doneOverlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      background: rgba(0,0,0,0.72);
+      place-items: center;
+      font-size: 28px;
+      font-weight: 700;
+      color: #34d399;
+      letter-spacing: 0.03em;
+    }
+
+    .doneOverlay.visible { display: grid; }
+
     .hint {
       margin-top: 8px;
       font-size: 12px;
@@ -191,6 +248,7 @@
 
 <body>
   <div class="container" id="app">
+    <div class="doneOverlay" id="doneOverlay">Session complete</div>
     <div class="cycle" id="cycle">Cycle: 1</div>
     <div class="phase" id="phase">Pause</div>
 
@@ -223,6 +281,18 @@
         <label><input type="checkbox" id="soundToggle" checked> Sound</label>
         <label><input type="checkbox" id="vibeToggle" checked> Vibration</label>
       </div>
+    </div>
+
+    <div class="goalRow">
+      <label>
+        Goal:
+        <input type="number" id="goalInput" min="1" max="99" value="5" />
+        cycles
+      </label>
+    </div>
+
+    <div class="sessionBar">
+      <div class="sessionBarFill" id="sessionBarFill"></div>
     </div>
 
     <div class="hint" id="hint">
@@ -284,6 +354,11 @@
       minShownSeconds: 1 // show 4..1 (never show 0)
     });
 
+    // Session goal
+    const SESSION = Object.freeze({
+      defaultCycles: 5
+    });
+
     /******************************************************************
      *  STATE
      ******************************************************************/
@@ -320,12 +395,16 @@
 
     const soundToggle = document.getElementById("soundToggle");
     const vibeToggle = document.getElementById("vibeToggle");
+    const goalInput = document.getElementById("goalInput");
+    const sessionBarFill = document.getElementById("sessionBarFill");
+    const doneOverlay = document.getElementById("doneOverlay");
 
     // Apply default toggle states + UI text
     soundToggle.checked = SOUND.enabledByDefault;
     vibeToggle.checked = VIBRATION.enabledByDefault;
     secondsLabelEl.textContent = UI.secondsLabel;
     hintEl.innerHTML = UI.hintHtml;
+    goalInput.value = SESSION.defaultCycles;
 
     /******************************************************************
      *  RING GEOMETRY
@@ -348,6 +427,11 @@
 
     function getPhase() {
       return PHASES[currentPhaseIndex];
+    }
+
+    function getGoal() {
+      const v = parseInt(goalInput.value, 10);
+      return Number.isFinite(v) && v >= 1 ? v : SESSION.defaultCycles;
     }
 
     function applyThemeForCurrentPhase() {
@@ -424,11 +508,18 @@
     /******************************************************************
      *  RENDER
      ******************************************************************/
+    function renderSessionBar() {
+      const goal = getGoal();
+      const pct = Math.min(100, ((cycleCount - 1) / goal) * 100);
+      sessionBarFill.style.width = `${pct}%`;
+    }
+
     function render(progress01, secondsLeftInt) {
       const offset = CIRC * (1 - progress01);
       ringProgressEl.style.strokeDashoffset = String(offset);
 
-      cycleEl.textContent = `${UI.cyclePrefix} ${cycleCount}`;
+      const goal = getGoal();
+      cycleEl.textContent = `${UI.cyclePrefix} ${cycleCount} / ${goal}`;
       phaseEl.textContent = getPhase().name;
 
       // Update countdown only when it changes
@@ -438,6 +529,7 @@
       }
 
       applyThemeForCurrentPhase();
+      renderSessionBar();
     }
 
     /******************************************************************
@@ -451,13 +543,25 @@
       const isLastPhase = currentPhaseIndex === PHASES.length - 1;
       const nextIdx = nextPhaseIndex();
 
-      if (isLastPhase) cycleCount++;
+      if (isLastPhase) {
+        cycleCount++;
+        if (cycleCount > getGoal()) {
+          finishSession();
+          return;
+        }
+      }
 
       currentPhaseIndex = nextIdx;
       elapsedMs = 0;
       phaseStartTs = nowTs;
 
       cueOnPhaseEnter(currentPhaseIndex);
+    }
+
+    function finishSession() {
+      stop();
+      renderSessionBar();
+      doneOverlay.classList.add("visible");
     }
 
     /******************************************************************
@@ -535,6 +639,7 @@
       rafId = null;
 
       releaseWakeLock();
+      goalInput.disabled = false;
       updateStatusUI();
     }
 
@@ -544,6 +649,8 @@
       cycleCount = 1;
       elapsedMs = 0;
       phaseStartTs = null;
+      doneOverlay.classList.remove("visible");
+      goalInput.disabled = false;
 
       render(0, getPhase().durationSec);
     }
@@ -567,6 +674,7 @@
         try { navigator.vibrate(0); } catch (_) {}
       }
 
+      goalInput.disabled = true;
       start();
       acquireWakeLock();
     });
