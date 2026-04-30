@@ -538,7 +538,8 @@
       btnStop: "Stop",
       hintHtml:
         "Sound: tap Start to activate (required by all browsers).<br/>" +
-        "Vibration: Android/Chrome only — not available on iOS or desktop."
+        "Vibration: Android/Chrome only — not available on iOS or desktop.<br/>" +
+        "Keys: Space — start/stop &nbsp;·&nbsp; R — reset &nbsp;·&nbsp; F — fullscreen"
     });
 
     // Phase sequence: 2s Pause -> 4s Inhale -> 2s Pause -> 8s Exhale
@@ -1186,6 +1187,19 @@
 
     document.addEventListener("fullscreenchange", updateFullscreenIcon);
     document.addEventListener("webkitfullscreenchange", updateFullscreenIcon);
+
+    /******************************************************************
+     *  KEYBOARD SHORTCUTS
+     ******************************************************************/
+    document.addEventListener("keydown", e => {
+      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      switch (e.code) {
+        case "Space": e.preventDefault(); toggleBtn.click(); break;
+        case "KeyR":  resetBtn.click();    break;
+        case "KeyF":  fullscreenBtn.click(); break;
+      }
+    });
 
     // ====== Init (no cue on load) ======
     loadSettings();
