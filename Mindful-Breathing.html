@@ -260,15 +260,43 @@
       position: absolute;
       inset: 0;
       border-radius: 16px;
-      background: rgba(0,0,0,0.72);
+      background: rgba(0,0,0,0.78);
       place-items: center;
+    }
+
+    .doneOverlay.visible { display: grid; }
+
+    .doneContent {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .doneTitle {
       font-size: 28px;
       font-weight: 700;
       color: #34d399;
       letter-spacing: 0.03em;
     }
 
-    .doneOverlay.visible { display: grid; }
+    .doneTime {
+      font-size: 15px;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .doneRestartBtn {
+      margin-top: 6px;
+      font-size: 16px;
+      padding: 10px 28px;
+      min-width: 0;
+      background: #34d399;
+      color: #000;
+      font-weight: 600;
+      border-radius: 12px;
+    }
+
+    .doneRestartBtn:hover { background: #6ee7b7; }
 
     .hint {
       margin-top: 8px;
@@ -281,7 +309,13 @@
 
 <body>
   <div class="container" id="app">
-    <div class="doneOverlay" id="doneOverlay">Session complete</div>
+    <div class="doneOverlay" id="doneOverlay">
+      <div class="doneContent">
+        <div class="doneTitle">Session complete</div>
+        <div class="doneTime" id="doneTime"></div>
+        <button class="doneRestartBtn" id="doneRestartBtn">Start again</button>
+      </div>
+    </div>
     <div class="cycle" id="cycle">Cycle: 1</div>
     <div class="phase" id="phase">Pause</div>
 
@@ -434,6 +468,10 @@
 
     // Wake lock
     let wakeLockSentinel = null;
+
+    // Session elapsed time tracking
+    let sessionResumeTs = 0;
+    let totalSessionMs = 0;
 
     /******************************************************************
      *  DOM
@@ -647,6 +685,7 @@
       playCompletionChime();
       stop();
       renderSessionBar();
+      document.getElementById("doneTime").textContent = `Total time: ${formatDuration(totalSessionMs)}`;
       doneOverlay.classList.add("visible");
     }
 
@@ -705,9 +744,16 @@
       }
     }
 
+    function formatDuration(ms) {
+      const s = Math.round(ms / 1000);
+      const m = Math.floor(s / 60);
+      return m > 0 ? `${m} min ${s % 60} sec` : `${s} sec`;
+    }
+
     function start() {
       if (isRunning) return;
       isRunning = true;
+      sessionResumeTs = Date.now();
 
       const now = performance.now();
       phaseStartTs = now - elapsedMs;
@@ -724,6 +770,7 @@
       if (rafId) cancelAnimationFrame(rafId);
       rafId = null;
 
+      totalSessionMs += Date.now() - sessionResumeTs;
       releaseWakeLock();
       goalInput.disabled = false;
       updateStatusUI();
@@ -735,6 +782,8 @@
       cycleCount = 1;
       elapsedMs = 0;
       phaseStartTs = null;
+      totalSessionMs = 0;
+      sessionResumeTs = 0;
       doneOverlay.classList.remove("visible");
       goalInput.disabled = false;
 
@@ -779,6 +828,7 @@
     });
 
     resetBtn.addEventListener("click", reset);
+    document.getElementById("doneRestartBtn").addEventListener("click", reset);
 
     // ====== Init (no cue on load) ======
     render(0, getPhase().durationSec);
