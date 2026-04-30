@@ -113,6 +113,27 @@
       color: rgba(255,255,255,0.55);
     }
 
+    /* ====== PRESETS ====== */
+    .presets {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .presetBtn {
+      font-size: 13px;
+      padding: 6px 16px;
+      min-width: 0;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: #222;
+      color: rgba(255,255,255,0.55);
+    }
+
+    .presetBtn:hover { background: #2e2e2e; color: rgba(255,255,255,0.85); }
+    .presetBtn.active { border-color: var(--accent); color: var(--accent); }
+
     /* ====== CONTROLS ====== */
     .controls {
       display: flex;
@@ -279,6 +300,12 @@
       </div>
     </div>
 
+    <div class="presets" id="presets">
+      <button class="presetBtn active" data-preset="relax">Relax</button>
+      <button class="presetBtn" data-preset="box">Box</button>
+      <button class="presetBtn" data-preset="478">4-7-8</button>
+    </div>
+
     <div class="controls">
       <button id="toggleBtn">Start</button>
       <button id="resetBtn" class="resetBtn">Reset</button>
@@ -334,12 +361,27 @@
     // Phase sequence: 2s Pause -> 4s Inhale -> 2s Pause -> 8s Exhale
     // Add/adjust durations, colors, and cue frequencies here.
     // breathR: [startFraction, endFraction] — 0=contracted, 1=expanded
-    const PHASES = Object.freeze([
-      { name: "Pause",  durationSec: 2, breathR: [0, 0], theme: { bg: "#101010", accent: "#9aa0a6" }, cue: { freqHz: 440 } },
-      { name: "Inhale", durationSec: 4, breathR: [0, 1], theme: { bg: "#07160a", accent: "#34d399" }, cue: { freqHz: 660 } },
-      { name: "Pause",  durationSec: 2, breathR: [1, 1], theme: { bg: "#101010", accent: "#9aa0a6" }, cue: { freqHz: 440 } },
-      { name: "Exhale", durationSec: 7, breathR: [1, 0], theme: { bg: "#06121d", accent: "#60a5fa" }, cue: { freqHz: 330 } }
-    ]);
+    const PRESETS = {
+      relax: [
+        { name: "Pause",  durationSec: 2, breathR: [0, 0], theme: { bg: "#101010", accent: "#9aa0a6" }, cue: { freqHz: 440 } },
+        { name: "Inhale", durationSec: 4, breathR: [0, 1], theme: { bg: "#07160a", accent: "#34d399" }, cue: { freqHz: 660 } },
+        { name: "Pause",  durationSec: 2, breathR: [1, 1], theme: { bg: "#101010", accent: "#9aa0a6" }, cue: { freqHz: 440 } },
+        { name: "Exhale", durationSec: 7, breathR: [1, 0], theme: { bg: "#06121d", accent: "#60a5fa" }, cue: { freqHz: 330 } },
+      ],
+      box: [
+        { name: "Inhale", durationSec: 4, breathR: [0, 1], theme: { bg: "#07160a", accent: "#34d399" }, cue: { freqHz: 660 } },
+        { name: "Hold",   durationSec: 4, breathR: [1, 1], theme: { bg: "#0d0a1a", accent: "#a78bfa" }, cue: { freqHz: 520 } },
+        { name: "Exhale", durationSec: 4, breathR: [1, 0], theme: { bg: "#06121d", accent: "#60a5fa" }, cue: { freqHz: 330 } },
+        { name: "Hold",   durationSec: 4, breathR: [0, 0], theme: { bg: "#101010", accent: "#9aa0a6" }, cue: { freqHz: 440 } },
+      ],
+      "478": [
+        { name: "Inhale", durationSec: 4, breathR: [0, 1], theme: { bg: "#07160a", accent: "#34d399" }, cue: { freqHz: 660 } },
+        { name: "Hold",   durationSec: 7, breathR: [1, 1], theme: { bg: "#0d0a1a", accent: "#a78bfa" }, cue: { freqHz: 520 } },
+        { name: "Exhale", durationSec: 8, breathR: [1, 0], theme: { bg: "#06121d", accent: "#60a5fa" }, cue: { freqHz: 330 } },
+      ],
+    };
+
+    let activePhases = PRESETS.relax;
 
     // Sound settings
     const SOUND = Object.freeze({
@@ -409,6 +451,7 @@
 
     const soundToggle = document.getElementById("soundToggle");
     const vibeToggle = document.getElementById("vibeToggle");
+    const presetsEl = document.getElementById("presets");
     const goalInput = document.getElementById("goalInput");
     const sessionBarFill = document.getElementById("sessionBarFill");
     const doneOverlay = document.getElementById("doneOverlay");
@@ -441,7 +484,7 @@
     }
 
     function getPhase() {
-      return PHASES[currentPhaseIndex];
+      return activePhases[currentPhaseIndex];
     }
 
     function getGoal() {
@@ -514,7 +557,7 @@
     }
 
     function cueOnPhaseEnter(phaseIndex) {
-      const phase = PHASES[phaseIndex];
+      const phase = activePhases[phaseIndex];
       const freqHz = phase?.cue?.freqHz ?? 520;
       playBeep(freqHz);
       vibrate();
@@ -558,11 +601,11 @@
      *  PHASE ADVANCE
      ******************************************************************/
     function nextPhaseIndex() {
-      return (currentPhaseIndex + 1) % PHASES.length;
+      return (currentPhaseIndex + 1) % activePhases.length;
     }
 
     function advanceToNextPhase(nowTs) {
-      const isLastPhase = currentPhaseIndex === PHASES.length - 1;
+      const isLastPhase = currentPhaseIndex === activePhases.length - 1;
       const nextIdx = nextPhaseIndex();
 
       if (isLastPhase) {
@@ -676,6 +719,19 @@
 
       render(0, getPhase().durationSec);
     }
+
+    presetsEl.addEventListener("click", e => {
+      if (isRunning) return;
+      const btn = e.target.closest(".presetBtn");
+      if (!btn) return;
+      const key = btn.dataset.preset;
+      if (!(key in PRESETS)) return;
+      activePhases = PRESETS[key];
+      presetsEl.querySelectorAll(".presetBtn").forEach(b =>
+        b.classList.toggle("active", b.dataset.preset === key)
+      );
+      reset();
+    });
 
     toggleBtn.addEventListener("click", async () => {
       if (isRunning) { stop(); return; }
