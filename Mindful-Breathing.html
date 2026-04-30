@@ -106,6 +106,15 @@
       transform: translate(-50%, -50%);
     }
 
+    @keyframes idlePulse {
+      0%, 100% { width: 48px; height: 48px; opacity: 0.12; }
+      50%       { width: 108px; height: 108px; opacity: 0.22; }
+    }
+
+    .breathCircle.idle {
+      animation: idlePulse 5s ease-in-out infinite;
+    }
+
     .time {
       font-size: 78px;
       font-weight: 800;
@@ -961,6 +970,8 @@
       isRunning = true;
       sessionResumeTs = Date.now();
 
+      breathCircleEl.classList.remove("idle");
+
       const now = performance.now();
       phaseStartTs = now - elapsedMs;
 
@@ -980,6 +991,9 @@
       elapsedEl.textContent = getElapsedDisplay();
       releaseWakeLock();
       goalInput.disabled = false;
+      breathCircleEl.style.width = "";
+      breathCircleEl.style.height = "";
+      breathCircleEl.classList.add("idle");
       updateStatusUI();
     }
 
@@ -1084,6 +1098,7 @@
     buildDurationInputs();
     render(0, getPhase().durationSec);
     updateStatusUI();
+    breathCircleEl.classList.add("idle");
   </script>
 </body>
 </html>
