@@ -543,6 +543,9 @@
       defaultCycles: 5
     });
 
+    // localStorage key
+    const STORAGE_KEY = "mb_v1";
+
     /******************************************************************
      *  STATE
      ******************************************************************/
@@ -566,6 +569,10 @@
     // Session elapsed time tracking
     let sessionResumeTs = 0;
     let totalSessionMs = 0;
+
+    // Persistence
+    let activePresetKey = "relax";
+    let savedDurations = {};
 
     /******************************************************************
      *  DOM
@@ -673,8 +680,52 @@
       if (Number.isFinite(val) && val >= 1) {
         activePhases[idx] = { ...activePhases[idx], durationSec: val };
         reset();
+        saveSettings();
       }
     });
+
+    /******************************************************************
+     *  PERSISTENCE
+     ******************************************************************/
+    function saveSettings() {
+      try {
+        savedDurations[activePresetKey] = activePhases.map(p => p.durationSec);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          sound: soundToggle.checked,
+          vibe: vibeToggle.checked,
+          preset: activePresetKey,
+          goal: goalInput.value,
+          durations: savedDurations,
+        }));
+      } catch (_) {}
+    }
+
+    function loadSettings() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        if (typeof data.sound === "boolean") soundToggle.checked = data.sound;
+        if (typeof data.vibe === "boolean") vibeToggle.checked = data.vibe;
+        if (data.goal) goalInput.value = data.goal;
+        if (data.durations && typeof data.durations === "object") savedDurations = data.durations;
+        if (data.preset && data.preset in PRESETS) {
+          activePresetKey = data.preset;
+          activePhases = PRESETS[activePresetKey].map(p => ({...p}));
+          const saved = savedDurations[activePresetKey];
+          if (Array.isArray(saved)) {
+            saved.forEach((sec, i) => {
+              if (i < activePhases.length && Number.isFinite(sec) && sec >= 1) {
+                activePhases[i] = { ...activePhases[i], durationSec: sec };
+              }
+            });
+          }
+          presetsEl.querySelectorAll(".presetBtn").forEach(b =>
+            b.classList.toggle("active", b.dataset.preset === activePresetKey)
+          );
+        }
+      } catch (_) {}
+    }
 
     /******************************************************************
      *  WAKE LOCK
@@ -952,12 +1003,23 @@
       if (!btn) return;
       const key = btn.dataset.preset;
       if (!(key in PRESETS)) return;
+      savedDurations[activePresetKey] = activePhases.map(p => p.durationSec);
+      activePresetKey = key;
       activePhases = PRESETS[key].map(p => ({...p}));
+      const savedD = savedDurations[key];
+      if (Array.isArray(savedD)) {
+        savedD.forEach((sec, i) => {
+          if (i < activePhases.length && Number.isFinite(sec) && sec >= 1) {
+            activePhases[i] = { ...activePhases[i], durationSec: sec };
+          }
+        });
+      }
       presetsEl.querySelectorAll(".presetBtn").forEach(b =>
         b.classList.toggle("active", b.dataset.preset === key)
       );
       buildDurationInputs();
       reset();
+      saveSettings();
     });
 
     toggleBtn.addEventListener("click", async () => {
@@ -987,6 +1049,10 @@
     resetBtn.addEventListener("click", reset);
     document.getElementById("doneRestartBtn").addEventListener("click", reset);
 
+    soundToggle.addEventListener("change", saveSettings);
+    vibeToggle.addEventListener("change", saveSettings);
+    goalInput.addEventListener("change", saveSettings);
+
     /******************************************************************
      *  FULLSCREEN
      ******************************************************************/
@@ -1014,6 +1080,7 @@
     document.addEventListener("webkitfullscreenchange", updateFullscreenIcon);
 
     // ====== Init (no cue on load) ======
+    loadSettings();
     buildDurationInputs();
     render(0, getPhase().durationSec);
     updateStatusUI();
