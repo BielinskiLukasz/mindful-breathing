@@ -421,6 +421,44 @@
       margin-bottom: 4px;
     }
 
+    /* ====== SESSION HISTORY ====== */
+    .history {
+      margin-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 10px;
+      text-align: left;
+    }
+
+    .history summary {
+      cursor: pointer;
+      user-select: none;
+      color: rgba(255,255,255,0.35);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      outline: none;
+    }
+
+    .history summary::before { content: "▸"; transition: transform 0.2s; }
+    .history[open] summary::before { transform: rotate(90deg); }
+
+    .historyItem {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 13px;
+    }
+
+    .histDate  { color: rgba(255,255,255,0.4); }
+    .histStats { color: rgba(255,255,255,0.6); font-variant-numeric: tabular-nums; }
+    .historyEmpty { color: rgba(255,255,255,0.28); padding: 8px 0; font-style: italic; font-size: 13px; }
+
     /* ====== FULLSCREEN ====== */
     .fullscreenBtn {
       position: absolute;
@@ -530,6 +568,11 @@
       <div class="sessionBarFill" id="sessionBarFill"></div>
     </div>
 
+    <details class="history" id="historyDetails">
+      <summary>Past sessions</summary>
+      <div id="historyList"></div>
+    </details>
+
     <div class="hint" id="hint">
       If sound doesn’t play: press Start (browsers require a user gesture).<br/>
       Vibration works only on supported devices (often Android/Chrome) and usually over HTTPS.
@@ -611,8 +654,9 @@
       defaultCycles: 5
     });
 
-    // localStorage key
-    const STORAGE_KEY = "mb_v1";
+    // localStorage keys
+    const STORAGE_KEY  = "mb_v1";
+    const HISTORY_KEY  = "mb_history";
 
     /******************************************************************
      *  STATE
@@ -802,6 +846,46 @@
     }
 
     /******************************************************************
+     *  SESSION HISTORY
+     ******************************************************************/
+    function saveHistory(entry) {
+      try {
+        const raw = localStorage.getItem(HISTORY_KEY);
+        const list = raw ? JSON.parse(raw) : [];
+        list.unshift(entry);
+        if (list.length > 5) list.length = 5;
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+      } catch (_) {}
+    }
+
+    function renderHistory() {
+      const el = document.getElementById("historyList");
+      try {
+        const raw = localStorage.getItem(HISTORY_KEY);
+        const list = raw ? JSON.parse(raw) : [];
+        if (!list.length) {
+          el.innerHTML = '<div class="historyEmpty">No sessions yet</div>';
+          return;
+        }
+        const today = new Date();
+        const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
+        el.innerHTML = list.map(s => {
+          const d = new Date(s.date);
+          const dateLabel = d.toDateString() === today.toDateString()     ? "Today"
+                          : d.toDateString() === yesterday.toDateString() ? "Yesterday"
+                          : d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
+          const timeLabel = d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
+          return `<div class="historyItem">
+            <span class="histDate">${dateLabel} ${timeLabel}</span>
+            <span class="histStats">${s.cycles} cycle${s.cycles !== 1 ? "s" : ""} · ${formatDuration(s.durationMs)}</span>
+          </div>`;
+        }).join("");
+      } catch (_) {
+        el.innerHTML = "";
+      }
+    }
+
+    /******************************************************************
      *  WAKE LOCK
      ******************************************************************/
     async function acquireWakeLock() {
@@ -967,6 +1051,8 @@
     function finishSession() {
       playCompletionChime();
       stop();
+      saveHistory({ date: new Date().toISOString(), durationMs: totalSessionMs, cycles: getGoal() });
+      renderHistory();
       renderSessionBar();
       document.getElementById("doneTime").textContent = `Total time: ${formatDuration(totalSessionMs)}`;
       doneOverlay.classList.add("visible");
@@ -1224,6 +1310,7 @@
     // ====== Init (no cue on load) ======
     loadSettings();
     buildDurationInputs();
+    renderHistory();
     render(0, getPhase().durationSec);
     updateStatusUI();
     breathCircleEl.classList.add("idle");
