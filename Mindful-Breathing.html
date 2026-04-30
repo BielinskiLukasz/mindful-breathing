@@ -312,6 +312,48 @@
       line-height: 1.35;
     }
 
+    /* ====== CUSTOM DURATIONS ====== */
+    .durations {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 6px 0 2px;
+    }
+
+    .durItem {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .durName {
+      font-size: 10px;
+      color: rgba(255,255,255,0.38);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .durInput {
+      width: 42px;
+      padding: 4px 2px;
+      background: #1e1e1e;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      color: rgba(255,255,255,0.7);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .durInput:focus { outline: none; border-color: var(--accent); }
+    .durInput:disabled { opacity: 0.35; }
+
+    .durUnit {
+      font-size: 9px;
+      color: rgba(255,255,255,0.25);
+    }
+
     /* ====== FULLSCREEN ====== */
     .fullscreenBtn {
       position: absolute;
@@ -381,6 +423,8 @@
       <button class="presetBtn" data-preset="box">Box</button>
       <button class="presetBtn" data-preset="478">4-7-8</button>
     </div>
+
+    <div class="durations" id="durations"></div>
 
     <div class="controls">
       <button id="toggleBtn">Start</button>
@@ -457,7 +501,7 @@
       ],
     };
 
-    let activePhases = PRESETS.relax;
+    let activePhases = PRESETS.relax.map(p => ({...p}));
 
     // Sound settings
     const SOUND = Object.freeze({
@@ -532,6 +576,7 @@
     const soundToggle = document.getElementById("soundToggle");
     const vibeToggle = document.getElementById("vibeToggle");
     const presetsEl = document.getElementById("presets");
+    const durationsEl = document.getElementById("durations");
     const goalInput = document.getElementById("goalInput");
     const sessionBarFill = document.getElementById("sessionBarFill");
     const doneOverlay = document.getElementById("doneOverlay");
@@ -579,6 +624,48 @@
       document.documentElement.style.setProperty("--accentSoft", hexToRgba(accent, 0.22));
       appEl.style.borderColor = hexToRgba(accent, 0.22);
     }
+
+    /******************************************************************
+     *  DURATION INPUTS
+     ******************************************************************/
+    function buildDurationInputs() {
+      durationsEl.innerHTML = "";
+      activePhases.forEach((phase, i) => {
+        const item = document.createElement("label");
+        item.className = "durItem";
+
+        const name = document.createElement("span");
+        name.className = "durName";
+        name.textContent = phase.name;
+
+        const input = document.createElement("input");
+        input.type = "number";
+        input.className = "durInput";
+        input.min = 1;
+        input.max = 99;
+        input.value = phase.durationSec;
+        input.dataset.index = i;
+        input.disabled = isRunning;
+
+        const unit = document.createElement("span");
+        unit.className = "durUnit";
+        unit.textContent = "sec";
+
+        item.append(name, input, unit);
+        durationsEl.appendChild(item);
+      });
+    }
+
+    durationsEl.addEventListener("change", e => {
+      const input = e.target.closest(".durInput");
+      if (!input || isRunning) return;
+      const idx = parseInt(input.dataset.index, 10);
+      const val = parseInt(input.value, 10);
+      if (Number.isFinite(val) && val >= 1) {
+        activePhases[idx] = { ...activePhases[idx], durationSec: val };
+        reset();
+      }
+    });
 
     /******************************************************************
      *  WAKE LOCK
@@ -791,6 +878,7 @@
         statusText.textContent = UI.statusStopped;
         appEl.classList.remove("running");
       }
+      durationsEl.querySelectorAll(".durInput").forEach(inp => { inp.disabled = isRunning; });
     }
 
     function formatDuration(ms) {
@@ -845,10 +933,11 @@
       if (!btn) return;
       const key = btn.dataset.preset;
       if (!(key in PRESETS)) return;
-      activePhases = PRESETS[key];
+      activePhases = PRESETS[key].map(p => ({...p}));
       presetsEl.querySelectorAll(".presetBtn").forEach(b =>
         b.classList.toggle("active", b.dataset.preset === key)
       );
+      buildDurationInputs();
       reset();
     });
 
@@ -906,6 +995,7 @@
     document.addEventListener("webkitfullscreenchange", updateFullscreenIcon);
 
     // ====== Init (no cue on load) ======
+    buildDurationInputs();
     render(0, getPhase().durationSec);
     updateStatusUI();
   </script>
