@@ -87,6 +87,18 @@
       pointer-events: none;
     }
 
+    .breathCircle {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.2;
+      transition: background 220ms ease;
+      pointer-events: none;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
     .time {
       font-size: 78px;
       font-weight: 800;
@@ -259,6 +271,7 @@
       </svg>
 
       <div class="ringContent">
+        <div id="breathCircle" class="breathCircle"></div>
         <div>
           <div class="time" id="time">2</div>
           <div class="subHint" id="secondsLabel">seconds</div>
@@ -320,11 +333,12 @@
 
     // Phase sequence: 2s Pause -> 4s Inhale -> 2s Pause -> 8s Exhale
     // Add/adjust durations, colors, and cue frequencies here.
+    // breathR: [startFraction, endFraction] — 0=contracted, 1=expanded
     const PHASES = Object.freeze([
-      { name: "Pause",  durationSec: 2, theme: { bg: "#101010", accent: "#9aa0a6" }, cue: { freqHz: 440 } },
-      { name: "Inhale", durationSec: 4, theme: { bg: "#07160a", accent: "#34d399" }, cue: { freqHz: 660 } },
-      { name: "Pause",  durationSec: 2, theme: { bg: "#101010", accent: "#9aa0a6" }, cue: { freqHz: 440 } },
-      { name: "Exhale", durationSec: 7, theme: { bg: "#06121d", accent: "#60a5fa" }, cue: { freqHz: 330 } }
+      { name: "Pause",  durationSec: 2, breathR: [0, 0], theme: { bg: "#101010", accent: "#9aa0a6" }, cue: { freqHz: 440 } },
+      { name: "Inhale", durationSec: 4, breathR: [0, 1], theme: { bg: "#07160a", accent: "#34d399" }, cue: { freqHz: 660 } },
+      { name: "Pause",  durationSec: 2, breathR: [1, 1], theme: { bg: "#101010", accent: "#9aa0a6" }, cue: { freqHz: 440 } },
+      { name: "Exhale", durationSec: 7, breathR: [1, 0], theme: { bg: "#06121d", accent: "#60a5fa" }, cue: { freqHz: 330 } }
     ]);
 
     // Sound settings
@@ -398,6 +412,7 @@
     const goalInput = document.getElementById("goalInput");
     const sessionBarFill = document.getElementById("sessionBarFill");
     const doneOverlay = document.getElementById("doneOverlay");
+    const breathCircleEl = document.getElementById("breathCircle");
 
     // Apply default toggle states + UI text
     soundToggle.checked = SOUND.enabledByDefault;
@@ -529,6 +544,13 @@
       }
 
       applyThemeForCurrentPhase();
+
+      const [bFrom, bTo] = getPhase().breathR;
+      const bT = bFrom + progress01 * (bTo - bFrom);
+      const bPx = Math.round(24 + bT * 146);
+      breathCircleEl.style.width = `${bPx}px`;
+      breathCircleEl.style.height = `${bPx}px`;
+
       renderSessionBar();
     }
 
