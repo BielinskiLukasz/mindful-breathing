@@ -244,8 +244,8 @@
       btnStart: "Start",
       btnStop: "Stop",
       hintHtml:
-        "If sound doesn’t play: press Start (browsers require a user gesture).<br/>" +
-        "Vibration works only on supported devices (often Android/Chrome) and usually over HTTPS."
+        "Sound: tap Start to activate (required by all browsers).<br/>" +
+        "Vibration: Android/Chrome only — not available on iOS or desktop."
     });
 
     // Phase sequence: 2s Pause -> 4s Inhale -> 2s Pause -> 8s Exhale
@@ -358,24 +358,6 @@
     /******************************************************************
      *  SOUND / VIBRATION
      ******************************************************************/
-    async function ensureAudio() {
-      if (!soundToggle.checked) return;
-
-      if (audioCtx) {
-        if (audioCtx.state === "suspended") {
-          try { await audioCtx.resume(); } catch (_) {}
-        }
-        return;
-      }
-
-      const AC = window.AudioContext || window.webkitAudioContext;
-      if (!AC) return;
-
-      audioCtx = new AC();
-      if (audioCtx.state === "suspended") {
-        try { await audioCtx.resume(); } catch (_) {}
-      }
-    }
 
     function playBeep(freqHz, ms = SOUND.beepMs, volume = SOUND.volume) {
       if (!soundToggle.checked) return;
@@ -507,15 +489,14 @@
       }
     }
 
-    async function start() {
+    function start() {
       if (isRunning) return;
       isRunning = true;
-
-      await ensureAudio();
 
       const now = performance.now();
       phaseStartTs = now - elapsedMs;
 
+      cueOnPhaseEnter(currentPhaseIndex);
       updateStatusUI();
       rafId = requestAnimationFrame(loop);
     }
@@ -540,9 +521,26 @@
       render(0, getPhase().durationSec);
     }
 
-    toggleBtn.addEventListener("click", () => {
-      if (isRunning) stop();
-      else start();
+    toggleBtn.addEventListener("click", async () => {
+      if (isRunning) { stop(); return; }
+
+      // Create/resume AudioContext synchronously within user gesture
+      if (soundToggle.checked) {
+        if (!audioCtx) {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) audioCtx = new AC();
+        }
+        if (audioCtx && audioCtx.state === "suspended") {
+          try { await audioCtx.resume(); } catch (_) {}
+        }
+      }
+
+      // Prime vibration API while still inside user gesture
+      if ("vibrate" in navigator) {
+        try { navigator.vibrate(0); } catch (_) {}
+      }
+
+      start();
     });
 
     resetBtn.addEventListener("click", reset);
