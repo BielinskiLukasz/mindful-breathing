@@ -1111,6 +1111,9 @@
 
       [3, 2, 1].forEach((n, i) => {
         const t = setTimeout(() => {
+          if (vibeToggle.checked && "vibrate" in navigator) {
+            try { navigator.vibrate(40); } catch (_) {}
+          }
           countdownNumEl.textContent = n;
           countdownNumEl.classList.remove("pop");
           void countdownNumEl.offsetWidth;
