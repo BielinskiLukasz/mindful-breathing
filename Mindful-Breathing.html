@@ -289,6 +289,35 @@
 
     .doneOverlay.visible { display: grid; }
 
+    /* ====== COUNTDOWN ====== */
+    .countdownOverlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      background: rgba(0,0,0,0.72);
+      place-items: center;
+      z-index: 20;
+    }
+
+    .countdownOverlay.visible { display: grid; }
+
+    @keyframes countdownPop {
+      0%   { transform: scale(1.5); opacity: 0; }
+      25%  { transform: scale(1);   opacity: 1; }
+      75%  { transform: scale(1);   opacity: 1; }
+      100% { transform: scale(0.8); opacity: 0; }
+    }
+
+    .countdownNum {
+      font-size: 100px;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .countdownNum.pop { animation: countdownPop 900ms ease forwards; }
+
     .doneContent {
       display: flex;
       flex-direction: column;
@@ -415,6 +444,10 @@
         <div class="doneTime" id="doneTime"></div>
         <button class="doneRestartBtn" id="doneRestartBtn">Start again</button>
       </div>
+    </div>
+
+    <div class="countdownOverlay" id="countdownOverlay">
+      <div class="countdownNum" id="countdownNum">3</div>
     </div>
     <div class="cycle" id="cycle">Cycle: 1</div>
     <div class="phase" id="phase">Pause</div>
@@ -582,6 +615,10 @@
     // Persistence
     let activePresetKey = "relax";
     let savedDurations = {};
+
+    // Countdown
+    let isCountingDown = false;
+    let countdownTimers = [];
 
     /******************************************************************
      *  DOM
@@ -940,6 +977,41 @@
     /******************************************************************
      *  CONTROLS
      ******************************************************************/
+    const countdownOverlay = document.getElementById("countdownOverlay");
+    const countdownNumEl   = document.getElementById("countdownNum");
+
+    function showCountdown(callback) {
+      isCountingDown = true;
+      countdownOverlay.classList.add("visible");
+      toggleBtn.textContent = UI.btnStop;
+
+      [3, 2, 1].forEach((n, i) => {
+        const t = setTimeout(() => {
+          countdownNumEl.textContent = n;
+          countdownNumEl.classList.remove("pop");
+          void countdownNumEl.offsetWidth;
+          countdownNumEl.classList.add("pop");
+        }, i * 1000);
+        countdownTimers.push(t);
+      });
+
+      const finalT = setTimeout(() => {
+        countdownOverlay.classList.remove("visible");
+        isCountingDown = false;
+        countdownTimers = [];
+        callback();
+      }, 3000);
+      countdownTimers.push(finalT);
+    }
+
+    function cancelCountdown() {
+      countdownTimers.forEach(clearTimeout);
+      countdownTimers = [];
+      countdownOverlay.classList.remove("visible");
+      isCountingDown = false;
+      updateStatusUI();
+    }
+
     function updateStatusUI() {
       if (isRunning) {
         toggleBtn.textContent = UI.btnStop;
@@ -998,6 +1070,7 @@
     }
 
     function reset() {
+      if (isCountingDown) cancelCountdown();
       stop();
       currentPhaseIndex = 0;
       cycleCount = 1;
@@ -1037,6 +1110,7 @@
     });
 
     toggleBtn.addEventListener("click", async () => {
+      if (isCountingDown) { cancelCountdown(); return; }
       if (isRunning) { stop(); return; }
 
       // Create/resume AudioContext synchronously within user gesture
@@ -1056,8 +1130,10 @@
       }
 
       goalInput.disabled = true;
-      start();
-      acquireWakeLock();
+      showCountdown(() => {
+        start();
+        acquireWakeLock();
+      });
     });
 
     resetBtn.addEventListener("click", reset);
