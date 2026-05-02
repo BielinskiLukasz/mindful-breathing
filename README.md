@@ -7,6 +7,13 @@ It runs entirely in the browser, requires no backend, and works offline.
 
 ---
 
+## 🔗 Live Demo
+
+Try the app here:  
+**https://bielinskilukasz.github.io/mindful-breathing/**
+
+---
+
 ## 🚀 Features
 
 - Three breathing modes  
@@ -46,7 +53,7 @@ cd mindful-breathing
 Simply open the HTML file in any modern browser:
 
 `bash
-open Mindful-Breathing.html
+open index.html
 `
 
 Or double‑click it in your file explorer.
