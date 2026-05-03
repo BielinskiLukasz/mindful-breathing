@@ -1,4 +1,5 @@
 # 🌬️ Mindful Breathing  
+![Version](https://img.shields.io/badge/version-0.2.1-blue)
 ![Status](https://img.shields.io/badge/status-in_progress-yellow)
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
@@ -9,6 +10,13 @@ A minimal, distraction‑free breathing timer for relaxation, focus, and mindful
 
 Mindful Breathing is a lightweight, single‑file HTML application that guides you through structured breathing cycles such as Relax, Box Breathing, and the 4‑7‑8 technique.  
 It runs entirely in the browser, requires no backend, and works offline.
+
+---
+
+## 🧭 Motivation / Why
+
+This project was created **for personal use** — as a simple, clean, offline breathing tool without ads, accounts, or unnecessary UI clutter.  
+It also serves as a small experiment in minimalistic UI, smooth CSS animations, and browser‑only app design.
 
 ---
 
@@ -131,6 +139,75 @@ Planned improvements and enhancements:
 - [ ] Refine the Start/Reset button styling for better visual consistency  
 - [ ] Improve mobile spacing and responsive scaling of UI elements  
 - [ ] Enhance readability of the status text (“Stopped 0:00”) 
+
+---
+
+## 🗺️ Roadmap
+
+*(To be expanded as the project evolves.)*
+
+### **v0.3**
+- UI improvements
+
+### **v0.4**
+- mobile landscape layout
+
+### **v0.5**
+- external API for quotes
+
+### **v1.0**
+- polished release
+
+---
+
+## 📜 Changelog  
+
+### [0.2.1](https://github.com/BielinskiLukasz/mindful-breathing/releases/tag/v0.2.1) – 2026-05-03  
+#### Added  
+- Add README for Mindful Breathing application  
+
+#### Changed  
+- Update durations for breath presets  
+- Rename `Mindful-Breathing.html` to `index.html`  
+
+### [0.2.0](https://github.com/BielinskiLukasz/mindful-breathing/releases/tag/v0.2.0) – 2026-04-30  
+#### Added  
+- Preset breathing patterns (Relax, Box, 4‑7‑8)  
+- Breathing animation circle following inhale/exhale  
+- Session goal with cycle counter and done overlay  
+- Screen wake lock to prevent display sleep  
+- Per‑phase duration editing below preset buttons  
+- Elapsed session timer next to status indicator  
+- Idle breathing pulse animation when session is stopped  
+- 3‑2‑1 countdown overlay before session starts  
+- Next phase label below the breathing ring  
+- Keyboard shortcuts: Space (start/stop), R (reset), F (fullscreen)  
+- Per‑phase breathing guidance text below the ring  
+- Ambient brightness animation synced with breathing  
+- Collapsible session history showing last 5 sessions  
+- Estimated session duration next to goal input  
+
+#### Changed  
+- Relax pattern updated: Pause → Hold, with Box color scheme  
+- Polish done overlay: show elapsed time and “Start again” button  
+
+#### Fixed  
+- Sound and vibration not working on mobile browsers  
+
+#### Added (mobile‑specific)  
+- Vibrate once per countdown tick (3‑2‑1) on mobile  
+
+### [0.1.0](https://github.com/BielinskiLukasz/mindful-breathing/releases/tag/v0.1.0) – 2026-04-02  
+#### Added  
+- Initial project structure  
+- Simple breathing timer  
+- Start/stop button  
+- Reset button  
+- Color scheme  
+- Animated progress ring  
+- Sound and vibration support  
+- English UI  
+- Configuration panel
 
 ---
 
