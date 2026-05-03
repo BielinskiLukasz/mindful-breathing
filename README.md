@@ -1,9 +1,17 @@
-# 🌬️ Mindful Breathing
+# 🌬️ Mindful Breathing  
+![Status](https://img.shields.io/badge/status-in_progress-yellow)
 
 A minimal, distraction‑free breathing timer for relaxation, focus, and mindfulness practice.
 
 Mindful Breathing is a lightweight, single‑file HTML application that guides you through structured breathing cycles such as Relax, Box Breathing, and the 4‑7‑8 technique.  
 It runs entirely in the browser, requires no backend, and works offline.
+
+---
+
+## 📌 Project Status
+
+This project is currently **in progress**.  
+New features, UI improvements, and refinements are actively being developed.
 
 ---
 
