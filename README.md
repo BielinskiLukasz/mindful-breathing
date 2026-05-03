@@ -10,7 +10,7 @@ It runs entirely in the browser, requires no backend, and works offline.
 ## 🔗 Live Demo
 
 Try the app here:  
-**https://bielinskilukasz.github.io/mindful-breathing/**
+**[https://bielinskilukasz.github.io/mindful-breathing/](https://bielinskilukasz.github.io/mindful-breathing/)**
 
 ---
 
@@ -35,7 +35,7 @@ Try the app here:
 
 ## 🖼️ Preview
 
-*(Screenshot from the app — breathing timer with cycle indicator, mode selection, and session history.)*
+<img width="639" height="805" alt="image" src="https://github.com/user-attachments/assets/e492c052-1ad8-44f7-a865-865139bd0c2d" />
 
 ---
 
@@ -52,9 +52,9 @@ cd mindful-breathing
 
 Simply open the HTML file in any modern browser:
 
-`bash
+```bash
 open index.html
-`
+```
 
 Or double‑click it in your file explorer.
 
@@ -100,6 +100,25 @@ Tested on:
 - Firefox  
 - Safari  
 - Edge  
+
+---
+
+## 📝 TODO
+
+Planned improvements and enhancements:
+
+- [ ] Remove vibration feedback  
+- [ ] Replace the sound checkbox with a speaker‑icon toggle button  
+- [ ] Add support for screen rotation on mobile (dedicated landscape layout)  
+- [ ] Add a “thought of the day” or inspirational quote (possibly via external API)  
+- [ ] Hide the bottom information panel behind an **(i)** expandable button  
+- [ ] Remove separators at the bottom of the page  
+- [ ] Add a favicon (browser tab icon)  
+- [ ] Improve the layout and spacing of the PAST SESSIONS section  
+- [ ] Add a “Clear history” button for session logs  
+- [ ] Refine the Start/Reset button styling for better visual consistency  
+- [ ] Improve mobile spacing and responsive scaling of UI elements  
+- [ ] Enhance readability of the status text (“Stopped 0:00”) 
 
 ---
 
