@@ -128,7 +128,8 @@ Tested on:
 
 Planned improvements and enhancements:
 
-- [ ] Remove vibration feedback  
+- [ ] Remove/fix vibration feedback
+- [ ] Switch date display to English locale
 - [ ] Replace the sound checkbox with a speaker‑icon toggle button  
 - [ ] Add support for screen rotation on mobile (dedicated landscape layout)  
 - [ ] Add a “thought of the day” or inspirational quote (possibly via external API)  
