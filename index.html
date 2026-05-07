@@ -386,12 +386,44 @@
 
     .doneRestartBtn:hover { background: #6ee7b7; }
 
+    .infoBtn {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 34px;
+      height: 34px;
+      min-width: 0;
+      padding: 0;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      color: rgba(255,255,255,0.4);
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .infoBtn:hover {
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.8);
+      border-color: rgba(255,255,255,0.25);
+    }
+
     .hint {
-      margin-top: 8px;
+      display: none;
+      margin-top: 10px;
       font-size: 12px;
       color: rgba(255,255,255,0.45);
-      line-height: 1.35;
+      line-height: 1.5;
+      background: rgba(255,255,255,0.03);
+      border-radius: 8px;
+      padding: 10px 12px;
+      text-align: left;
     }
+
+    .hint.visible { display: block; }
 
     /* ====== CUSTOM DURATIONS ====== */
     .durations {
@@ -643,6 +675,7 @@
 
 <body>
   <div class="container" id="app">
+    <button class="infoBtn" id="infoBtn" title="Keyboard shortcuts & notes" aria-label="Toggle info panel">ⓘ</button>
     <button class="fullscreenBtn" id="fullscreenBtn" title="Toggle fullscreen" aria-label="Toggle fullscreen">
       <svg id="fsEnterIcon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="1,6 1,1 6,1"/><polyline points="10,1 15,1 15,6"/>
@@ -760,9 +793,9 @@
       btnStart: "Start",
       btnStop: "Stop",
       hintHtml:
-        "Sound: tap Start to activate (required by all browsers).<br/>" +
-        "Vibration: Android/Chrome only — not available on iOS or desktop.<br/>" +
-        "Keys: Space — start/stop &nbsp;·&nbsp; R — reset &nbsp;·&nbsp; F — fullscreen"
+        "🔊 Sound activates on first Start tap (browser autoplay policy).<br/>" +
+        "📳 Vibration: Android/Chrome only — not available on iOS or desktop.<br/>" +
+        "⌨️ Keys: Space — start/stop &nbsp;·&nbsp; R — reset &nbsp;·&nbsp; F — fullscreen"
     });
 
     // Phase sequence: 2s Pause -> 4s Inhale -> 2s Pause -> 8s Exhale
@@ -1472,6 +1505,13 @@
     vibeToggle.addEventListener("change", saveSettings);
     goalInput.addEventListener("change", saveSettings);
     goalInput.addEventListener("input", updateTimeEst);
+
+    /******************************************************************
+     *  INFO PANEL
+     ******************************************************************/
+    document.getElementById("infoBtn").addEventListener("click", () => {
+      hintEl.classList.toggle("visible");
+    });
 
     /******************************************************************
      *  FULLSCREEN
