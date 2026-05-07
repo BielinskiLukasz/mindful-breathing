@@ -890,8 +890,8 @@
           const d = new Date(s.date);
           const dateLabel = d.toDateString() === today.toDateString()     ? "Today"
                           : d.toDateString() === yesterday.toDateString() ? "Yesterday"
-                          : d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
-          const timeLabel = d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
+                          : d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+          const timeLabel = d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
           return `<div class="historyItem">
             <span class="histDate">${dateLabel} ${timeLabel}</span>
             <span class="histStats">${s.cycles} cycle${s.cycles !== 1 ? "s" : ""} · ${formatDuration(s.durationMs)}</span>
