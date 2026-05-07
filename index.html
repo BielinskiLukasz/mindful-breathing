@@ -522,6 +522,58 @@
       color: rgba(255,255,255,0.8);
       border-color: rgba(255,255,255,0.25);
     }
+
+    /* ====== MOBILE ====== */
+    @media (max-width: 480px) {
+      .container {
+        padding: 16px 14px;
+        border-radius: 14px;
+      }
+
+      .phase { font-size: 36px; }
+
+      .ringWrap {
+        width: 200px;
+        height: 200px;
+        margin: 4px auto 10px;
+      }
+
+      .ringSvg {
+        width: 200px;
+        height: 200px;
+      }
+
+      .time { font-size: 62px; }
+
+      .presetBtn { font-size: 12px; padding: 5px 12px; }
+
+      button { font-size: 15px; padding: 10px 14px; min-width: 100px; }
+      .resetBtn { min-width: 78px; font-size: 13px; }
+
+      .goalRow { font-size: 13px; }
+
+      .statusRow { gap: 10px; }
+      .status { font-size: 13px; }
+      .toggles { font-size: 13px; }
+    }
+
+    @media (max-width: 360px) {
+      .phase { font-size: 30px; }
+      .time { font-size: 52px; }
+
+      .ringWrap {
+        width: 170px;
+        height: 170px;
+      }
+
+      .ringSvg {
+        width: 170px;
+        height: 170px;
+      }
+
+      .presets { gap: 5px; }
+      .presetBtn { font-size: 11px; padding: 4px 10px; }
+    }
   </style>
 </head>
 
