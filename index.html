@@ -642,7 +642,7 @@
     // Vibration settings
     const VIBRATION = Object.freeze({
       enabledByDefault: true,
-      pattern: [55, 40, 55] // ms pattern
+      pattern: [50] // single short pulse per phase transition
     });
 
     // Progress ring settings (must match SVG attributes where relevant)
@@ -1270,7 +1270,7 @@
       }
 
       // Prime vibration API while still inside user gesture
-      if ("vibrate" in navigator) {
+      if (vibeToggle.checked && "vibrate" in navigator) {
         try { navigator.vibrate(0); } catch (_) {}
       }
 
