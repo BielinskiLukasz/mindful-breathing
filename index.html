@@ -531,6 +531,23 @@
     .histStats { color: rgba(255,255,255,0.75); font-variant-numeric: tabular-nums; font-size: 12px; }
     .historyEmpty { color: rgba(255,255,255,0.28); padding: 10px 0 4px; font-style: italic; font-size: 13px; }
 
+    .clearHistBtn {
+      margin-left: auto;
+      font-size: 10px;
+      padding: 2px 8px;
+      min-width: 0;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.3);
+      border-radius: 6px;
+      font-weight: 400;
+    }
+    .clearHistBtn:hover {
+      border-color: rgba(255,255,255,0.28);
+      color: rgba(255,255,255,0.65);
+      background: transparent;
+    }
+
     /* ====== FULLSCREEN ====== */
     .fullscreenBtn {
       position: absolute;
@@ -770,7 +787,7 @@
     </div>
 
     <details class="history" id="historyDetails">
-      <summary>Past sessions</summary>
+      <summary>Past sessions <button class="clearHistBtn" id="clearHistBtn">Clear</button></summary>
       <div id="historyList"></div>
     </details>
 
@@ -1505,6 +1522,15 @@
     vibeToggle.addEventListener("change", saveSettings);
     goalInput.addEventListener("change", saveSettings);
     goalInput.addEventListener("input", updateTimeEst);
+
+    /******************************************************************
+     *  CLEAR HISTORY
+     ******************************************************************/
+    document.getElementById("clearHistBtn").addEventListener("click", e => {
+      e.stopPropagation();
+      try { localStorage.removeItem(HISTORY_KEY); } catch (_) {}
+      renderHistory();
+    });
 
     /******************************************************************
      *  INFO PANEL
