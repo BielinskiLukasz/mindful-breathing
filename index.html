@@ -339,12 +339,29 @@
       position: absolute;
       inset: 0;
       border-radius: 16px;
-      background: rgba(0,0,0,0.72);
+      background: rgba(0,0,0,0.82);
       place-items: center;
       z-index: 20;
     }
 
     .countdownOverlay.visible { display: grid; }
+
+    .countdownContent {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      padding: 0 28px;
+    }
+
+    .countdownQuote {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      font-style: italic;
+      max-width: 260px;
+      line-height: 1.65;
+      text-align: center;
+    }
 
     @keyframes countdownPop {
       0%   { transform: scale(1.5); opacity: 0; }
@@ -354,7 +371,7 @@
     }
 
     .countdownNum {
-      font-size: 100px;
+      font-size: 96px;
       font-weight: 800;
       color: var(--accent);
       line-height: 1;
@@ -721,7 +738,10 @@
     </div>
 
     <div class="countdownOverlay" id="countdownOverlay">
-      <div class="countdownNum" id="countdownNum">3</div>
+      <div class="countdownContent">
+        <div class="countdownQuote" id="countdownQuote"></div>
+        <div class="countdownNum" id="countdownNum">3</div>
+      </div>
     </div>
     <div class="cycle" id="cycle">Cycle: 1</div>
     <div class="phase" id="phase">Pause</div>
@@ -883,6 +903,20 @@
     // localStorage keys
     const STORAGE_KEY  = "mb_v1";
     const HISTORY_KEY  = "mb_history";
+
+    // Pre-session quotes
+    const QUOTES = [
+      "Breathing in, I calm my body. Breathing out, I smile.",
+      "The breath is always in the present moment.",
+      "In the pause between breaths, find stillness.",
+      "Each exhale is a release. Each inhale, a beginning.",
+      "Breathe deeply. You are exactly where you need to be.",
+      "The quality of your breath reflects the quality of your mind.",
+      "Slow down. Your breath knows the way.",
+      "With every exhale, let go of what no longer serves you.",
+      "Peace begins with a single conscious breath.",
+      "You don't have to control your thoughts — just stop letting them control you.",
+    ];
 
     /******************************************************************
      *  STATE
@@ -1361,6 +1395,8 @@
       isCountingDown = true;
       countdownOverlay.classList.add("visible");
       toggleBtn.textContent = UI.btnStop;
+      document.getElementById("countdownQuote").textContent =
+        QUOTES[Math.floor(Math.random() * QUOTES.length)];
 
       [3, 2, 1].forEach((n, i) => {
         const t = setTimeout(() => {
