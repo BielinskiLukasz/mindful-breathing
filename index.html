@@ -310,7 +310,7 @@
       height: 100%;
       border-radius: 3px;
       background: var(--accent);
-      transition: width 400ms ease, background 220ms ease;
+      transition: background 220ms ease;
       width: 0%;
     }
 
@@ -1076,7 +1076,14 @@
      ******************************************************************/
     function renderSessionBar() {
       const goal = getGoal();
-      const pct = Math.min(100, ((cycleCount - 1) / goal) * 100);
+      let completedCycles = cycleCount - 1;
+      let cycleProgress = 0;
+      if (isRunning) {
+        const totalCycleMs = activePhases.reduce((s, p) => s + p.durationSec * 1000, 0);
+        const elapsedInCycleMs = activePhases.slice(0, currentPhaseIndex).reduce((s, p) => s + p.durationSec * 1000, 0) + elapsedMs;
+        cycleProgress = Math.min(1, elapsedInCycleMs / totalCycleMs);
+      }
+      const pct = Math.min(100, ((completedCycles + cycleProgress) / goal) * 100);
       sessionBarFill.style.width = `${pct}%`;
     }
 
