@@ -523,6 +523,23 @@
       border-color: rgba(255,255,255,0.25);
     }
 
+    /* ====== SOUND ICON TOGGLE ====== */
+    .iconToggle {
+      width: 32px;
+      height: 32px;
+      min-width: 0;
+      padding: 0;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      color: rgba(255,255,255,0.65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .iconToggle:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.9); }
+    .iconToggle.muted { color: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.06); }
+
     /* ====== MOBILE ====== */
     @media (max-width: 480px) {
       .container {
@@ -643,7 +660,18 @@
       </div>
 
       <div class="toggles">
-        <label><input type="checkbox" id="soundToggle" checked> Sound</label>
+        <button class="iconToggle" id="soundToggle" title="Toggle sound">
+          <svg id="soundOnIcon" viewBox="0 0 18 18" width="16" height="16" fill="currentColor" aria-hidden="true">
+            <path d="M2 6.5h3.5l4-3.5v12l-4-3.5H2z"/>
+            <path d="M11.5 6.5a3 3 0 0 1 0 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M13.5 4a6.5 6.5 0 0 1 0 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <svg id="soundOffIcon" viewBox="0 0 18 18" width="16" height="16" fill="currentColor" aria-hidden="true" style="display:none">
+            <path d="M2 6.5h3.5l4-3.5v12l-4-3.5H2z"/>
+            <line x1="11" y1="6" x2="15.5" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="15.5" y1="6" x2="11" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
         <label><input type="checkbox" id="vibeToggle" checked> Vibration</label>
       </div>
     </div>
@@ -783,6 +811,9 @@
     let isCountingDown = false;
     let countdownTimers = [];
 
+    // Sound toggle state (replaces checkbox .checked)
+    let soundEnabled = SOUND.enabledByDefault;
+
     /******************************************************************
      *  DOM
      ******************************************************************/
@@ -809,8 +840,15 @@
     const nextPhaseEl = document.getElementById("nextPhase");
     const phaseHintEl = document.getElementById("phaseHint");
 
+    function updateSoundToggleUI() {
+      document.getElementById("soundOnIcon").style.display = soundEnabled ? "" : "none";
+      document.getElementById("soundOffIcon").style.display = soundEnabled ? "none" : "";
+      soundToggle.classList.toggle("muted", !soundEnabled);
+      soundToggle.setAttribute("aria-label", soundEnabled ? "Mute sound" : "Unmute sound");
+    }
+
     // Apply default toggle states + UI text
-    soundToggle.checked = SOUND.enabledByDefault;
+    updateSoundToggleUI();
     vibeToggle.checked = VIBRATION.enabledByDefault;
     secondsLabelEl.textContent = UI.secondsLabel;
     hintEl.innerHTML = UI.hintHtml;
@@ -912,7 +950,7 @@
       try {
         savedDurations[activePresetKey] = activePhases.map(p => p.durationSec);
         localStorage.setItem(STORAGE_KEY, JSON.stringify({
-          sound: soundToggle.checked,
+          sound: soundEnabled,
           vibe: vibeToggle.checked,
           preset: activePresetKey,
           goal: goalInput.value,
@@ -926,7 +964,7 @@
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return;
         const data = JSON.parse(raw);
-        if (typeof data.sound === "boolean") soundToggle.checked = data.sound;
+        if (typeof data.sound === "boolean") { soundEnabled = data.sound; updateSoundToggleUI(); }
         if (typeof data.vibe === "boolean") vibeToggle.checked = data.vibe;
         if (data.goal) goalInput.value = data.goal;
         if (data.durations && typeof data.durations === "object") savedDurations = data.durations;
@@ -1016,7 +1054,7 @@
      ******************************************************************/
 
     function playBeep(freqHz, ms = SOUND.beepMs, volume = SOUND.volume) {
-      if (!soundToggle.checked) return;
+      if (!soundEnabled) return;
       if (!audioCtx) return;
 
       const t0 = audioCtx.currentTime;
@@ -1045,7 +1083,7 @@
     }
 
     function playCompletionChime() {
-      if (!soundToggle.checked || !audioCtx) return;
+      if (!soundEnabled || !audioCtx) return;
       const notes = [880, 698, 523];
       const dur = 0.45;
       notes.forEach((freq, i) => {
@@ -1354,7 +1392,7 @@
       if (isRunning) { stop(); return; }
 
       // Create/resume AudioContext synchronously within user gesture
-      if (soundToggle.checked) {
+      if (soundEnabled) {
         if (!audioCtx) {
           const AC = window.AudioContext || window.webkitAudioContext;
           if (AC) audioCtx = new AC();
@@ -1379,7 +1417,11 @@
     resetBtn.addEventListener("click", reset);
     document.getElementById("doneRestartBtn").addEventListener("click", reset);
 
-    soundToggle.addEventListener("change", saveSettings);
+    soundToggle.addEventListener("click", () => {
+      soundEnabled = !soundEnabled;
+      updateSoundToggleUI();
+      saveSettings();
+    });
     vibeToggle.addEventListener("change", saveSettings);
     goalInput.addEventListener("change", saveSettings);
     goalInput.addEventListener("input", updateTimeEst);
