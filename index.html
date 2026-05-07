@@ -797,7 +797,18 @@
             <line x1="15.5" y1="6" x2="11" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
         </button>
-        <label><input type="checkbox" id="vibeToggle" checked> Vibration</label>
+        <button class="iconToggle" id="vibeToggle" title="Toggle vibration">
+          <svg id="vibeOnIcon" viewBox="0 0 18 18" width="16" height="16" fill="currentColor" aria-hidden="true">
+            <path d="M3 5.5a6 6 0 0 0 0 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <rect x="6" y="2.5" width="6" height="13" rx="1.5"/>
+            <path d="M15 5.5a6 6 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <svg id="vibeOffIcon" viewBox="0 0 18 18" width="16" height="16" fill="currentColor" aria-hidden="true" style="display:none">
+            <rect x="6" y="2.5" width="6" height="13" rx="1.5"/>
+            <line x1="13" y1="5.5" x2="17" y2="9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="17" y1="5.5" x2="13" y2="9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
       </div>
     </div>
 
@@ -950,8 +961,9 @@
     let isCountingDown = false;
     let countdownTimers = [];
 
-    // Sound toggle state (replaces checkbox .checked)
+    // Sound/vibration toggle states (replace checkbox .checked)
     let soundEnabled = SOUND.enabledByDefault;
+    let vibeEnabled  = VIBRATION.enabledByDefault;
 
     /******************************************************************
      *  DOM
@@ -986,9 +998,16 @@
       soundToggle.setAttribute("aria-label", soundEnabled ? "Mute sound" : "Unmute sound");
     }
 
+    function updateVibeToggleUI() {
+      document.getElementById("vibeOnIcon").style.display = vibeEnabled ? "" : "none";
+      document.getElementById("vibeOffIcon").style.display = vibeEnabled ? "none" : "";
+      vibeToggle.classList.toggle("muted", !vibeEnabled);
+      vibeToggle.setAttribute("aria-label", vibeEnabled ? "Mute vibration" : "Unmute vibration");
+    }
+
     // Apply default toggle states + UI text
     updateSoundToggleUI();
-    vibeToggle.checked = VIBRATION.enabledByDefault;
+    updateVibeToggleUI();
     secondsLabelEl.textContent = UI.secondsLabel;
     hintEl.innerHTML = UI.hintHtml;
     goalInput.value = SESSION.defaultCycles;
@@ -1090,7 +1109,7 @@
         savedDurations[activePresetKey] = activePhases.map(p => p.durationSec);
         localStorage.setItem(STORAGE_KEY, JSON.stringify({
           sound: soundEnabled,
-          vibe: vibeToggle.checked,
+          vibe: vibeEnabled,
           preset: activePresetKey,
           goal: goalInput.value,
           durations: savedDurations,
@@ -1104,7 +1123,7 @@
         if (!raw) return;
         const data = JSON.parse(raw);
         if (typeof data.sound === "boolean") { soundEnabled = data.sound; updateSoundToggleUI(); }
-        if (typeof data.vibe === "boolean") vibeToggle.checked = data.vibe;
+        if (typeof data.vibe === "boolean") { vibeEnabled = data.vibe; updateVibeToggleUI(); }
         if (data.goal) goalInput.value = data.goal;
         if (data.durations && typeof data.durations === "object") savedDurations = data.durations;
         if (data.preset && data.preset in PRESETS) {
@@ -1216,7 +1235,7 @@
     }
 
     function vibrate(pattern = VIBRATION.pattern) {
-      if (!vibeToggle.checked) return;
+      if (!vibeEnabled) return;
       if (!("vibrate" in navigator)) return;
       try { navigator.vibrate(pattern); } catch (_) {}
     }
@@ -1400,7 +1419,7 @@
 
       [3, 2, 1].forEach((n, i) => {
         const t = setTimeout(() => {
-          if (vibeToggle.checked && "vibrate" in navigator) {
+          if (vibeEnabled && "vibrate" in navigator) {
             try { navigator.vibrate(40); } catch (_) {}
           }
           countdownNumEl.textContent = n;
@@ -1544,7 +1563,7 @@
       }
 
       // Prime vibration API while still inside user gesture
-      if (vibeToggle.checked && "vibrate" in navigator) {
+      if (vibeEnabled && "vibrate" in navigator) {
         try { navigator.vibrate(0); } catch (_) {}
       }
 
@@ -1563,7 +1582,11 @@
       updateSoundToggleUI();
       saveSettings();
     });
-    vibeToggle.addEventListener("change", saveSettings);
+    vibeToggle.addEventListener("click", () => {
+      vibeEnabled = !vibeEnabled;
+      updateVibeToggleUI();
+      saveSettings();
+    });
     goalInput.addEventListener("change", saveSettings);
     goalInput.addEventListener("input", updateTimeEst);
 
