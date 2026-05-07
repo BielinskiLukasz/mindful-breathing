@@ -3,7 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Breathing Timer (smooth + cues)</title>
+  <title>Mindful Breathing</title>
+  <meta name="description" content="A distraction-free breathing timer for relaxation, focus, and mindfulness practice." />
+  <meta name="theme-color" content="#34d399" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Breathing" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23111'/><circle cx='16' cy='16' r='12' fill='none' stroke='%2334d399' stroke-width='2'/><circle cx='16' cy='16' r='5.5' fill='%2334d399' opacity='.75'/></svg>" />
+  <link rel="apple-touch-icon" href="icon.svg" />
+  <link rel="manifest" href="manifest.json" />
   <style>
     :root{
       --bg: #111;
@@ -161,22 +169,52 @@
     }
 
     button {
-      font-size: 18px;
-      padding: 12px 18px;
-      border: 0;
+      font-size: 16px;
+      padding: 11px 18px;
+      border: 1px solid transparent;
       border-radius: 12px;
       cursor: pointer;
       background: #2b2b2b;
       color: #fff;
-      transition: transform 0.05s ease, background 0.2s ease;
+      transition: transform 0.05s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
       min-width: 120px;
+      font-weight: 500;
     }
 
-    button:hover { background: #3a3a3a; }
-    button:active { transform: scale(0.98); }
+    button:hover { background: #383838; }
+    button:active { transform: scale(0.97); }
 
-    .resetBtn { background: #3a1f1f; }
-    .resetBtn:hover { background: #4a2a2a; }
+    /* Primary action: highlight with accent when idle (Ready state) */
+    .container:not(.running) #toggleBtn {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0,0,0,0.2);
+    }
+    .container:not(.running) #toggleBtn:hover {
+      background: rgba(255,255,255,0.06);
+    }
+
+    /* Stop state: subtle red tint */
+    .container.running #toggleBtn {
+      background: #2a1515;
+      border-color: #e57373;
+      color: #e57373;
+    }
+    .container.running #toggleBtn:hover { background: #3a1f1f; }
+
+    /* Reset: secondary, smaller */
+    .resetBtn {
+      min-width: 90px;
+      font-size: 14px;
+      background: transparent;
+      border-color: rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.5);
+    }
+    .resetBtn:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.8);
+    }
 
     .statusRow{
       margin-top: 12px;
@@ -198,7 +236,7 @@
 
     .elapsed {
       font-size: 13px;
-      color: rgba(255,255,255,0.35);
+      color: rgba(255,255,255,0.55);
       font-variant-numeric: tabular-nums;
       letter-spacing: 0.03em;
     }
@@ -280,7 +318,7 @@
       height: 100%;
       border-radius: 3px;
       background: var(--accent);
-      transition: width 400ms ease, background 220ms ease;
+      transition: background 220ms ease;
       width: 0%;
     }
 
@@ -301,12 +339,29 @@
       position: absolute;
       inset: 0;
       border-radius: 16px;
-      background: rgba(0,0,0,0.72);
+      background: rgba(0,0,0,0.82);
       place-items: center;
       z-index: 20;
     }
 
     .countdownOverlay.visible { display: grid; }
+
+    .countdownContent {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      padding: 0 28px;
+    }
+
+    .countdownQuote {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      font-style: italic;
+      max-width: 260px;
+      line-height: 1.65;
+      text-align: center;
+    }
 
     @keyframes countdownPop {
       0%   { transform: scale(1.5); opacity: 0; }
@@ -316,7 +371,7 @@
     }
 
     .countdownNum {
-      font-size: 100px;
+      font-size: 96px;
       font-weight: 800;
       color: var(--accent);
       line-height: 1;
@@ -356,12 +411,44 @@
 
     .doneRestartBtn:hover { background: #6ee7b7; }
 
+    .infoBtn {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 34px;
+      height: 34px;
+      min-width: 0;
+      padding: 0;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      color: rgba(255,255,255,0.4);
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .infoBtn:hover {
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.8);
+      border-color: rgba(255,255,255,0.25);
+    }
+
     .hint {
-      margin-top: 8px;
+      display: none;
+      margin-top: 10px;
       font-size: 12px;
       color: rgba(255,255,255,0.45);
-      line-height: 1.35;
+      line-height: 1.5;
+      background: rgba(255,255,255,0.03);
+      border-radius: 8px;
+      padding: 10px 12px;
+      text-align: left;
     }
+
+    .hint.visible { display: block; }
 
     /* ====== CUSTOM DURATIONS ====== */
     .durations {
@@ -430,7 +517,6 @@
     /* ====== SESSION HISTORY ====== */
     .history {
       margin-top: 16px;
-      border-top: 1px solid rgba(255,255,255,0.08);
       padding-top: 10px;
       text-align: left;
     }
@@ -438,32 +524,54 @@
     .history summary {
       cursor: pointer;
       user-select: none;
-      color: rgba(255,255,255,0.35);
+      color: rgba(255,255,255,0.4);
       font-size: 11px;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.07em;
       text-transform: uppercase;
       list-style: none;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
       outline: none;
+      padding: 2px 0;
     }
 
-    .history summary::before { content: "▸"; transition: transform 0.2s; }
+    .history summary::before { content: "▸"; transition: transform 0.2s; font-size: 9px; }
     .history[open] summary::before { transform: rotate(90deg); }
 
     .historyItem {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 5px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding: 7px 8px;
       font-size: 13px;
+      border-radius: 8px;
+      margin-top: 4px;
+      background: rgba(255,255,255,0.03);
     }
 
-    .histDate  { color: rgba(255,255,255,0.4); }
-    .histStats { color: rgba(255,255,255,0.6); font-variant-numeric: tabular-nums; }
-    .historyEmpty { color: rgba(255,255,255,0.28); padding: 8px 0; font-style: italic; font-size: 13px; }
+    .historyItem:hover { background: rgba(255,255,255,0.06); }
+
+    .histDate  { color: rgba(255,255,255,0.5); }
+    .histStats { color: rgba(255,255,255,0.75); font-variant-numeric: tabular-nums; font-size: 12px; }
+    .historyEmpty { color: rgba(255,255,255,0.28); padding: 10px 0 4px; font-style: italic; font-size: 13px; }
+
+    .clearHistBtn {
+      margin-left: auto;
+      font-size: 10px;
+      padding: 2px 8px;
+      min-width: 0;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.3);
+      border-radius: 6px;
+      font-weight: 400;
+    }
+    .clearHistBtn:hover {
+      border-color: rgba(255,255,255,0.28);
+      color: rgba(255,255,255,0.65);
+      background: transparent;
+    }
 
     /* ====== FULLSCREEN ====== */
     .fullscreenBtn {
@@ -488,11 +596,128 @@
       color: rgba(255,255,255,0.8);
       border-color: rgba(255,255,255,0.25);
     }
+
+    /* ====== SOUND ICON TOGGLE ====== */
+    .iconToggle {
+      width: 32px;
+      height: 32px;
+      min-width: 0;
+      padding: 0;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      color: rgba(255,255,255,0.65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .iconToggle:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.9); }
+    .iconToggle.muted { color: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.06); }
+
+    /* ====== MOBILE ====== */
+    @media (max-width: 480px) {
+      .container {
+        padding: 16px 14px;
+        border-radius: 14px;
+      }
+
+      .phase { font-size: 36px; }
+
+      .ringWrap {
+        width: 200px;
+        height: 200px;
+        margin: 4px auto 10px;
+      }
+
+      .ringSvg {
+        width: 200px;
+        height: 200px;
+      }
+
+      .time { font-size: 62px; }
+
+      .presetBtn { font-size: 12px; padding: 5px 12px; }
+
+      button { font-size: 15px; padding: 10px 14px; min-width: 100px; }
+      .resetBtn { min-width: 78px; font-size: 13px; }
+
+      .goalRow { font-size: 13px; }
+
+      .statusRow { gap: 10px; }
+      .status { font-size: 13px; }
+      .toggles { font-size: 13px; }
+    }
+
+    @media (max-width: 360px) {
+      .phase { font-size: 30px; }
+      .time { font-size: 52px; }
+
+      .ringWrap {
+        width: 170px;
+        height: 170px;
+      }
+
+      .ringSvg {
+        width: 170px;
+        height: 170px;
+      }
+
+      .presets { gap: 5px; }
+      .presetBtn { font-size: 11px; padding: 4px 10px; }
+    }
+
+    /* ====== LANDSCAPE MOBILE ====== */
+    @media (max-height: 500px) and (orientation: landscape) {
+      body {
+        align-items: flex-start;
+        overflow-y: auto;
+        padding: 8px 0;
+      }
+
+      .container {
+        display: grid;
+        grid-template-columns: 170px 1fr;
+        column-gap: 14px;
+        width: min(700px, 98vw);
+        padding: 10px 14px;
+        text-align: left;
+      }
+
+      .ringWrap {
+        grid-column: 1;
+        grid-row: 1 / 20;
+        width: 155px;
+        height: 155px;
+        margin: 0;
+        align-self: center;
+        text-align: center;
+      }
+
+      .ringSvg { width: 155px; height: 155px; }
+      .time { font-size: 48px; }
+
+      .cycle    { grid-column: 2; font-size: 12px; margin: 0 0 2px; }
+      .phase    { grid-column: 2; font-size: 26px; margin: 0 0 2px; }
+      .phaseHint { grid-column: 2; font-size: 12px; }
+      .nextPhase { grid-column: 2; }
+      #presets  { grid-column: 2; justify-content: flex-start; margin-bottom: 4px; }
+      #durations { grid-column: 2; justify-content: flex-start; }
+      .controls { grid-column: 2; justify-content: flex-start; margin-top: 4px; }
+      .statusRow { grid-column: 2; justify-content: flex-start; margin-top: 4px; }
+      .goalRow  { grid-column: 2; justify-content: flex-start; margin-top: 6px; }
+      .sessionBar { grid-column: 2; margin-top: 6px; }
+      #historyDetails { grid-column: 2; }
+      .hint     { grid-column: 2; }
+
+      button { padding: 8px 12px; font-size: 14px; min-width: 100px; }
+      .resetBtn { min-width: 76px; font-size: 12px; }
+    }
   </style>
 </head>
 
 <body>
   <div class="container" id="app">
+    <button class="infoBtn" id="infoBtn" title="Keyboard shortcuts & notes" aria-label="Toggle info panel">ⓘ</button>
     <button class="fullscreenBtn" id="fullscreenBtn" title="Toggle fullscreen" aria-label="Toggle fullscreen">
       <svg id="fsEnterIcon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="1,6 1,1 6,1"/><polyline points="10,1 15,1 15,6"/>
@@ -513,7 +738,10 @@
     </div>
 
     <div class="countdownOverlay" id="countdownOverlay">
-      <div class="countdownNum" id="countdownNum">3</div>
+      <div class="countdownContent">
+        <div class="countdownQuote" id="countdownQuote"></div>
+        <div class="countdownNum" id="countdownNum">3</div>
+      </div>
     </div>
     <div class="cycle" id="cycle">Cycle: 1</div>
     <div class="phase" id="phase">Pause</div>
@@ -557,7 +785,18 @@
       </div>
 
       <div class="toggles">
-        <label><input type="checkbox" id="soundToggle" checked> Sound</label>
+        <button class="iconToggle" id="soundToggle" title="Toggle sound">
+          <svg id="soundOnIcon" viewBox="0 0 18 18" width="16" height="16" fill="currentColor" aria-hidden="true">
+            <path d="M2 6.5h3.5l4-3.5v12l-4-3.5H2z"/>
+            <path d="M11.5 6.5a3 3 0 0 1 0 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M13.5 4a6.5 6.5 0 0 1 0 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <svg id="soundOffIcon" viewBox="0 0 18 18" width="16" height="16" fill="currentColor" aria-hidden="true" style="display:none">
+            <path d="M2 6.5h3.5l4-3.5v12l-4-3.5H2z"/>
+            <line x1="11" y1="6" x2="15.5" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="15.5" y1="6" x2="11" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
         <label><input type="checkbox" id="vibeToggle" checked> Vibration</label>
       </div>
     </div>
@@ -576,7 +815,7 @@
     </div>
 
     <details class="history" id="historyDetails">
-      <summary>Past sessions</summary>
+      <summary>Past sessions <button class="clearHistBtn" id="clearHistBtn">Clear</button></summary>
       <div id="historyList"></div>
     </details>
 
@@ -599,9 +838,9 @@
       btnStart: "Start",
       btnStop: "Stop",
       hintHtml:
-        "Sound: tap Start to activate (required by all browsers).<br/>" +
-        "Vibration: Android/Chrome only — not available on iOS or desktop.<br/>" +
-        "Keys: Space — start/stop &nbsp;·&nbsp; R — reset &nbsp;·&nbsp; F — fullscreen"
+        "🔊 Sound activates on first Start tap (browser autoplay policy).<br/>" +
+        "📳 Vibration: Android/Chrome only — not available on iOS or desktop.<br/>" +
+        "⌨️ Keys: Space — start/stop &nbsp;·&nbsp; R — reset &nbsp;·&nbsp; F — fullscreen"
     });
 
     // Phase sequence: 2s Pause -> 4s Inhale -> 2s Pause -> 8s Exhale
@@ -642,7 +881,7 @@
     // Vibration settings
     const VIBRATION = Object.freeze({
       enabledByDefault: true,
-      pattern: [55, 40, 55] // ms pattern
+      pattern: [50] // single short pulse per phase transition
     });
 
     // Progress ring settings (must match SVG attributes where relevant)
@@ -664,6 +903,20 @@
     // localStorage keys
     const STORAGE_KEY  = "mb_v1";
     const HISTORY_KEY  = "mb_history";
+
+    // Pre-session quotes
+    const QUOTES = [
+      "Breathing in, I calm my body. Breathing out, I smile.",
+      "The breath is always in the present moment.",
+      "In the pause between breaths, find stillness.",
+      "Each exhale is a release. Each inhale, a beginning.",
+      "Breathe deeply. You are exactly where you need to be.",
+      "The quality of your breath reflects the quality of your mind.",
+      "Slow down. Your breath knows the way.",
+      "With every exhale, let go of what no longer serves you.",
+      "Peace begins with a single conscious breath.",
+      "You don't have to control your thoughts — just stop letting them control you.",
+    ];
 
     /******************************************************************
      *  STATE
@@ -697,6 +950,9 @@
     let isCountingDown = false;
     let countdownTimers = [];
 
+    // Sound toggle state (replaces checkbox .checked)
+    let soundEnabled = SOUND.enabledByDefault;
+
     /******************************************************************
      *  DOM
      ******************************************************************/
@@ -723,8 +979,15 @@
     const nextPhaseEl = document.getElementById("nextPhase");
     const phaseHintEl = document.getElementById("phaseHint");
 
+    function updateSoundToggleUI() {
+      document.getElementById("soundOnIcon").style.display = soundEnabled ? "" : "none";
+      document.getElementById("soundOffIcon").style.display = soundEnabled ? "none" : "";
+      soundToggle.classList.toggle("muted", !soundEnabled);
+      soundToggle.setAttribute("aria-label", soundEnabled ? "Mute sound" : "Unmute sound");
+    }
+
     // Apply default toggle states + UI text
-    soundToggle.checked = SOUND.enabledByDefault;
+    updateSoundToggleUI();
     vibeToggle.checked = VIBRATION.enabledByDefault;
     secondsLabelEl.textContent = UI.secondsLabel;
     hintEl.innerHTML = UI.hintHtml;
@@ -826,7 +1089,7 @@
       try {
         savedDurations[activePresetKey] = activePhases.map(p => p.durationSec);
         localStorage.setItem(STORAGE_KEY, JSON.stringify({
-          sound: soundToggle.checked,
+          sound: soundEnabled,
           vibe: vibeToggle.checked,
           preset: activePresetKey,
           goal: goalInput.value,
@@ -840,7 +1103,7 @@
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return;
         const data = JSON.parse(raw);
-        if (typeof data.sound === "boolean") soundToggle.checked = data.sound;
+        if (typeof data.sound === "boolean") { soundEnabled = data.sound; updateSoundToggleUI(); }
         if (typeof data.vibe === "boolean") vibeToggle.checked = data.vibe;
         if (data.goal) goalInput.value = data.goal;
         if (data.durations && typeof data.durations === "object") savedDurations = data.durations;
@@ -890,8 +1153,8 @@
           const d = new Date(s.date);
           const dateLabel = d.toDateString() === today.toDateString()     ? "Today"
                           : d.toDateString() === yesterday.toDateString() ? "Yesterday"
-                          : d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
-          const timeLabel = d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
+                          : d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+          const timeLabel = d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
           return `<div class="historyItem">
             <span class="histDate">${dateLabel} ${timeLabel}</span>
             <span class="histStats">${s.cycles} cycle${s.cycles !== 1 ? "s" : ""} · ${formatDuration(s.durationMs)}</span>
@@ -930,7 +1193,7 @@
      ******************************************************************/
 
     function playBeep(freqHz, ms = SOUND.beepMs, volume = SOUND.volume) {
-      if (!soundToggle.checked) return;
+      if (!soundEnabled) return;
       if (!audioCtx) return;
 
       const t0 = audioCtx.currentTime;
@@ -959,7 +1222,7 @@
     }
 
     function playCompletionChime() {
-      if (!soundToggle.checked || !audioCtx) return;
+      if (!soundEnabled || !audioCtx) return;
       const notes = [880, 698, 523];
       const dur = 0.45;
       notes.forEach((freq, i) => {
@@ -990,7 +1253,14 @@
      ******************************************************************/
     function renderSessionBar() {
       const goal = getGoal();
-      const pct = Math.min(100, ((cycleCount - 1) / goal) * 100);
+      let completedCycles = cycleCount - 1;
+      let cycleProgress = 0;
+      if (isRunning) {
+        const totalCycleMs = activePhases.reduce((s, p) => s + p.durationSec * 1000, 0);
+        const elapsedInCycleMs = activePhases.slice(0, currentPhaseIndex).reduce((s, p) => s + p.durationSec * 1000, 0) + elapsedMs;
+        cycleProgress = Math.min(1, elapsedInCycleMs / totalCycleMs);
+      }
+      const pct = Math.min(100, ((completedCycles + cycleProgress) / goal) * 100);
       sessionBarFill.style.width = `${pct}%`;
     }
 
@@ -1125,6 +1395,8 @@
       isCountingDown = true;
       countdownOverlay.classList.add("visible");
       toggleBtn.textContent = UI.btnStop;
+      document.getElementById("countdownQuote").textContent =
+        QUOTES[Math.floor(Math.random() * QUOTES.length)];
 
       [3, 2, 1].forEach((n, i) => {
         const t = setTimeout(() => {
@@ -1159,11 +1431,12 @@
     function updateStatusUI() {
       if (isRunning) {
         toggleBtn.textContent = UI.btnStop;
-        statusText.textContent = UI.statusRunning;
+        statusText.textContent = "Running";
         appEl.classList.add("running");
       } else {
         toggleBtn.textContent = UI.btnStart;
-        statusText.textContent = UI.statusStopped;
+        const isAtStart = totalSessionMs === 0 && cycleCount === 1 && currentPhaseIndex === 0;
+        statusText.textContent = isAtStart ? "Ready" : "Paused";
         appEl.classList.remove("running");
       }
       durationsEl.querySelectorAll(".durInput").forEach(inp => { inp.disabled = isRunning; });
@@ -1177,6 +1450,7 @@
 
     function getElapsedDisplay() {
       const ms = isRunning ? totalSessionMs + (Date.now() - sessionResumeTs) : totalSessionMs;
+      if (ms < 1000) return "";
       const s = Math.floor(ms / 1000);
       return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
     }
@@ -1259,7 +1533,7 @@
       if (isRunning) { stop(); return; }
 
       // Create/resume AudioContext synchronously within user gesture
-      if (soundToggle.checked) {
+      if (soundEnabled) {
         if (!audioCtx) {
           const AC = window.AudioContext || window.webkitAudioContext;
           if (AC) audioCtx = new AC();
@@ -1270,7 +1544,7 @@
       }
 
       // Prime vibration API while still inside user gesture
-      if ("vibrate" in navigator) {
+      if (vibeToggle.checked && "vibrate" in navigator) {
         try { navigator.vibrate(0); } catch (_) {}
       }
 
@@ -1284,10 +1558,30 @@
     resetBtn.addEventListener("click", reset);
     document.getElementById("doneRestartBtn").addEventListener("click", reset);
 
-    soundToggle.addEventListener("change", saveSettings);
+    soundToggle.addEventListener("click", () => {
+      soundEnabled = !soundEnabled;
+      updateSoundToggleUI();
+      saveSettings();
+    });
     vibeToggle.addEventListener("change", saveSettings);
     goalInput.addEventListener("change", saveSettings);
     goalInput.addEventListener("input", updateTimeEst);
+
+    /******************************************************************
+     *  CLEAR HISTORY
+     ******************************************************************/
+    document.getElementById("clearHistBtn").addEventListener("click", e => {
+      e.stopPropagation();
+      try { localStorage.removeItem(HISTORY_KEY); } catch (_) {}
+      renderHistory();
+    });
+
+    /******************************************************************
+     *  INFO PANEL
+     ******************************************************************/
+    document.getElementById("infoBtn").addEventListener("click", () => {
+      hintEl.classList.toggle("visible");
+    });
 
     /******************************************************************
      *  FULLSCREEN
@@ -1327,6 +1621,13 @@
         case "KeyF":  fullscreenBtn.click(); break;
       }
     });
+
+    // ====== Service Worker ======
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () =>
+        navigator.serviceWorker.register("sw.js").catch(() => {})
+      );
+    }
 
     // ====== Init (no cue on load) ======
     loadSettings();
