@@ -252,28 +252,6 @@
 
     .running .runningDot { background: #4caf50; }
 
-    .toggles{
-      display: inline-flex;
-      gap: 12px;
-      align-items: center;
-      color: rgba(255,255,255,0.75);
-      font-size: 14px;
-      user-select: none;
-    }
-
-    .toggles label{
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-    }
-
-    input[type="checkbox"]{
-      width: 18px;
-      height: 18px;
-      accent-color: var(--accent);
-      cursor: pointer;
-    }
 
     /* ====== SESSION GOAL ====== */
     .goalRow {
@@ -411,10 +389,17 @@
 
     .doneRestartBtn:hover { background: #6ee7b7; }
 
-    .infoBtn {
+    .cornerControls {
       position: absolute;
       top: 10px;
       left: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      z-index: 5;
+    }
+
+    .infoBtn {
       width: 34px;
       height: 34px;
       min-width: 0;
@@ -423,11 +408,9 @@
       border: 1px solid rgba(255,255,255,0.12);
       border-radius: 8px;
       color: rgba(255,255,255,0.4);
-      font-size: 15px;
       display: flex;
       align-items: center;
       justify-content: center;
-      line-height: 1;
     }
 
     .infoBtn:hover {
@@ -645,7 +628,6 @@
 
       .statusRow { gap: 10px; }
       .status { font-size: 13px; }
-      .toggles { font-size: 13px; }
     }
 
     @media (max-width: 360px) {
@@ -717,7 +699,39 @@
 
 <body>
   <div class="container" id="app">
-    <button class="infoBtn" id="infoBtn" title="Keyboard shortcuts & notes" aria-label="Toggle info panel">ⓘ</button>
+    <div class="cornerControls">
+      <button class="infoBtn" id="infoBtn" title="Keyboard shortcuts & notes" aria-label="Toggle info panel">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="8" cy="8" r="6.5"/>
+          <line x1="8" y1="7.5" x2="8" y2="11.5"/>
+          <circle cx="8" cy="5" r="0.8" fill="currentColor" stroke="none"/>
+        </svg>
+      </button>
+      <button class="iconToggle" id="soundToggle" title="Toggle sound">
+        <svg id="soundOnIcon" viewBox="0 0 18 18" width="16" height="16" fill="currentColor" aria-hidden="true">
+          <path d="M2 6.5h3.5l4-3.5v12l-4-3.5H2z"/>
+          <path d="M11.5 6.5a3 3 0 0 1 0 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M13.5 4a6.5 6.5 0 0 1 0 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <svg id="soundOffIcon" viewBox="0 0 18 18" width="16" height="16" fill="currentColor" aria-hidden="true" style="display:none">
+          <path d="M2 6.5h3.5l4-3.5v12l-4-3.5H2z"/>
+          <line x1="11" y1="6" x2="15.5" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="15.5" y1="6" x2="11" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <button class="iconToggle" id="vibeToggle" title="Toggle vibration">
+        <svg id="vibeOnIcon" viewBox="0 0 18 18" width="16" height="16" fill="currentColor" aria-hidden="true">
+          <path d="M3 5.5a6 6 0 0 0 0 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <rect x="6" y="2.5" width="6" height="13" rx="1.5"/>
+          <path d="M15 5.5a6 6 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <svg id="vibeOffIcon" viewBox="0 0 18 18" width="16" height="16" fill="currentColor" aria-hidden="true" style="display:none">
+          <rect x="6" y="2.5" width="6" height="13" rx="1.5"/>
+          <line x1="13" y1="5.5" x2="17" y2="9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="17" y1="5.5" x2="13" y2="9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
     <button class="fullscreenBtn" id="fullscreenBtn" title="Toggle fullscreen" aria-label="Toggle fullscreen">
       <svg id="fsEnterIcon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="1,6 1,1 6,1"/><polyline points="10,1 15,1 15,6"/>
@@ -784,27 +798,12 @@
         <span id="elapsed" class="elapsed">0:00</span>
       </div>
 
-      <div class="toggles">
-        <button class="iconToggle" id="soundToggle" title="Toggle sound">
-          <svg id="soundOnIcon" viewBox="0 0 18 18" width="16" height="16" fill="currentColor" aria-hidden="true">
-            <path d="M2 6.5h3.5l4-3.5v12l-4-3.5H2z"/>
-            <path d="M11.5 6.5a3 3 0 0 1 0 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M13.5 4a6.5 6.5 0 0 1 0 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-          <svg id="soundOffIcon" viewBox="0 0 18 18" width="16" height="16" fill="currentColor" aria-hidden="true" style="display:none">
-            <path d="M2 6.5h3.5l4-3.5v12l-4-3.5H2z"/>
-            <line x1="11" y1="6" x2="15.5" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="15.5" y1="6" x2="11" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </button>
-        <label><input type="checkbox" id="vibeToggle" checked> Vibration</label>
-      </div>
     </div>
 
     <div class="goalRow">
       <label>
         Goal:
-        <input type="number" id="goalInput" min="1" max="99" value="5" />
+        <input type="number" id="goalInput" min="1" max="50" value="5" />
         cycles
       </label>
       <span class="timeEst" id="timeEst"></span>
@@ -897,7 +896,8 @@
 
     // Session goal
     const SESSION = Object.freeze({
-      defaultCycles: 5
+      defaultCycles: 5,
+      maxCycles: 50
     });
 
     // localStorage keys
@@ -950,8 +950,9 @@
     let isCountingDown = false;
     let countdownTimers = [];
 
-    // Sound toggle state (replaces checkbox .checked)
+    // Sound/vibration toggle states (replace checkbox .checked)
     let soundEnabled = SOUND.enabledByDefault;
+    let vibeEnabled  = VIBRATION.enabledByDefault;
 
     /******************************************************************
      *  DOM
@@ -986,9 +987,16 @@
       soundToggle.setAttribute("aria-label", soundEnabled ? "Mute sound" : "Unmute sound");
     }
 
+    function updateVibeToggleUI() {
+      document.getElementById("vibeOnIcon").style.display = vibeEnabled ? "" : "none";
+      document.getElementById("vibeOffIcon").style.display = vibeEnabled ? "none" : "";
+      vibeToggle.classList.toggle("muted", !vibeEnabled);
+      vibeToggle.setAttribute("aria-label", vibeEnabled ? "Mute vibration" : "Unmute vibration");
+    }
+
     // Apply default toggle states + UI text
     updateSoundToggleUI();
-    vibeToggle.checked = VIBRATION.enabledByDefault;
+    updateVibeToggleUI();
     secondsLabelEl.textContent = UI.secondsLabel;
     hintEl.innerHTML = UI.hintHtml;
     goalInput.value = SESSION.defaultCycles;
@@ -1018,7 +1026,8 @@
 
     function getGoal() {
       const v = parseInt(goalInput.value, 10);
-      return Number.isFinite(v) && v >= 1 ? v : SESSION.defaultCycles;
+      if (!Number.isFinite(v)) return SESSION.defaultCycles;
+      return Math.min(SESSION.maxCycles, Math.max(1, v));
     }
 
     function applyThemeForCurrentPhase() {
@@ -1090,7 +1099,7 @@
         savedDurations[activePresetKey] = activePhases.map(p => p.durationSec);
         localStorage.setItem(STORAGE_KEY, JSON.stringify({
           sound: soundEnabled,
-          vibe: vibeToggle.checked,
+          vibe: vibeEnabled,
           preset: activePresetKey,
           goal: goalInput.value,
           durations: savedDurations,
@@ -1104,7 +1113,7 @@
         if (!raw) return;
         const data = JSON.parse(raw);
         if (typeof data.sound === "boolean") { soundEnabled = data.sound; updateSoundToggleUI(); }
-        if (typeof data.vibe === "boolean") vibeToggle.checked = data.vibe;
+        if (typeof data.vibe === "boolean") { vibeEnabled = data.vibe; updateVibeToggleUI(); }
         if (data.goal) goalInput.value = data.goal;
         if (data.durations && typeof data.durations === "object") savedDurations = data.durations;
         if (data.preset && data.preset in PRESETS) {
@@ -1216,7 +1225,7 @@
     }
 
     function vibrate(pattern = VIBRATION.pattern) {
-      if (!vibeToggle.checked) return;
+      if (!vibeEnabled) return;
       if (!("vibrate" in navigator)) return;
       try { navigator.vibrate(pattern); } catch (_) {}
     }
@@ -1400,7 +1409,7 @@
 
       [3, 2, 1].forEach((n, i) => {
         const t = setTimeout(() => {
-          if (vibeToggle.checked && "vibrate" in navigator) {
+          if (vibeEnabled && "vibrate" in navigator) {
             try { navigator.vibrate(40); } catch (_) {}
           }
           countdownNumEl.textContent = n;
@@ -1544,7 +1553,7 @@
       }
 
       // Prime vibration API while still inside user gesture
-      if (vibeToggle.checked && "vibrate" in navigator) {
+      if (vibeEnabled && "vibrate" in navigator) {
         try { navigator.vibrate(0); } catch (_) {}
       }
 
@@ -1563,7 +1572,11 @@
       updateSoundToggleUI();
       saveSettings();
     });
-    vibeToggle.addEventListener("change", saveSettings);
+    vibeToggle.addEventListener("click", () => {
+      vibeEnabled = !vibeEnabled;
+      updateVibeToggleUI();
+      saveSettings();
+    });
     goalInput.addEventListener("change", saveSettings);
     goalInput.addEventListener("input", updateTimeEst);
 
