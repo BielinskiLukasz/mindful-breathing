@@ -1,7 +1,7 @@
 # Mindful Breathing
 
 ![Status](https://img.shields.io/badge/status-active_development-brightgreen)
-![Version](https://img.shields.io/badge/version-0.3.0-blue)
+![Version](https://img.shields.io/badge/version-0.3.1-blue)
 ![HTML5](https://img.shields.io/badge/HTML-5-E34F26?logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS-3-1572B6?logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/ECMAScript-2023-F7DF1E?logo=javascript&logoColor=black)
@@ -29,7 +29,7 @@ No backend. No dependencies. No installation. Works offline.
 - **Configurable durations** — edit phase lengths per preset on the fly
 - **Inspirational quote** shown on the 3-2-1 countdown overlay before each session
 - **Sound cues** via Web Audio API — speaker icon toggle, per-phase sine tones
-- **Haptic feedback** via Vibration API on supported Android/Chrome devices
+- **Haptic feedback** via Vibration API — vibration icon toggle, supported on Android/Chrome
 - **Screen Wake Lock** — prevents display sleep during a session
 - **Session history** with last 5 sessions and a one-tap Clear button
 - **Collapsible info panel** — keyboard shortcuts and notes behind an `ⓘ` button
