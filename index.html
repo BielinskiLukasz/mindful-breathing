@@ -815,7 +815,7 @@
     <div class="goalRow">
       <label>
         Goal:
-        <input type="number" id="goalInput" min="1" max="99" value="5" />
+        <input type="number" id="goalInput" min="1" max="50" value="5" />
         cycles
       </label>
       <span class="timeEst" id="timeEst"></span>
@@ -908,7 +908,8 @@
 
     // Session goal
     const SESSION = Object.freeze({
-      defaultCycles: 5
+      defaultCycles: 5,
+      maxCycles: 50
     });
 
     // localStorage keys
@@ -1037,7 +1038,8 @@
 
     function getGoal() {
       const v = parseInt(goalInput.value, 10);
-      return Number.isFinite(v) && v >= 1 ? v : SESSION.defaultCycles;
+      if (!Number.isFinite(v)) return SESSION.defaultCycles;
+      return Math.min(SESSION.maxCycles, Math.max(1, v));
     }
 
     function applyThemeForCurrentPhase() {
