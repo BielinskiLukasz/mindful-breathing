@@ -26,7 +26,10 @@ No backend. No dependencies. No installation. Works offline.
 - **Smooth animated ring** driven by `requestAnimationFrame`, synchronized with each phase
 - **Real-time session progress bar** — fills continuously across cycles, not just at boundaries
 - **Ambient brightness animation** — the whole UI breathes with you
-- **Configurable durations** — edit phase lengths per preset on the fly
+- **Settings panel** — a `⚙` button in the top-left corner opens a modal with all session customization in one place
+- **Breathing mode selection inside settings** — pick Relax, Box, or 4-7-8 from the settings panel; changes apply immediately
+- **Editable phase durations inside settings** — set Inhale, Hold, Exhale (and second Hold where applicable) in seconds, clamped to 1–30 sec
+- **Editable cycle count inside settings** — choose 1–20 cycles per session; the displayed cycle counter and estimated session duration update live
 - **Inspirational quote** shown on the 3-2-1 countdown overlay before each session
 - **Sound cues** via Web Audio API — speaker icon toggle, per-phase sine tones
 - **Haptic feedback** via Vibration API — vibration icon toggle, supported on Android/Chrome
@@ -36,6 +39,18 @@ No backend. No dependencies. No installation. Works offline.
 - **Keyboard shortcuts** — `Space` start/stop · `R` reset · `F` fullscreen
 - **Fullscreen mode** for an immersive, distraction-free experience
 - **Installable PWA** — works offline and can be added to home screen on mobile
+
+---
+
+## Settings Panel
+
+All session customization lives behind the `⚙` icon in the top-left corner. Open it to configure:
+
+- **Breathing mode** — Relax (4-2-8-2), Box (4-4-4-4), or 4-7-8. Switching modes immediately updates the breathing cycle and resets to the start of phase 1.
+- **Phase durations** — per-phase numeric inputs (Inhale, Hold, Exhale, and second Hold for Relax/Box), each clamped to 1–30 seconds. Values are persisted to `localStorage` per preset, so each mode keeps its own customizations.
+- **Cycles per session** — a numeric input from 1 to 20. Changes update the displayed cycle counter (`Cycle: X / Y`) and the estimated total session duration in real time.
+
+The panel is a lightweight modal — click outside it or the `×` button to dismiss.
 
 ---
 
