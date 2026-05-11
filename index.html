@@ -52,6 +52,14 @@
       opacity: 0.9;
     }
 
+    .modeIndicator {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 2px;
+    }
+
     .phase {
       font-size: 46px;
       margin-bottom: 10px;
@@ -872,6 +880,7 @@
         </div>
       </div>
     </div>
+    <div class="modeIndicator" id="modeIndicator">Relax</div>
     <div class="cycle" id="cycle">Cycle: 1</div>
     <div class="phase" id="phase">Pause</div>
 
@@ -1126,6 +1135,13 @@
       const v = parseInt(goalInput.value, 10);
       if (!Number.isFinite(v)) return SESSION.defaultCycles;
       return Math.min(SESSION.maxCycles, Math.max(1, v));
+    }
+
+    const MODE_LABELS = Object.freeze({ relax: "Relax", box: "Box", "478": "4-7-8" });
+
+    function updateModeIndicator() {
+      const el = document.getElementById("modeIndicator");
+      if (el) el.textContent = MODE_LABELS[activePresetKey] || activePresetKey;
     }
 
     function applyThemeForCurrentPhase() {
@@ -1634,6 +1650,7 @@
       presetsEl.querySelectorAll(".presetBtn").forEach(b =>
         b.classList.toggle("active", b.dataset.preset === key)
       );
+      updateModeIndicator();
       buildDurationInputs();
       reset();
       saveSettings();
@@ -1779,6 +1796,7 @@
 
     // ====== Init (no cue on load) ======
     loadSettings();
+    updateModeIndicator();
     buildDurationInputs();
     renderHistory();
     render(0, getPhase().durationSec);
