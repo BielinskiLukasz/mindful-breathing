@@ -672,6 +672,7 @@
 
     .settingsPanel .presets { justify-content: flex-start; margin-bottom: 0; }
     .settingsPanel .durations { justify-content: flex-start; margin: 0; }
+    .settingsPanel .goalRow { justify-content: flex-start; margin-top: 0; }
 
     /* ====== MOBILE ====== */
     @media (max-width: 480px) {
@@ -858,6 +859,17 @@
           <div class="settingsLabel">Phase durations (sec)</div>
           <div class="durations" id="durations"></div>
         </div>
+
+        <div class="settingsGroup">
+          <div class="settingsLabel">Cycles per session</div>
+          <div class="goalRow">
+            <label>
+              <input type="number" id="goalInput" min="1" max="20" value="5" />
+              cycles
+            </label>
+            <span class="timeEst" id="timeEst"></span>
+          </div>
+        </div>
       </div>
     </div>
     <div class="cycle" id="cycle">Cycle: 1</div>
@@ -893,15 +905,6 @@
         <span id="elapsed" class="elapsed">0:00</span>
       </div>
 
-    </div>
-
-    <div class="goalRow">
-      <label>
-        Goal:
-        <input type="number" id="goalInput" min="1" max="50" value="5" />
-        cycles
-      </label>
-      <span class="timeEst" id="timeEst"></span>
     </div>
 
     <div class="sessionBar">
@@ -992,7 +995,7 @@
     // Session goal
     const SESSION = Object.freeze({
       defaultCycles: 5,
-      maxCycles: 50
+      maxCycles: 20
     });
 
     // localStorage keys
@@ -1676,8 +1679,25 @@
       updateVibeToggleUI();
       saveSettings();
     });
-    goalInput.addEventListener("change", saveSettings);
-    goalInput.addEventListener("input", updateTimeEst);
+    function clampGoalInput() {
+      const raw = parseInt(goalInput.value, 10);
+      if (!Number.isFinite(raw)) { goalInput.value = SESSION.defaultCycles; return; }
+      const clamped = Math.min(SESSION.maxCycles, Math.max(1, raw));
+      if (String(clamped) !== goalInput.value) goalInput.value = clamped;
+    }
+
+    goalInput.addEventListener("change", () => {
+      clampGoalInput();
+      cycleEl.textContent = `${UI.cyclePrefix} ${cycleCount} / ${getGoal()}`;
+      renderSessionBar();
+      updateTimeEst();
+      saveSettings();
+    });
+    goalInput.addEventListener("input", () => {
+      cycleEl.textContent = `${UI.cyclePrefix} ${cycleCount} / ${getGoal()}`;
+      renderSessionBar();
+      updateTimeEst();
+    });
 
     /******************************************************************
      *  CLEAR HISTORY
