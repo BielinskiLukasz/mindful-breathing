@@ -26,7 +26,8 @@ No backend. No dependencies. No installation. Works offline.
 - **Smooth animated ring** driven by `requestAnimationFrame`, synchronized with each phase
 - **Real-time session progress bar** — fills continuously across cycles, not just at boundaries
 - **Ambient brightness animation** — the whole UI breathes with you
-- **Settings panel** — a `⚙` button in the top-left corner opens a modal with all session customization in one place
+- **Visible mode indicator** — a small uppercase label above the cycle counter (e.g. `RELAX`, `BOX`, `4-7-8`) always shows which preset is active; updates live when the mode is changed in settings
+- **Settings panel** — a proper cogwheel `⚙` icon in the top-left corner opens a modal with all session customization in one place
 - **Breathing mode selection inside settings** — pick Relax, Box, or 4-7-8 from the settings panel; changes apply immediately
 - **Editable phase durations inside settings** — set Inhale, Hold, Exhale (and second Hold where applicable) in seconds, clamped to 1–30 sec
 - **Editable cycle count inside settings** — choose 1–20 cycles per session; the displayed cycle counter and estimated session duration update live
@@ -35,10 +36,11 @@ No backend. No dependencies. No installation. Works offline.
 - **Haptic feedback** via Vibration API — vibration icon toggle, supported on Android/Chrome
 - **Screen Wake Lock** — prevents display sleep during a session
 - **Session history** with last 5 sessions and a one-tap Clear button
-- **Collapsible info panel** — keyboard shortcuts and notes behind an `ⓘ` button
+- **Dedicated info panel** — the `ⓘ` icon now opens a modal with keyboard shortcuts and platform notes (replacing the previous inline collapsible block)
 - **Keyboard shortcuts** — `Space` start/stop · `R` reset · `F` fullscreen
 - **Fullscreen mode** for an immersive, distraction-free experience
 - **Installable PWA** — works offline and can be added to home screen on mobile
+- **Landscape-aware layout** — main UI re-centers, corner icons reflow into a row, and Start/Reset buttons stay centered when the device is rotated
 
 ---
 
@@ -54,6 +56,28 @@ The panel is a lightweight modal — click outside it or the `×` button to dism
 
 ---
 
+## Info Panel
+
+The `ⓘ` icon in the top-left corner column now opens a dedicated modal (matching the settings panel's style) instead of toggling an inline block under the controls. The panel surfaces two groups:
+
+- **Keyboard shortcuts** — `Space` (start / stop), `R` (reset), `F` (fullscreen), shown as `<kbd>`-style chips.
+- **Notes** — sound-autoplay caveat (browser autoplay policy) and the Android-/Chrome-only nature of vibration.
+
+Dismiss the same way as the settings panel: the `×` button or a click outside the panel.
+
+---
+
+## Landscape Layout
+
+When the device is rotated horizontally (`max-height: 500px` and `orientation: landscape`), the layout adapts so nothing crowds or overlaps:
+
+- **Centered main UI** — the title row, mode indicator, cycle counter, phase label, timer ring, and status text all stay horizontally centered.
+- **Corner icons reflow into a row** — the (i), gear, and sound/vibration toggles sit horizontally across the top of the card so they no longer stack down into the ring area. All four icons (plus the fullscreen toggle in the top-right) are normalised to the same 32×32 size with consistent spacing, so nothing touches or overlaps.
+- **Centered controls** — Start / Reset buttons, status row, goal row, and session bar are explicitly centered in landscape, matching portrait alignment.
+- **Consistent vertical rhythm** — top padding reserves room for the icon row, and the surrounding elements share a uniform 8 px rhythm so spacing reads the same way in either orientation.
+
+---
+
 ## Motivation
 
 Most breathing apps are bloated — they require accounts, push notifications, subscriptions, or an internet connection just to count seconds. This project started as a personal tool: something clean, private, and always available, even on a plane with no Wi-Fi.
@@ -64,7 +88,6 @@ It also became an experiment in how far you can push a single HTML file before i
 
 ## What's Next
 
-- Landscape layout refinements and edge-case polish
 - Expand session history beyond 5 entries with scroll
 - Custom breathing preset builder (name, phases, durations)
 - Streak tracking — consecutive days with completed sessions
