@@ -818,27 +818,46 @@
 
       .container {
         width: min(560px, 96vw);
-        padding: 48px 14px 12px;
+        padding: 52px 14px 12px;
         text-align: center;
       }
 
       .cornerControls {
         flex-direction: row;
-        gap: 6px;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .cornerControls .infoBtn,
+      .cornerControls .iconToggle {
+        width: 32px;
+        height: 32px;
+      }
+
+      .fullscreenBtn {
+        width: 32px;
+        height: 32px;
       }
 
       .ringWrap {
         width: 150px;
         height: 150px;
-        margin: 4px auto 8px;
+        margin: 4px auto 10px;
       }
 
       .ringSvg { width: 150px; height: 150px; }
       .time { font-size: 46px; }
 
-      .cycle { font-size: 12px; margin: 0 0 2px; }
-      .phase { font-size: 26px; margin: 0 0 2px; }
-      .phaseHint { font-size: 12px; }
+      .modeIndicator { margin-bottom: 4px; text-align: center; }
+      .cycle { font-size: 12px; margin: 0 0 2px; text-align: center; }
+      .phase { font-size: 26px; margin: 0 0 4px; text-align: center; }
+      .phaseHint { font-size: 12px; text-align: center; }
+      .nextPhase { text-align: center; }
+
+      .controls { justify-content: center; margin-top: 8px; }
+      .statusRow { justify-content: center; margin-top: 8px; }
+      .goalRow { justify-content: center; }
+      .sessionBar { margin-top: 8px; }
 
       button { padding: 8px 12px; font-size: 14px; min-width: 100px; }
       .resetBtn { min-width: 76px; font-size: 12px; }
