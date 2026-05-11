@@ -667,6 +667,68 @@
       line-height: 1.55;
     }
 
+    /* ====== INFO PANEL ====== */
+    .infoOverlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      background: rgba(0,0,0,0.85);
+      place-items: center;
+      z-index: 30;
+      padding: 24px;
+    }
+
+    .infoOverlay.visible { display: grid; }
+
+    .infoPanel {
+      width: 100%;
+      max-width: 360px;
+      background: #1a1a1a;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 20px 22px;
+      text-align: left;
+      position: relative;
+    }
+
+    .infoTitle {
+      font-size: 16px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      margin: 0 0 14px;
+    }
+
+    .infoCloseBtn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 30px;
+      height: 30px;
+      min-width: 0;
+      padding: 0;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      color: rgba(255,255,255,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      line-height: 1;
+    }
+    .infoCloseBtn:hover {
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.9);
+    }
+
+    .infoPlaceholder {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.55;
+    }
+
     .settingsGroup { margin-top: 8px; }
     .settingsGroup + .settingsGroup { margin-top: 14px; }
 
@@ -846,6 +908,14 @@
       <div class="countdownContent">
         <div class="countdownQuote" id="countdownQuote"></div>
         <div class="countdownNum" id="countdownNum">3</div>
+      </div>
+    </div>
+
+    <div class="infoOverlay" id="infoOverlay" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
+      <div class="infoPanel">
+        <h2 class="infoTitle" id="infoTitle">Info</h2>
+        <button class="infoCloseBtn" id="infoCloseBtn" title="Close info" aria-label="Close info">×</button>
+        <div class="infoPlaceholder">Info will appear here.</div>
       </div>
     </div>
 
@@ -1728,8 +1798,16 @@
     /******************************************************************
      *  INFO PANEL
      ******************************************************************/
-    document.getElementById("infoBtn").addEventListener("click", () => {
-      hintEl.classList.toggle("visible");
+    const infoOverlay = document.getElementById("infoOverlay");
+    const infoCloseBtn = document.getElementById("infoCloseBtn");
+
+    function openInfo() { infoOverlay.classList.add("visible"); }
+    function closeInfo() { infoOverlay.classList.remove("visible"); }
+
+    document.getElementById("infoBtn").addEventListener("click", openInfo);
+    infoCloseBtn.addEventListener("click", closeInfo);
+    infoOverlay.addEventListener("click", e => {
+      if (e.target === infoOverlay) closeInfo();
     });
 
     /******************************************************************
