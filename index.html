@@ -817,38 +817,28 @@
       }
 
       .container {
-        display: grid;
-        grid-template-columns: 170px 1fr;
-        column-gap: 14px;
-        width: min(700px, 98vw);
-        padding: 10px 14px;
-        text-align: left;
-      }
-
-      .ringWrap {
-        grid-column: 1;
-        grid-row: 1 / 20;
-        width: 155px;
-        height: 155px;
-        margin: 0;
-        align-self: center;
+        width: min(560px, 96vw);
+        padding: 48px 14px 12px;
         text-align: center;
       }
 
-      .ringSvg { width: 155px; height: 155px; }
-      .time { font-size: 48px; }
+      .cornerControls {
+        flex-direction: row;
+        gap: 6px;
+      }
 
-      .cycle    { grid-column: 2; font-size: 12px; margin: 0 0 2px; }
-      .phase    { grid-column: 2; font-size: 26px; margin: 0 0 2px; }
-      .phaseHint { grid-column: 2; font-size: 12px; }
-      .nextPhase { grid-column: 2; }
-      #presets  { grid-column: 2; justify-content: flex-start; margin-bottom: 4px; }
-      #durations { grid-column: 2; justify-content: flex-start; }
-      .controls { grid-column: 2; justify-content: flex-start; margin-top: 4px; }
-      .statusRow { grid-column: 2; justify-content: flex-start; margin-top: 4px; }
-      .goalRow  { grid-column: 2; justify-content: flex-start; margin-top: 6px; }
-      .sessionBar { grid-column: 2; margin-top: 6px; }
-      #historyDetails { grid-column: 2; }
+      .ringWrap {
+        width: 150px;
+        height: 150px;
+        margin: 4px auto 8px;
+      }
+
+      .ringSvg { width: 150px; height: 150px; }
+      .time { font-size: 46px; }
+
+      .cycle { font-size: 12px; margin: 0 0 2px; }
+      .phase { font-size: 26px; margin: 0 0 2px; }
+      .phaseHint { font-size: 12px; }
 
       button { padding: 8px 12px; font-size: 14px; min-width: 100px; }
       .resetBtn { min-width: 76px; font-size: 12px; }
