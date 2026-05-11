@@ -52,6 +52,14 @@
       opacity: 0.9;
     }
 
+    .modeIndicator {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 2px;
+    }
+
     .phase {
       font-size: 46px;
       margin-bottom: 10px;
@@ -419,20 +427,6 @@
       border-color: rgba(255,255,255,0.25);
     }
 
-    .hint {
-      display: none;
-      margin-top: 10px;
-      font-size: 12px;
-      color: rgba(255,255,255,0.45);
-      line-height: 1.5;
-      background: rgba(255,255,255,0.03);
-      border-radius: 8px;
-      padding: 10px 12px;
-      text-align: left;
-    }
-
-    .hint.visible { display: block; }
-
     /* ====== CUSTOM DURATIONS ====== */
     .durations {
       display: flex;
@@ -597,6 +591,172 @@
     .iconToggle:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.9); }
     .iconToggle.muted { color: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.06); }
 
+    /* ====== SETTINGS PANEL ====== */
+    .settingsOverlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      background: rgba(0,0,0,0.85);
+      place-items: center;
+      z-index: 30;
+      padding: 24px;
+    }
+
+    .settingsOverlay.visible { display: grid; }
+
+    .settingsPanel {
+      width: 100%;
+      max-width: 360px;
+      background: #1a1a1a;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 20px 22px;
+      text-align: left;
+      position: relative;
+    }
+
+    .settingsTitle {
+      font-size: 16px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      margin: 0 0 14px;
+    }
+
+    .settingsCloseBtn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 30px;
+      height: 30px;
+      min-width: 0;
+      padding: 0;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      color: rgba(255,255,255,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      line-height: 1;
+    }
+    .settingsCloseBtn:hover {
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.9);
+    }
+
+    .settingsPlaceholder {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.55;
+    }
+
+    /* ====== INFO PANEL ====== */
+    .infoOverlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      background: rgba(0,0,0,0.85);
+      place-items: center;
+      z-index: 30;
+      padding: 24px;
+    }
+
+    .infoOverlay.visible { display: grid; }
+
+    .infoPanel {
+      width: 100%;
+      max-width: 360px;
+      background: #1a1a1a;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 20px 22px;
+      text-align: left;
+      position: relative;
+    }
+
+    .infoTitle {
+      font-size: 16px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      margin: 0 0 14px;
+    }
+
+    .infoCloseBtn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 30px;
+      height: 30px;
+      min-width: 0;
+      padding: 0;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      color: rgba(255,255,255,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      line-height: 1;
+    }
+    .infoCloseBtn:hover {
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.9);
+    }
+
+    .infoSection { margin-top: 8px; }
+    .infoSection + .infoSection { margin-top: 14px; }
+
+    .infoSectionLabel {
+      font-size: 11px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 6px;
+    }
+
+    .infoList {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.6;
+    }
+    .infoList li + li { margin-top: 4px; }
+
+    .infoList kbd {
+      display: inline-block;
+      padding: 1px 6px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 11px;
+      color: rgba(255,255,255,0.85);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 4px;
+      margin-right: 4px;
+    }
+
+    .settingsGroup { margin-top: 8px; }
+    .settingsGroup + .settingsGroup { margin-top: 14px; }
+
+    .settingsLabel {
+      font-size: 11px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 6px;
+    }
+
+    .settingsPanel .presets { justify-content: flex-start; margin-bottom: 0; }
+    .settingsPanel .durations { justify-content: flex-start; margin: 0; }
+    .settingsPanel .goalRow { justify-content: flex-start; margin-top: 0; }
+
     /* ====== MOBILE ====== */
     @media (max-width: 480px) {
       .container {
@@ -657,39 +817,47 @@
       }
 
       .container {
-        display: grid;
-        grid-template-columns: 170px 1fr;
-        column-gap: 14px;
-        width: min(700px, 98vw);
-        padding: 10px 14px;
-        text-align: left;
-      }
-
-      .ringWrap {
-        grid-column: 1;
-        grid-row: 1 / 20;
-        width: 155px;
-        height: 155px;
-        margin: 0;
-        align-self: center;
+        width: min(560px, 96vw);
+        padding: 52px 14px 12px;
         text-align: center;
       }
 
-      .ringSvg { width: 155px; height: 155px; }
-      .time { font-size: 48px; }
+      .cornerControls {
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+      }
 
-      .cycle    { grid-column: 2; font-size: 12px; margin: 0 0 2px; }
-      .phase    { grid-column: 2; font-size: 26px; margin: 0 0 2px; }
-      .phaseHint { grid-column: 2; font-size: 12px; }
-      .nextPhase { grid-column: 2; }
-      #presets  { grid-column: 2; justify-content: flex-start; margin-bottom: 4px; }
-      #durations { grid-column: 2; justify-content: flex-start; }
-      .controls { grid-column: 2; justify-content: flex-start; margin-top: 4px; }
-      .statusRow { grid-column: 2; justify-content: flex-start; margin-top: 4px; }
-      .goalRow  { grid-column: 2; justify-content: flex-start; margin-top: 6px; }
-      .sessionBar { grid-column: 2; margin-top: 6px; }
-      #historyDetails { grid-column: 2; }
-      .hint     { grid-column: 2; }
+      .cornerControls .infoBtn,
+      .cornerControls .iconToggle {
+        width: 32px;
+        height: 32px;
+      }
+
+      .fullscreenBtn {
+        width: 32px;
+        height: 32px;
+      }
+
+      .ringWrap {
+        width: 150px;
+        height: 150px;
+        margin: 4px auto 10px;
+      }
+
+      .ringSvg { width: 150px; height: 150px; }
+      .time { font-size: 46px; }
+
+      .modeIndicator { margin-bottom: 4px; text-align: center; }
+      .cycle { font-size: 12px; margin: 0 0 2px; text-align: center; }
+      .phase { font-size: 26px; margin: 0 0 4px; text-align: center; }
+      .phaseHint { font-size: 12px; text-align: center; }
+      .nextPhase { text-align: center; }
+
+      .controls { justify-content: center; margin-top: 8px; }
+      .statusRow { justify-content: center; margin-top: 8px; }
+      .goalRow { justify-content: center; }
+      .sessionBar { margin-top: 8px; }
 
       button { padding: 8px 12px; font-size: 14px; min-width: 100px; }
       .resetBtn { min-width: 76px; font-size: 12px; }
@@ -705,6 +873,12 @@
           <circle cx="8" cy="8" r="6.5"/>
           <line x1="8" y1="7.5" x2="8" y2="11.5"/>
           <circle cx="8" cy="5" r="0.8" fill="currentColor" stroke="none"/>
+        </svg>
+      </button>
+      <button class="iconToggle" id="settingsBtn" title="Settings" aria-label="Open settings">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37 1 .608 2.296.07 2.572-1.065z"/>
+          <circle cx="12" cy="12" r="3"/>
         </svg>
       </button>
       <button class="iconToggle" id="soundToggle" title="Toggle sound">
@@ -757,6 +931,63 @@
         <div class="countdownNum" id="countdownNum">3</div>
       </div>
     </div>
+
+    <div class="infoOverlay" id="infoOverlay" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
+      <div class="infoPanel">
+        <h2 class="infoTitle" id="infoTitle">Info & Shortcuts</h2>
+        <button class="infoCloseBtn" id="infoCloseBtn" title="Close info" aria-label="Close info">×</button>
+
+        <div class="infoSection">
+          <div class="infoSectionLabel">Keyboard shortcuts</div>
+          <ul class="infoList">
+            <li><kbd>Space</kbd> — start / stop</li>
+            <li><kbd>R</kbd> — reset</li>
+            <li><kbd>F</kbd> — fullscreen</li>
+          </ul>
+        </div>
+
+        <div class="infoSection">
+          <div class="infoSectionLabel">Notes</div>
+          <ul class="infoList">
+            <li>🔊 Sound activates on the first <em>Start</em> tap (browser autoplay policy).</li>
+            <li>📳 Vibration: Android / Chrome only — not available on iOS or desktop.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="settingsOverlay" id="settingsOverlay" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+      <div class="settingsPanel">
+        <h2 class="settingsTitle" id="settingsTitle">Settings</h2>
+        <button class="settingsCloseBtn" id="settingsCloseBtn" title="Close settings" aria-label="Close settings">×</button>
+
+        <div class="settingsGroup">
+          <div class="settingsLabel">Breathing mode</div>
+          <div class="presets" id="presets">
+            <button class="presetBtn active" data-preset="relax">Relax</button>
+            <button class="presetBtn" data-preset="box">Box</button>
+            <button class="presetBtn" data-preset="478">4-7-8</button>
+          </div>
+        </div>
+
+        <div class="settingsGroup">
+          <div class="settingsLabel">Phase durations (sec)</div>
+          <div class="durations" id="durations"></div>
+        </div>
+
+        <div class="settingsGroup">
+          <div class="settingsLabel">Cycles per session</div>
+          <div class="goalRow">
+            <label>
+              <input type="number" id="goalInput" min="1" max="20" value="5" />
+              cycles
+            </label>
+            <span class="timeEst" id="timeEst"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modeIndicator" id="modeIndicator">Relax</div>
     <div class="cycle" id="cycle">Cycle: 1</div>
     <div class="phase" id="phase">Pause</div>
 
@@ -778,14 +1009,6 @@
     <div class="phaseHint" id="phaseHint"></div>
     <div class="nextPhase" id="nextPhase"></div>
 
-    <div class="presets" id="presets">
-      <button class="presetBtn active" data-preset="relax">Relax</button>
-      <button class="presetBtn" data-preset="box">Box</button>
-      <button class="presetBtn" data-preset="478">4-7-8</button>
-    </div>
-
-    <div class="durations" id="durations"></div>
-
     <div class="controls">
       <button id="toggleBtn">Start</button>
       <button id="resetBtn" class="resetBtn">Reset</button>
@@ -800,15 +1023,6 @@
 
     </div>
 
-    <div class="goalRow">
-      <label>
-        Goal:
-        <input type="number" id="goalInput" min="1" max="50" value="5" />
-        cycles
-      </label>
-      <span class="timeEst" id="timeEst"></span>
-    </div>
-
     <div class="sessionBar">
       <div class="sessionBarFill" id="sessionBarFill"></div>
     </div>
@@ -818,10 +1032,6 @@
       <div id="historyList"></div>
     </details>
 
-    <div class="hint" id="hint">
-      If sound doesn’t play: press Start (browsers require a user gesture).<br/>
-      Vibration works only on supported devices (often Android/Chrome) and usually over HTTPS.
-    </div>
   </div>
 
   <script>
@@ -835,11 +1045,7 @@
       statusRunning: "Running",
       statusStopped: "Stopped",
       btnStart: "Start",
-      btnStop: "Stop",
-      hintHtml:
-        "🔊 Sound activates on first Start tap (browser autoplay policy).<br/>" +
-        "📳 Vibration: Android/Chrome only — not available on iOS or desktop.<br/>" +
-        "⌨️ Keys: Space — start/stop &nbsp;·&nbsp; R — reset &nbsp;·&nbsp; F — fullscreen"
+      btnStop: "Stop"
     });
 
     // Phase sequence: 2s Pause -> 4s Inhale -> 2s Pause -> 8s Exhale
@@ -897,7 +1103,7 @@
     // Session goal
     const SESSION = Object.freeze({
       defaultCycles: 5,
-      maxCycles: 50
+      maxCycles: 20
     });
 
     // localStorage keys
@@ -966,7 +1172,6 @@
     const statusText = document.getElementById("statusText");
     const ringProgressEl = document.getElementById("ringProgress");
     const secondsLabelEl = document.getElementById("secondsLabel");
-    const hintEl = document.getElementById("hint");
 
     const soundToggle = document.getElementById("soundToggle");
     const vibeToggle = document.getElementById("vibeToggle");
@@ -998,7 +1203,6 @@
     updateSoundToggleUI();
     updateVibeToggleUI();
     secondsLabelEl.textContent = UI.secondsLabel;
-    hintEl.innerHTML = UI.hintHtml;
     goalInput.value = SESSION.defaultCycles;
 
     /******************************************************************
@@ -1028,6 +1232,13 @@
       const v = parseInt(goalInput.value, 10);
       if (!Number.isFinite(v)) return SESSION.defaultCycles;
       return Math.min(SESSION.maxCycles, Math.max(1, v));
+    }
+
+    const MODE_LABELS = Object.freeze({ relax: "Relax", box: "Box", "478": "4-7-8" });
+
+    function updateModeIndicator() {
+      const el = document.getElementById("modeIndicator");
+      if (el) el.textContent = MODE_LABELS[activePresetKey] || activePresetKey;
     }
 
     function applyThemeForCurrentPhase() {
@@ -1064,7 +1275,7 @@
         input.type = "number";
         input.className = "durInput";
         input.min = 1;
-        input.max = 99;
+        input.max = 30;
         input.value = phase.durationSec;
         input.dataset.index = i;
         input.disabled = isRunning;
@@ -1083,12 +1294,16 @@
       const input = e.target.closest(".durInput");
       if (!input || isRunning) return;
       const idx = parseInt(input.dataset.index, 10);
-      const val = parseInt(input.value, 10);
-      if (Number.isFinite(val) && val >= 1) {
-        activePhases[idx] = { ...activePhases[idx], durationSec: val };
-        reset();
-        saveSettings();
+      const raw = parseInt(input.value, 10);
+      if (!Number.isFinite(raw)) {
+        input.value = activePhases[idx].durationSec;
+        return;
       }
+      const val = Math.min(30, Math.max(1, raw));
+      input.value = val;
+      activePhases[idx] = { ...activePhases[idx], durationSec: val };
+      reset();
+      saveSettings();
     });
 
     /******************************************************************
@@ -1532,6 +1747,7 @@
       presetsEl.querySelectorAll(".presetBtn").forEach(b =>
         b.classList.toggle("active", b.dataset.preset === key)
       );
+      updateModeIndicator();
       buildDurationInputs();
       reset();
       saveSettings();
@@ -1577,8 +1793,25 @@
       updateVibeToggleUI();
       saveSettings();
     });
-    goalInput.addEventListener("change", saveSettings);
-    goalInput.addEventListener("input", updateTimeEst);
+    function clampGoalInput() {
+      const raw = parseInt(goalInput.value, 10);
+      if (!Number.isFinite(raw)) { goalInput.value = SESSION.defaultCycles; return; }
+      const clamped = Math.min(SESSION.maxCycles, Math.max(1, raw));
+      if (String(clamped) !== goalInput.value) goalInput.value = clamped;
+    }
+
+    goalInput.addEventListener("change", () => {
+      clampGoalInput();
+      cycleEl.textContent = `${UI.cyclePrefix} ${cycleCount} / ${getGoal()}`;
+      renderSessionBar();
+      updateTimeEst();
+      saveSettings();
+    });
+    goalInput.addEventListener("input", () => {
+      cycleEl.textContent = `${UI.cyclePrefix} ${cycleCount} / ${getGoal()}`;
+      renderSessionBar();
+      updateTimeEst();
+    });
 
     /******************************************************************
      *  CLEAR HISTORY
@@ -1592,8 +1825,32 @@
     /******************************************************************
      *  INFO PANEL
      ******************************************************************/
-    document.getElementById("infoBtn").addEventListener("click", () => {
-      hintEl.classList.toggle("visible");
+    const infoOverlay = document.getElementById("infoOverlay");
+    const infoCloseBtn = document.getElementById("infoCloseBtn");
+
+    function openInfo() { infoOverlay.classList.add("visible"); }
+    function closeInfo() { infoOverlay.classList.remove("visible"); }
+
+    document.getElementById("infoBtn").addEventListener("click", openInfo);
+    infoCloseBtn.addEventListener("click", closeInfo);
+    infoOverlay.addEventListener("click", e => {
+      if (e.target === infoOverlay) closeInfo();
+    });
+
+    /******************************************************************
+     *  SETTINGS PANEL
+     ******************************************************************/
+    const settingsOverlay = document.getElementById("settingsOverlay");
+    const settingsBtn = document.getElementById("settingsBtn");
+    const settingsCloseBtn = document.getElementById("settingsCloseBtn");
+
+    function openSettings() { settingsOverlay.classList.add("visible"); }
+    function closeSettings() { settingsOverlay.classList.remove("visible"); }
+
+    settingsBtn.addEventListener("click", openSettings);
+    settingsCloseBtn.addEventListener("click", closeSettings);
+    settingsOverlay.addEventListener("click", e => {
+      if (e.target === settingsOverlay) closeSettings();
     });
 
     /******************************************************************
@@ -1644,6 +1901,7 @@
 
     // ====== Init (no cue on load) ======
     loadSettings();
+    updateModeIndicator();
     buildDurationInputs();
     renderHistory();
     render(0, getPhase().durationSec);
