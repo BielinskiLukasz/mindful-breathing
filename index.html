@@ -659,6 +659,19 @@
       line-height: 1.55;
     }
 
+    .settingsGroup { margin-top: 8px; }
+    .settingsGroup + .settingsGroup { margin-top: 14px; }
+
+    .settingsLabel {
+      font-size: 11px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 6px;
+    }
+
+    .settingsPanel .presets { justify-content: flex-start; margin-bottom: 0; }
+
     /* ====== MOBILE ====== */
     @media (max-width: 480px) {
       .container {
@@ -830,7 +843,15 @@
       <div class="settingsPanel">
         <h2 class="settingsTitle" id="settingsTitle">Settings</h2>
         <button class="settingsCloseBtn" id="settingsCloseBtn" title="Close settings" aria-label="Close settings">×</button>
-        <div class="settingsPlaceholder">Settings will appear here.</div>
+
+        <div class="settingsGroup">
+          <div class="settingsLabel">Breathing mode</div>
+          <div class="presets" id="presets">
+            <button class="presetBtn active" data-preset="relax">Relax</button>
+            <button class="presetBtn" data-preset="box">Box</button>
+            <button class="presetBtn" data-preset="478">4-7-8</button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="cycle" id="cycle">Cycle: 1</div>
@@ -853,12 +874,6 @@
 
     <div class="phaseHint" id="phaseHint"></div>
     <div class="nextPhase" id="nextPhase"></div>
-
-    <div class="presets" id="presets">
-      <button class="presetBtn active" data-preset="relax">Relax</button>
-      <button class="presetBtn" data-preset="box">Box</button>
-      <button class="presetBtn" data-preset="478">4-7-8</button>
-    </div>
 
     <div class="durations" id="durations"></div>
 
