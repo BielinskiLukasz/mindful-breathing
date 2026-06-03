@@ -23,7 +23,6 @@ Reliable, uninterrupted breathing guidance with verifiable history — users nee
 
 ### Active
 
-- [ ] "Start again" button accessible after session completes (fix ringSvg z-index blocking)
 - [ ] Vibration feedback works reliably during phase transitions
 - [ ] User can configure max session logs stored (unlimited or capped number)
 - [ ] User can configure session logs visible per page (pagination)

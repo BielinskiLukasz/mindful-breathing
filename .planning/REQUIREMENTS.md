@@ -7,8 +7,7 @@
 
 ### Bug Fixes
 
-- [ ] **BUG-01**: "Start again" button is clickable after session completes (fix ringSvg z-index blocking)
-- [ ] **BUG-02**: Vibration feedback triggers reliably during phase transitions
+- [ ] **BUG-01**: Vibration feedback triggers reliably during phase transitions
 
 ### Session History
 
@@ -61,7 +60,6 @@
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | BUG-01 | Phase 1 | Pending |
-| BUG-02 | Phase 1 | Pending |
 | HIST-01 | Phase 2 | Pending |
 | HIST-02 | Phase 2 | Pending |
 | HIST-03 | Phase 2 | Pending |
@@ -73,8 +71,8 @@
 | UX-03 | Phase 3 | Pending |
 
 **Coverage:**
-- v1 requirements: 11 total
-- Mapped to phases: 11
+- v1 requirements: 10 total
+- Mapped to phases: 10
 - Unmapped: 0 ✓
 
 ---
