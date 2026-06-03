@@ -21,9 +21,8 @@
 **Progress:** 0% — Planning phase
 
 ```
-Phase 1: #----------
+Phase 1: ----------
 Phase 2: -----------
-Phase 3: -----------
 ```
 
 ---
@@ -32,9 +31,8 @@ Phase 3: -----------
 
 | Phase | Goal | Requirements | Criteria |
 |-------|------|--------------|----------|
-| 1 | Critical UI fixes (vibration reliability) | BUG-01 | 1 |
-| 2 | Session history with pagination & config | HIST-01, HIST-02, HIST-03, HIST-04 | 4 |
-| 3 | Theme toggle & responsive UX | THEME-01, THEME-02, UX-01, UX-02, UX-03 | 4 |
+| 1 | Session history, pagination, & vibration | BUG-01, HIST-01, HIST-02, HIST-03, HIST-04 | 5 |
+| 2 | Theme toggle & responsive UX | THEME-01, THEME-02, UX-01, UX-02, UX-03 | 5 |
 
 **Coverage:** 10/10 v1 requirements mapped ✓
 

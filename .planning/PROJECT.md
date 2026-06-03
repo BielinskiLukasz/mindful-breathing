@@ -63,6 +63,16 @@ The codebase is a single `index.html` file (~1,350 lines) with clear internal se
 | Light/dark theme toggle | Users prefer choice, dark-only current state limits accessibility | — Pending |
 | Paginated history view | Unlimited growth of session data, but scalable UI presentation | — Pending |
 
+## Phases
+
+**Phase 1: Session History & Vibration** (5 requirements)
+- Fix vibration reliability (BUG-01)
+- History pagination & configuration (HIST-01–HIST-04)
+
+**Phase 2: Theming & UX Polish** (5 requirements)
+- Light/dark theme toggle (THEME-01–THEME-02)
+- Responsive design & visual polish (UX-01–UX-03)
+
 ## Evolution
 
 This document evolves at phase transitions and milestone boundaries.
