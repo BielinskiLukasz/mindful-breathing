@@ -41,7 +41,7 @@ Reliable, uninterrupted breathing guidance with verifiable history — users nee
 
 ## Context
 
-This is a v0.3+ release of an existing mindful-breathing tool. The app is fully functional but has two critical UX bugs (button blocking after session, vibration failure) and needs feature enhancements for session tracking and personalization. Recent git history shows intentional deletion of old planning docs to restart project planning.
+This is a v0.3+ release of an existing mindful-breathing tool. The app is fully functional but has critical UX bug (vibration failure) and needs feature enhancements for session tracking and personalization.
 
 The codebase is a single `index.html` file (~1,350 lines) with clear internal sections: CONFIG, STATE, DOM, HELPERS, RENDER, MAIN LOOP, CONTROLS, etc. No build step, no dependencies, no transpilation.
 
