@@ -30,7 +30,9 @@
 4. User can navigate between pages of session history (Page 1, 2, 3...) with next/previous controls
 5. Session history cards are visually scannable, displaying duration, preset name, and date in clear format
 
-**Plans:** TBD
+**Plans:** 1 plan (01-01-PLAN.md — all Phase 1 features in single plan per MVP granularity)
+
+- [x] 01-01-PLAN.md — Vibration reliability verification, history cap configuration, pagination controls, enhanced card rendering, responsive CSS
 
 **UI hint:** yes
 
@@ -59,7 +61,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Session History & Vibration | 0/TBD | Not started | - |
+| 1. Session History & Vibration | 1/1 | Planning complete | — |
 | 2. Theming & Polish | 0/TBD | Not started | - |
 
 ---
@@ -79,4 +81,4 @@
 
 ---
 
-*Roadmap created: 2026-06-03*
+*Roadmap updated: 2026-06-03 Phase 1 planning complete*
