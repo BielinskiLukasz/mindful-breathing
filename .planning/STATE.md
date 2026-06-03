@@ -32,11 +32,11 @@ Phase 3: -----------
 
 | Phase | Goal | Requirements | Criteria |
 |-------|------|--------------|----------|
-| 1 | Critical UI fixes (button blocking, vibration) | BUG-01, BUG-02 | 3 |
+| 1 | Critical UI fixes (vibration reliability) | BUG-01 | 1 |
 | 2 | Session history with pagination & config | HIST-01, HIST-02, HIST-03, HIST-04 | 4 |
 | 3 | Theme toggle & responsive UX | THEME-01, THEME-02, UX-01, UX-02, UX-03 | 4 |
 
-**Coverage:** 11/11 v1 requirements mapped ✓
+**Coverage:** 10/10 v1 requirements mapped ✓
 
 ---
 
@@ -55,7 +55,6 @@ Phase 3: -----------
 4. **No external network requests** — fully offline capable
 
 ### Known Issues (Phase 1)
-- ringSvg z-index blocks "Start again" button after session completes
 - Vibration API feedback unreliable during phase transitions
 
 ### Design Principles
