@@ -9,40 +9,26 @@
 
 ## Phases
 
-- [ ] **Phase 1: Critical Fixes** - Resolve button blocking and vibration reliability issues
-- [ ] **Phase 2: Session History Management** - Enable pagination, filtering, and configurable storage
-- [ ] **Phase 3: Theming & UX Polish** - Add light/dark theme toggle and optimize visual design across devices
+- [ ] **Phase 1: Session History & Vibration** - Fix vibration reliability and enable pagination, filtering, and configurable storage
+- [ ] **Phase 2: Theming & UX Polish** - Add light/dark theme toggle and optimize visual design across devices
 
 ---
 
 ## Phase Details
 
-### Phase 1: Critical Fixes
+### Phase 1: Session History & Vibration
 
-**Goal:** Users can interact with the app reliably after sessions complete and receive haptic feedback during active breathing.  
+**Goal:** Users can configure session history storage, navigate logs, and receive haptic feedback during active breathing.  
 **Mode:** mvp  
 **Depends on:** None (foundation)  
-**Requirements:** BUG-01  
+**Requirements:** BUG-01, HIST-01, HIST-02, HIST-03, HIST-04  
 
 **Success Criteria** (what must be TRUE):
 1. Vibration haptics trigger reliably at each phase transition during active breathing session
-
-**Plans:** TBD
-
----
-
-### Phase 2: Session History Management
-
-**Goal:** Users can configure session history storage, pagination, and navigate their breathing session logs.  
-**Mode:** mvp  
-**Depends on:** Phase 1  
-**Requirements:** HIST-01, HIST-02, HIST-03, HIST-04  
-
-**Success Criteria** (what must be TRUE):
-1. User can configure maximum session logs to store (numeric input or "unlimited" option, persisted to localStorage)
-2. User can set pagination size (number of logs visible per page) and see changes apply immediately
-3. User can navigate between pages of session history (Page 1, 2, 3...) with next/previous controls
-4. Session history cards are visually scannable, displaying duration, preset name, and date in clear format
+2. User can configure maximum session logs to store (numeric input or "unlimited" option, persisted to localStorage)
+3. User can set pagination size (number of logs visible per page) and see changes apply immediately
+4. User can navigate between pages of session history (Page 1, 2, 3...) with next/previous controls
+5. Session history cards are visually scannable, displaying duration, preset name, and date in clear format
 
 **Plans:** TBD
 
@@ -50,11 +36,11 @@
 
 ---
 
-### Phase 3: Theming & UX Polish
+### Phase 2: Theming & UX Polish
 
 **Goal:** Users have personalized theme preferences and optimized visual experience across all screen sizes and orientations.  
 **Mode:** mvp  
-**Depends on:** Phase 2  
+**Depends on:** Phase 1  
 **Requirements:** THEME-01, THEME-02, UX-01, UX-02, UX-03  
 
 **Success Criteria** (what must be TRUE):
@@ -73,9 +59,8 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Critical Fixes | 0/TBD | Not started | - |
-| 2. Session History | 0/TBD | Not started | - |
-| 3. Theming & Polish | 0/TBD | Not started | - |
+| 1. Session History & Vibration | 0/TBD | Not started | - |
+| 2. Theming & Polish | 0/TBD | Not started | - |
 
 ---
 
@@ -88,9 +73,9 @@
 | Category | Requirements | Phase |
 |----------|--------------|-------|
 | Bug Fixes | BUG-01 | 1 |
-| Session History | HIST-01, HIST-02, HIST-03, HIST-04 | 2 |
-| Theming | THEME-01, THEME-02 | 3 |
-| User Experience | UX-01, UX-02, UX-03 | 3 |
+| Session History | HIST-01, HIST-02, HIST-03, HIST-04 | 1 |
+| Theming | THEME-01, THEME-02 | 2 |
+| User Experience | UX-01, UX-02, UX-03 | 2 |
 
 ---
 
