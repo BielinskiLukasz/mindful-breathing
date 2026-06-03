@@ -22,12 +22,10 @@
 **Goal:** Users can interact with the app reliably after sessions complete and receive haptic feedback during active breathing.  
 **Mode:** mvp  
 **Depends on:** None (foundation)  
-**Requirements:** BUG-01, BUG-02  
+**Requirements:** BUG-01  
 
 **Success Criteria** (what must be TRUE):
-1. User can click "Start again" button immediately after session completes without DOM blocking
-2. Vibration haptics trigger reliably at each phase transition during active breathing session
-3. No z-index conflicts prevent interaction with post-session UI elements
+1. Vibration haptics trigger reliably at each phase transition during active breathing session
 
 **Plans:** TBD
 
@@ -83,13 +81,13 @@
 
 ## Coverage Summary
 
-**Total v1 requirements:** 11  
-**Mapped to phases:** 11  
+**Total v1 requirements:** 10  
+**Mapped to phases:** 10  
 **Unmapped:** 0 ✓
 
 | Category | Requirements | Phase |
 |----------|--------------|-------|
-| Bug Fixes | BUG-01, BUG-02 | 1 |
+| Bug Fixes | BUG-01 | 1 |
 | Session History | HIST-01, HIST-02, HIST-03, HIST-04 | 2 |
 | Theming | THEME-01, THEME-02 | 3 |
 | User Experience | UX-01, UX-02, UX-03 | 3 |
