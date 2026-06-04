@@ -2000,6 +2000,8 @@
 
     // ====== Init (no cue on load) ======
     loadSettings();
+    document.getElementById("maxHistoryInput").value = maxHistoryEntries;
+    sessionStorage.removeItem("historyPage");
     updateModeIndicator();
     buildDurationInputs();
     renderHistory();
