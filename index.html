@@ -528,6 +528,12 @@
       background: rgba(255,255,255,0.03);
     }
 
+    .historyItem span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     .historyItem:hover { background: rgba(255,255,255,0.06); }
 
     .histDate  { color: rgba(255,255,255,0.5); }
@@ -789,6 +795,10 @@
 
       .statusRow { gap: 10px; }
       .status { font-size: 13px; }
+
+      .history { margin-top: 10px; padding-top: 6px; }
+      .historyItem { font-size: 12px; padding: 5px 6px; }
+      .histDate { font-size: 11px; }
     }
 
     @media (max-width: 360px) {
@@ -807,6 +817,12 @@
 
       .presets { gap: 5px; }
       .presetBtn { font-size: 11px; padding: 4px 10px; }
+
+      .history { margin-top: 6px; padding-top: 4px; }
+      .historyItem { font-size: 11px; padding: 4px 4px; }
+      .histDate { font-size: 10px; }
+      #histPrevBtn, #histNextBtn { font-size: 11px; padding: 4px 8px; }
+      #pageIndicator { font-size: 11px; }
     }
 
     /* ====== LANDSCAPE MOBILE ====== */
@@ -864,6 +880,9 @@
 
       button { padding: 8px 12px; font-size: 14px; min-width: 100px; }
       .resetBtn { min-width: 76px; font-size: 12px; }
+
+      .history { margin-top: 4px; padding-top: 2px; max-height: 180px; overflow-y: auto; }
+      .historyItem { font-size: 11px; padding: 3px 4px; margin-top: 2px; }
     }
   </style>
 </head>
