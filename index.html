@@ -1565,7 +1565,7 @@
     function finishSession() {
       playCompletionChime();
       stop();
-      saveHistory({ date: new Date().toISOString(), durationMs: totalSessionMs, cycles: getGoal() });
+      saveHistory({ date: new Date().toISOString(), durationMs: totalSessionMs, cycles: getGoal(), preset: activePresetKey });
       renderHistory();
       renderSessionBar();
       document.getElementById("doneTime").textContent = `Total time: ${formatDuration(totalSessionMs)}`;
