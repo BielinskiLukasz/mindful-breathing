@@ -528,6 +528,12 @@
       background: rgba(255,255,255,0.03);
     }
 
+    .historyItem span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     .historyItem:hover { background: rgba(255,255,255,0.06); }
 
     .histDate  { color: rgba(255,255,255,0.5); }
@@ -789,6 +795,10 @@
 
       .statusRow { gap: 10px; }
       .status { font-size: 13px; }
+
+      .history { margin-top: 10px; padding-top: 6px; }
+      .historyItem { font-size: 12px; padding: 5px 6px; }
+      .histDate { font-size: 11px; }
     }
 
     @media (max-width: 360px) {
@@ -807,6 +817,12 @@
 
       .presets { gap: 5px; }
       .presetBtn { font-size: 11px; padding: 4px 10px; }
+
+      .history { margin-top: 6px; padding-top: 4px; }
+      .historyItem { font-size: 11px; padding: 4px 4px; }
+      .histDate { font-size: 10px; }
+      #histPrevBtn, #histNextBtn { font-size: 11px; padding: 4px 8px; }
+      #pageIndicator { font-size: 11px; }
     }
 
     /* ====== LANDSCAPE MOBILE ====== */
@@ -864,6 +880,9 @@
 
       button { padding: 8px 12px; font-size: 14px; min-width: 100px; }
       .resetBtn { min-width: 76px; font-size: 12px; }
+
+      .history { margin-top: 4px; padding-top: 2px; max-height: 180px; overflow-y: auto; }
+      .historyItem { font-size: 11px; padding: 3px 4px; margin-top: 2px; }
     }
   </style>
 </head>
@@ -988,6 +1007,13 @@
             <span class="timeEst" id="timeEst"></span>
           </div>
         </div>
+
+        <div class="settingsGroup">
+          <div class="settingsLabel">Session history cap</div>
+          <label style="font-size: 13px; color: rgba(255,255,255,0.7); display: flex; gap: 6px; align-items: center;">
+            Keep last <input type="number" id="maxHistoryInput" min="1" max="10000" value="1000" style="width: 60px; padding: 4px 6px; background: #2b2b2b; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 14px; text-align: center;"> sessions
+          </label>
+        </div>
       </div>
     </div>
     <div class="modeIndicator" id="modeIndicator">Relax</div>
@@ -1033,6 +1059,11 @@
     <details class="history" id="historyDetails">
       <summary>Past sessions <button class="clearHistBtn" id="clearHistBtn">Clear</button></summary>
       <div id="historyList"></div>
+      <div id="historyNav" style="margin-top: 12px; display: flex; gap: 6px; justify-content: center; align-items: center;">
+        <button id="histPrevBtn" style="font-size: 12px; padding: 6px 10px; min-width: 0; display: none;">&#8592; Prev</button>
+        <span id="pageIndicator" style="color: rgba(255,255,255,0.4); font-size: 12px; min-width: 80px; text-align: center;"></span>
+        <button id="histNextBtn" style="font-size: 12px; padding: 6px 10px; min-width: 0; display: none;">Next &#8594;</button>
+      </div>
     </details>
 
   </div>
@@ -1162,6 +1193,9 @@
     // Sound/vibration toggle states (replace checkbox .checked)
     let soundEnabled = SOUND.enabledByDefault;
     let vibeEnabled  = VIBRATION.enabledByDefault;
+
+    // History storage cap
+    let maxHistoryEntries = 1000;
 
     /******************************************************************
      *  DOM
@@ -1321,6 +1355,7 @@
           preset: activePresetKey,
           goal: goalInput.value,
           durations: savedDurations,
+          maxHistoryEntries: maxHistoryEntries,
         }));
       } catch (_) {}
     }
@@ -1334,6 +1369,7 @@
         if (typeof data.vibe === "boolean") { vibeEnabled = data.vibe; updateVibeToggleUI(); }
         if (data.goal) goalInput.value = data.goal;
         if (data.durations && typeof data.durations === "object") savedDurations = data.durations;
+        maxHistoryEntries = data.maxHistoryEntries ?? 1000;
         if (data.preset && data.preset in PRESETS) {
           activePresetKey = data.preset;
           activePhases = PRESETS[activePresetKey].map(p => ({...p}));
@@ -1360,7 +1396,7 @@
         const raw = localStorage.getItem(HISTORY_KEY);
         const list = raw ? JSON.parse(raw) : [];
         list.unshift(entry);
-        if (list.length > 5) list.length = 5;
+        if (list.length > maxHistoryEntries) list.length = maxHistoryEntries;
         localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
       } catch (_) {}
     }
@@ -1372,21 +1408,52 @@
         const list = raw ? JSON.parse(raw) : [];
         if (!list.length) {
           el.innerHTML = '<div class="historyEmpty">No sessions yet</div>';
+          // Hide nav buttons if they exist
+          const prevBtn = document.getElementById("histPrevBtn");
+          const nextBtn = document.getElementById("histNextBtn");
+          const pageInd = document.getElementById("pageIndicator");
+          if (prevBtn) prevBtn.style.display = "none";
+          if (nextBtn) nextBtn.style.display = "none";
+          if (pageInd) pageInd.textContent = "";
           return;
         }
+
+        const pageSize = 5;
+        const pageStr = sessionStorage.getItem("historyPage") || "1";
+        const totalPages = Math.ceil(list.length / pageSize);
+        const currentPage = Math.min(totalPages, Math.max(1, parseInt(pageStr, 10)));
+        const start = (currentPage - 1) * pageSize;
+        const end = start + pageSize;
+
         const today = new Date();
         const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
-        el.innerHTML = list.map(s => {
+
+        el.innerHTML = list.slice(start, end).map(s => {
           const d = new Date(s.date);
           const dateLabel = d.toDateString() === today.toDateString()     ? "Today"
                           : d.toDateString() === yesterday.toDateString() ? "Yesterday"
-                          : d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
-          const timeLabel = d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+                          : d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+          const presetKey = s.preset || "relax";
+          const presetName = MODE_LABELS[presetKey] || presetKey;
+          const presetColor = (PRESETS[presetKey] && PRESETS[presetKey][0] && PRESETS[presetKey][0].theme && PRESETS[presetKey][0].theme.accent) || "#9aa0a6";
           return `<div class="historyItem">
-            <span class="histDate">${dateLabel} ${timeLabel}</span>
-            <span class="histStats">${s.cycles} cycle${s.cycles !== 1 ? "s" : ""} · ${formatDuration(s.durationMs)}</span>
+            <span><span style="color: ${presetColor};">&#9679;</span> ${presetName} &bull; ${formatDuration(s.durationMs)} &bull; ${s.cycles} cycle${s.cycles !== 1 ? "s" : ""} &bull; ${dateLabel}</span>
           </div>`;
         }).join("");
+
+        // Update pagination controls
+        const prevBtn = document.getElementById("histPrevBtn");
+        const nextBtn = document.getElementById("histNextBtn");
+        const pageInd = document.getElementById("pageIndicator");
+        if (totalPages > 1) {
+          if (prevBtn) prevBtn.style.display = "";
+          if (nextBtn) nextBtn.style.display = "";
+          if (pageInd) pageInd.textContent = `Page ${currentPage} of ${totalPages}`;
+        } else {
+          if (prevBtn) prevBtn.style.display = "none";
+          if (nextBtn) nextBtn.style.display = "none";
+          if (pageInd) pageInd.textContent = "";
+        }
       } catch (_) {
         el.innerHTML = "";
       }
@@ -1565,7 +1632,7 @@
     function finishSession() {
       playCompletionChime();
       stop();
-      saveHistory({ date: new Date().toISOString(), durationMs: totalSessionMs, cycles: getGoal() });
+      saveHistory({ date: new Date().toISOString(), durationMs: totalSessionMs, cycles: getGoal(), preset: activePresetKey });
       renderHistory();
       renderSessionBar();
       document.getElementById("doneTime").textContent = `Total time: ${formatDuration(totalSessionMs)}`;
@@ -1816,6 +1883,35 @@
       updateTimeEst();
     });
 
+    document.getElementById("maxHistoryInput").addEventListener("change", e => {
+      const val = Math.max(1, Math.min(10000, parseInt(e.target.value, 10) || 1000));
+      e.target.value = val;
+      maxHistoryEntries = val;
+      saveSettings();
+      renderHistory();
+    });
+
+    document.getElementById("histPrevBtn").addEventListener("click", () => {
+      const currentPage = Math.max(1, parseInt(sessionStorage.getItem("historyPage") || "1", 10));
+      if (currentPage > 1) {
+        sessionStorage.setItem("historyPage", currentPage - 1);
+        renderHistory();
+      }
+    });
+
+    document.getElementById("histNextBtn").addEventListener("click", () => {
+      const pageStr = sessionStorage.getItem("historyPage") || "1";
+      const currentPage = Math.max(1, parseInt(pageStr, 10));
+      const raw = localStorage.getItem(HISTORY_KEY);
+      const list = raw ? JSON.parse(raw) : [];
+      const pageSize = 5;
+      const totalPages = Math.ceil(list.length / pageSize);
+      if (currentPage < totalPages) {
+        sessionStorage.setItem("historyPage", currentPage + 1);
+        renderHistory();
+      }
+    });
+
     /******************************************************************
      *  CLEAR HISTORY
      ******************************************************************/
@@ -1904,6 +2000,8 @@
 
     // ====== Init (no cue on load) ======
     loadSettings();
+    document.getElementById("maxHistoryInput").value = maxHistoryEntries;
+    sessionStorage.removeItem("historyPage");
     updateModeIndicator();
     buildDurationInputs();
     renderHistory();
