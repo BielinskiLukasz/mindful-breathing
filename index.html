@@ -1384,21 +1384,52 @@
         const list = raw ? JSON.parse(raw) : [];
         if (!list.length) {
           el.innerHTML = '<div class="historyEmpty">No sessions yet</div>';
+          // Hide nav buttons if they exist
+          const prevBtn = document.getElementById("histPrevBtn");
+          const nextBtn = document.getElementById("histNextBtn");
+          const pageInd = document.getElementById("pageIndicator");
+          if (prevBtn) prevBtn.style.display = "none";
+          if (nextBtn) nextBtn.style.display = "none";
+          if (pageInd) pageInd.textContent = "";
           return;
         }
+
+        const pageSize = 5;
+        const pageStr = sessionStorage.getItem("historyPage") || "1";
+        const totalPages = Math.ceil(list.length / pageSize);
+        const currentPage = Math.min(totalPages, Math.max(1, parseInt(pageStr, 10)));
+        const start = (currentPage - 1) * pageSize;
+        const end = start + pageSize;
+
         const today = new Date();
         const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
-        el.innerHTML = list.map(s => {
+
+        el.innerHTML = list.slice(start, end).map(s => {
           const d = new Date(s.date);
           const dateLabel = d.toDateString() === today.toDateString()     ? "Today"
                           : d.toDateString() === yesterday.toDateString() ? "Yesterday"
-                          : d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
-          const timeLabel = d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+                          : d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+          const presetKey = s.preset || "relax";
+          const presetName = MODE_LABELS[presetKey] || presetKey;
+          const presetColor = (PRESETS[presetKey] && PRESETS[presetKey][0] && PRESETS[presetKey][0].theme && PRESETS[presetKey][0].theme.accent) || "#9aa0a6";
           return `<div class="historyItem">
-            <span class="histDate">${dateLabel} ${timeLabel}</span>
-            <span class="histStats">${s.cycles} cycle${s.cycles !== 1 ? "s" : ""} · ${formatDuration(s.durationMs)}</span>
+            <span><span style="color: ${presetColor};">&#9679;</span> ${presetName} &bull; ${formatDuration(s.durationMs)} &bull; ${s.cycles} cycle${s.cycles !== 1 ? "s" : ""} &bull; ${dateLabel}</span>
           </div>`;
         }).join("");
+
+        // Update pagination controls
+        const prevBtn = document.getElementById("histPrevBtn");
+        const nextBtn = document.getElementById("histNextBtn");
+        const pageInd = document.getElementById("pageIndicator");
+        if (totalPages > 1) {
+          if (prevBtn) prevBtn.style.display = "";
+          if (nextBtn) nextBtn.style.display = "";
+          if (pageInd) pageInd.textContent = `Page ${currentPage} of ${totalPages}`;
+        } else {
+          if (prevBtn) prevBtn.style.display = "none";
+          if (nextBtn) nextBtn.style.display = "none";
+          if (pageInd) pageInd.textContent = "";
+        }
       } catch (_) {
         el.innerHTML = "";
       }
