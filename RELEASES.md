@@ -1,77 +1,264 @@
 # Release Notes
 
-## v0.4.0 — Responsive Design & Landscape Layout (Phase 2)
+## 🟦 **v0.4.1**  
+📅 *Release date: 2026-06-05*  
+🔖 Commit: `8015112`  
+👤 Author: @BielinskiLukasz  
 
-**Status:** Released  
-**Date:** 2026-06-05
-
-### What's New
-
-#### Responsive Typography & Layout
-- Responsive font sizing that adapts to viewport width (clamp-based scaling)
-- Improved readability on small screens and tablets
-- Maintained visual hierarchy across all device sizes
-
-#### Landscape Orientation Support
+### **What's Changed**
+- Responsive typography with viewport-aware scaling (clamp-based)
 - Full landscape layout redesign with 2-column adaptive grid
-- Icon row reflows horizontally in landscape mode
-- Ring and controls centered on both portrait and landscape
-- Session history visibility in landscape view
-- Consistent 8px spacing rhythm across all orientations
+- Theming enhancements for dark and light modes
+- Expanded session history visibility and responsiveness
 
-#### Theming Enhancements
+### **Added**
+- Responsive font sizing that adapts to viewport width (clamp-based scaling)
+- Full landscape layout redesign with 2-column adaptive grid
+- Icon row horizontal reflow in landscape mode
+- Session history visibility in landscape view
 - Improved dark mode default colors for better contrast
 - Light theme color refinements
+- Enhanced touch targets for mobile users
 - Smooth 220ms transitions on theme changes
 
-#### Session Management
-- Session history expanded with better visibility
-- Status and goal rows properly positioned in all orientations
+### **Changed**
+- Ring and controls centered on both portrait and landscape layouts
+- Status and goal rows repositioned for responsiveness across orientations
 - Cycle counter and phase labels responsive to layout changes
+- Icon sizing and button positioning optimized across orientations
+- Consistent 8px spacing rhythm across all orientations
 
-### Bug Fixes
+### **Fixed**
+- Icon sizing inconsistencies across orientations
+- Button positioning in landscape mode
+- Session history panel positioning in various layouts
 
-- Fixed icon sizing inconsistencies across orientations
-- Improved button positioning in landscape mode
-- Enhanced touch targets for mobile users
-
-### Known Issues (Phase 3 Backlog)
-
-- Light theme contrast issues on some devices
-- Icon size inconsistencies between vertical and horizontal views need refinement
-- History panel visibility in 2-column horizontal layout needs improvement
-- Fullscreen button placement conflicts in horizontal 2-column view
-- Vibration API reliability issues on some Android devices
-- Clear history button lacks confirmation dialog
+### **Full Changelog**
+`v0.4.0...v0.4.1`
 
 ---
 
-## v0.3.1 — Settings Panel & Phase Duration Customization
+## 🟦 **v0.4.0**  
+📅 *Release date: 2026‑06‑04*  
+🔖 Commit: `140948f`  
+👤 Author: @BielinskiLukasz  
 
-**Status:** Released  
-**Date:** 2026-05-15
+### **What's Changed**
+- History pagination, storage cap, session preset tracking (#10)
 
-### Features
+### **Added**
+- Session history now displays with pagination navigation (Previous/Next buttons)  
+- Configurable storage cap for session history (default: 14 entries)  
+- Preset badge shown in session history cards (displays which pattern was used)  
+- Session history cards fully responsive for landscape and mobile layouts  
+- Settings initialization on app load ensures all custom durations and toggles persist  
+- Improved responsive CSS for session history rendering across all breakpoints
 
-- Settings panel with preset selection
-- Per-preset phase duration customization (1–30 seconds)
-- Cycles per session configuration (1–20 cycles)
-- Mode indicator badge showing active preset
-- Dedicated info panel with keyboard shortcuts
-- Landscape layout awareness
+### **Changed**
+- Session history rendering completely rewritten to support pagination  
+- History card styling improved for consistency with app theme  
+- Landscape mode CSS extended to accommodate larger history panel
+
+### **Fixed**
+- —
+
+### **Full Changelog**
+`v0.3.3...v0.4.0`
 
 ---
 
-## v0.3.0 — Initial Release
+## 🟨 **v0.3.3**  
+📅 *Release date: 2026‑06‑03*  
+🔖 Commit: `1e78b88`  
+👤 Author: @BielinskiLukasz  
 
-**Status:** Released
+### **What's Changed**
+- Bugfix release (#7)
 
-### Core Features
+### **Added**
+- —
 
-- Three scientifically-backed breathing modes (Relax, Box, 4-7-8)
-- Animated progress ring with phase synchronization
-- Sound and vibration cues
-- Session history tracking
-- Fullscreen mode
-- PWA installable
-- Offline support
+### **Changed**
+- —
+
+### **Fixed**
+- Focus handling corrected on done overlay for improved keyboard accessibility
+
+### **Full Changelog**
+`v0.3.2...v0.3.3`
+
+---
+
+## 🟧 **v0.3.2**  
+📅 *Release date: 2026‑05‑11*  
+🔖 Commit: `aa86631`  
+👤 Author: @BielinskiLukasz  
+
+### **What's Changed**
+- Settings panel and mode indicator (#5)
+
+### **Added**
+- Settings panel (gear icon) provides centralized control for app customization  
+- Editable cycle count in settings (separate from the main goal input)  
+- Per‑phase breathing duration editing moved to settings panel  
+- Breathing preset selection integrated into settings panel  
+- Mode indicator showing currently active breathing pattern  
+- Info panel (ⓘ icon) consolidates shortcuts and informational content  
+- Improved landscape orientation layout with centered UI and icon alignment
+
+### **Changed**
+- Settings icon upgraded from placeholder to proper cogwheel symbol  
+- Keyboard shortcuts and breathing guidance moved from always‑visible UI to collapsible info panel  
+- Icon spacing refined for better visual balance  
+- Text and button alignment centered in landscape orientation
+
+### **Fixed**
+- Landscape orientation layout no longer allows icon overlap  
+- Main UI properly centered in landscape mode
+
+### **Full Changelog**
+`v0.3.1...v0.3.2`
+
+---
+
+## 🟦 **v0.3.1**  
+📅 *Release date: 2026‑05‑07*  
+🔖 Commit: `a376179`  
+👤 Author: @BielinskiLukasz  
+
+### **What's Changed**
+- Icon buttons: vibration replaces text checkbox (#3)  
+- Input validation: goal cycle clamped to 1–50 (#4)
+
+### **Added**
+- Vibration icon button replaces the vibration text checkbox (matches the sound toggle style)  
+- Sound and vibration icon buttons grouped with the ⓘ info button in a top‑left corner column
+
+### **Changed**
+- Goal cycle input clamped to 1–50 in both HTML (max attribute) and JS  
+- Info button icon replaced from Unicode ⓘ to inline SVG
+
+### **Fixed**
+- —
+
+### **Full Changelog**
+`v0.3.0...v0.3.1`
+
+---
+
+## 🟩 **v0.3.0**  
+📅 *Release date: 2026‑05‑07*  
+🔖 Commit: `1354a22`  
+👤 Author: @BielinskiLukasz  
+
+### **What's Changed**
+- Icon buttons, PWA features, landscape layout, and info panel (#2)
+
+### **Added**
+- Speaker icon button replaces the sound text checkbox  
+- Two‑column landscape layout for mobile (ring left, controls right)  
+- Collapsible info panel behind an ⓘ icon button  
+- "Clear" button in the session history panel  
+- Favicon, PWA manifest, service worker (offline caching, Add to Home Screen)  
+- Inspirational quote on the 3‑2‑1 countdown overlay  
+- Session progress bar filling continuously within each cycle
+
+### **Changed**
+- Status text shows "Ready" or "Paused" instead of "Stopped"; elapsed time hidden at zero  
+- Start/Stop styled as primary action; Reset as secondary  
+- Past Sessions redesigned as card‑style items  
+- Responsive breakpoints at 480px and 360px  
+- Session history dates forced to en‑US locale
+
+### **Fixed**
+- Vibration pattern simplified to a single 50ms pulse  
+- Priming no longer fires when vibration is disabled
+
+### **Full Changelog**
+`v0.2.1...v0.3.0`
+
+---
+
+## 🟨 **v0.2.1**  
+📅 *Release date: 2026‑05‑03*  
+🔖 Commit: `c6955fe`  
+👤 Author: @BielinskiLukasz  
+
+### **What's Changed**
+- Documentation and file organization
+
+### **Added**
+- README for Mindful Breathing application
+
+### **Changed**
+- Updated durations for breath presets  
+- Renamed `Mindful-Breathing.html` → `index.html`
+
+### **Fixed**
+- —
+
+### **Full Changelog**
+`v0.2.0...v0.2.1`
+
+---
+
+## 🟧 **v0.2.0 – Initial release**  
+📅 *Release date: 2026‑04‑30*  
+🔖 Commit: `38c874d`  
+👤 Author: @BielinskiLukasz  
+
+### **What's Changed**
+- Core breathing app with presets, animations, and session history
+
+### **Added**
+- Preset breathing patterns (Relax, Box, 4‑7‑8)  
+- Breathing animation circle  
+- Session goal with cycle counter  
+- Screen wake lock  
+- Per‑phase duration editing  
+- Elapsed session timer  
+- Idle breathing pulse animation  
+- 3‑2‑1 countdown overlay  
+- Next phase label  
+- Keyboard shortcuts (Space, R, F)  
+- Per‑phase breathing guidance text  
+- Ambient brightness animation  
+- Collapsible session history  
+- Estimated session duration next to goal input
+
+### **Changed**
+- Relax pattern updated (Pause → Hold)  
+- Polish done overlay improvements
+
+### **Fixed**
+- Sound and vibration not working on mobile browsers
+
+### **Full Changelog**
+`v0.1.0...v0.2.0`
+
+---
+
+## 🟫 **v0.1.0 – Initial release**  
+📅 *Release date: 2026‑04‑02*  
+🔖 Commit: `857ac6e`  
+👤 Author: @BielinskiLukasz  
+
+### **What's Changed**
+- Project initialization with breathing timer and UI foundations
+
+### **Added**
+- Initial project structure  
+- Simple breathing timer  
+- Start/stop button  
+- Reset button  
+- Color scheme  
+- Animated progress ring  
+- Sound and vibration support  
+- English UI  
+- Configuration panel
+
+### **Changed**
+- —
+
+### **Fixed**
+- —
