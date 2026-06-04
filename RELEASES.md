@@ -1,4 +1,42 @@
-# **RELEASES.md**
+# Release Notes
+
+## 🟦 **v0.4.1**  
+📅 *Release date: 2026-06-05*  
+🔖 Commit: `8015112`  
+👤 Author: @BielinskiLukasz  
+
+### **What's Changed**
+- Responsive typography with viewport-aware scaling (clamp-based)
+- Full landscape layout redesign with 2-column adaptive grid
+- Theming enhancements for dark and light modes
+- Expanded session history visibility and responsiveness
+
+### **Added**
+- Responsive font sizing that adapts to viewport width (clamp-based scaling)
+- Full landscape layout redesign with 2-column adaptive grid
+- Icon row horizontal reflow in landscape mode
+- Session history visibility in landscape view
+- Improved dark mode default colors for better contrast
+- Light theme color refinements
+- Enhanced touch targets for mobile users
+- Smooth 220ms transitions on theme changes
+
+### **Changed**
+- Ring and controls centered on both portrait and landscape layouts
+- Status and goal rows repositioned for responsiveness across orientations
+- Cycle counter and phase labels responsive to layout changes
+- Icon sizing and button positioning optimized across orientations
+- Consistent 8px spacing rhythm across all orientations
+
+### **Fixed**
+- Icon sizing inconsistencies across orientations
+- Button positioning in landscape mode
+- Session history panel positioning in various layouts
+
+### **Full Changelog**
+`v0.4.0...v0.4.1`
+
+---
 
 ## 🟦 **v0.4.0**  
 📅 *Release date: 2026‑06‑04*  
