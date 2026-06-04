@@ -39,7 +39,7 @@
       justify-content: center;
       height: 100vh;
       margin: 0;
-      transition: background 220ms ease;
+      transition: background 220ms ease, color 220ms ease;
     }
 
     .container {
@@ -51,7 +51,7 @@
       border-radius: 18px;
       box-shadow: 0 12px 30px rgba(0,0,0,0.35);
       border: 2px solid var(--accentSoft);
-      transition: border-color 220ms ease;
+      transition: background 220ms ease, border-color 220ms ease;
     }
 
     .cycle {
@@ -1207,6 +1207,9 @@
     // History storage cap
     let maxHistoryEntries = 1000;
 
+    // Theme state
+    let isDarkMode = true;
+
     /******************************************************************
      *  DOM
      ******************************************************************/
@@ -1366,6 +1369,7 @@
           goal: goalInput.value,
           durations: savedDurations,
           maxHistoryEntries: maxHistoryEntries,
+          isDarkMode: isDarkMode,
         }));
       } catch (_) {}
     }
@@ -1380,6 +1384,10 @@
         if (data.goal) goalInput.value = data.goal;
         if (data.durations && typeof data.durations === "object") savedDurations = data.durations;
         maxHistoryEntries = data.maxHistoryEntries ?? 1000;
+        // Theme preference: default to dark (isDarkMode = true) if not saved
+        isDarkMode = typeof data.isDarkMode === "boolean" ? data.isDarkMode : true;
+        applyThemeColors(isDarkMode ? DARK_THEME : LIGHT_THEME);
+        updateThemeToggleUI();
         if (data.preset && data.preset in PRESETS) {
           activePresetKey = data.preset;
           activePhases = PRESETS[activePresetKey].map(p => ({...p}));
@@ -1894,8 +1902,6 @@
       text: "#fff",
       textSoft: "rgba(255,255,255,0.55)"
     });
-
-    let isDarkMode = true;
 
     function applyThemeColors(theme) {
       const root = document.documentElement;
