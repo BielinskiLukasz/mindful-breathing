@@ -53,7 +53,7 @@
 3. Landscape orientation displays breathing interface optimally without horizontal scroll or cramped text
 4. All interactive elements have clear visual hierarchy and accessible color contrast (keyboard focus states deferred to Phase 3)
 
-**Plans:** 4/4 plans created, 4/4 complete
+**Plans:** 4/4 plans complete
 
 - [x] 02-01-PLAN.md — Light theme CSS custom properties, toggle button in settings, theme handler, localStorage persistence (completed 2026-06-05)
 - [x] 02-02-PLAN.md — Responsive typography with CSS clamp(), all text sizes scale smoothly from 320px to 4K (completed 2026-06-05)
@@ -69,7 +69,7 @@
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Session History & Vibration | 1/1 | Complete    | 2026-06-04 |
-| 2. Theming & Polish | 4/4 | Complete | 02-01 through 02-04: 2026-06-05 |
+| 2. Theming & Polish | 4/4 | Complete    | 2026-06-04 |
 
 ---
 
