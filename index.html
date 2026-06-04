@@ -1040,6 +1040,11 @@
     <details class="history" id="historyDetails">
       <summary>Past sessions <button class="clearHistBtn" id="clearHistBtn">Clear</button></summary>
       <div id="historyList"></div>
+      <div id="historyNav" style="margin-top: 12px; display: flex; gap: 6px; justify-content: center; align-items: center;">
+        <button id="histPrevBtn" style="font-size: 12px; padding: 6px 10px; min-width: 0; display: none;">&#8592; Prev</button>
+        <span id="pageIndicator" style="color: rgba(255,255,255,0.4); font-size: 12px; min-width: 80px; text-align: center;"></span>
+        <button id="histNextBtn" style="font-size: 12px; padding: 6px 10px; min-width: 0; display: none;">Next &#8594;</button>
+      </div>
     </details>
 
   </div>
@@ -1865,6 +1870,27 @@
       maxHistoryEntries = val;
       saveSettings();
       renderHistory();
+    });
+
+    document.getElementById("histPrevBtn").addEventListener("click", () => {
+      const currentPage = Math.max(1, parseInt(sessionStorage.getItem("historyPage") || "1", 10));
+      if (currentPage > 1) {
+        sessionStorage.setItem("historyPage", currentPage - 1);
+        renderHistory();
+      }
+    });
+
+    document.getElementById("histNextBtn").addEventListener("click", () => {
+      const pageStr = sessionStorage.getItem("historyPage") || "1";
+      const currentPage = Math.max(1, parseInt(pageStr, 10));
+      const raw = localStorage.getItem(HISTORY_KEY);
+      const list = raw ? JSON.parse(raw) : [];
+      const pageSize = 5;
+      const totalPages = Math.ceil(list.length / pageSize);
+      if (currentPage < totalPages) {
+        sessionStorage.setItem("historyPage", currentPage + 1);
+        renderHistory();
+      }
     });
 
     /******************************************************************
