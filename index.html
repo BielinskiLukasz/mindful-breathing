@@ -884,6 +884,91 @@
       .history { margin-top: 4px; padding-top: 2px; max-height: 180px; overflow-y: auto; }
       .historyItem { padding: 3px 4px; margin-top: 2px; }
     }
+
+    /* ====== LANDSCAPE LAYOUT (50/50 SPLIT) ====== */
+    @media (orientation: landscape) and (min-height: 501px) {
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        height: auto;
+        overflow: hidden;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        max-width: 1400px;
+        height: 100vh;
+        padding: 0;
+        border-radius: 0;
+        text-align: left;
+        overflow: hidden;
+      }
+
+      /* ---- Ring side (left 50%) ---- */
+      .ringSection {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .ringWrap {
+        width: clamp(200px, 25vw, 400px);
+        height: clamp(200px, 25vw, 400px);
+        margin: 8px auto 8px;
+      }
+
+      .ringSvg {
+        width: 100%;
+        height: 100%;
+      }
+
+      /* ---- Controls/History side (right 50%) ---- */
+      .controlsSection {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 20px;
+        overflow-y: auto;
+        border-left: 1px solid var(--accentSoft);
+      }
+
+      .controls {
+        flex-shrink: 0;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        margin-top: 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--accentSoft);
+      }
+
+      .statusRow {
+        flex-shrink: 0;
+        margin-top: 8px;
+      }
+
+      .sessionBar {
+        flex-shrink: 0;
+        margin-top: 8px;
+      }
+
+      .history {
+        flex: 1;
+        overflow-y: auto;
+        margin-top: 12px;
+        padding-right: 4px;
+      }
+    }
   </style>
 </head>
 
@@ -1017,55 +1102,59 @@
         </div>
       </div>
     </div>
-    <div class="modeIndicator" id="modeIndicator">Relax</div>
-    <div class="cycle" id="cycle">Cycle: 1</div>
-    <div class="phase" id="phase">Pause</div>
+    <div class="ringSection">
+      <div class="modeIndicator" id="modeIndicator">Relax</div>
+      <div class="cycle" id="cycle">Cycle: 1</div>
+      <div class="phase" id="phase">Pause</div>
 
-    <div class="ringWrap">
-      <svg class="ringSvg" viewBox="0 0 220 220" aria-hidden="true">
-        <circle class="ringBg" cx="110" cy="110" r="92" fill="transparent" stroke-width="14" />
-        <circle id="ringProgress" class="ringProgress" cx="110" cy="110" r="92" fill="transparent" stroke-width="14" />
-      </svg>
+      <div class="ringWrap">
+        <svg class="ringSvg" viewBox="0 0 220 220" aria-hidden="true">
+          <circle class="ringBg" cx="110" cy="110" r="92" fill="transparent" stroke-width="14" />
+          <circle id="ringProgress" class="ringProgress" cx="110" cy="110" r="92" fill="transparent" stroke-width="14" />
+        </svg>
 
-      <div class="ringContent">
-        <div id="breathCircle" class="breathCircle"></div>
-        <div>
-          <div class="time" id="time">2</div>
-          <div class="subHint" id="secondsLabel">seconds</div>
+        <div class="ringContent">
+          <div id="breathCircle" class="breathCircle"></div>
+          <div>
+            <div class="time" id="time">2</div>
+            <div class="subHint" id="secondsLabel">seconds</div>
+          </div>
         </div>
       </div>
+
+      <div class="phaseHint" id="phaseHint"></div>
+      <div class="nextPhase" id="nextPhase"></div>
     </div>
 
-    <div class="phaseHint" id="phaseHint"></div>
-    <div class="nextPhase" id="nextPhase"></div>
-
-    <div class="controls">
-      <button id="toggleBtn">Start</button>
-      <button id="resetBtn" class="resetBtn">Reset</button>
-    </div>
-
-    <div class="statusRow">
-      <div class="status">
-        <span class="runningDot"></span>
-        <span id="statusText">Stopped</span>
-        <span id="elapsed" class="elapsed">0:00</span>
+    <div class="controlsSection">
+      <div class="controls">
+        <button id="toggleBtn">Start</button>
+        <button id="resetBtn" class="resetBtn">Reset</button>
       </div>
 
-    </div>
+      <div class="statusRow">
+        <div class="status">
+          <span class="runningDot"></span>
+          <span id="statusText">Stopped</span>
+          <span id="elapsed" class="elapsed">0:00</span>
+        </div>
 
-    <div class="sessionBar">
-      <div class="sessionBarFill" id="sessionBarFill"></div>
-    </div>
-
-    <details class="history" id="historyDetails">
-      <summary>Past sessions <button class="clearHistBtn" id="clearHistBtn">Clear</button></summary>
-      <div id="historyList"></div>
-      <div id="historyNav" style="margin-top: 12px; display: flex; gap: 6px; justify-content: center; align-items: center;">
-        <button id="histPrevBtn" style="font-size: clamp(11px, 1.2vw + 7px, 14px); padding: 6px 10px; min-width: 0; display: none;">&#8592; Prev</button>
-        <span id="pageIndicator" style="color: rgba(255,255,255,0.4); font-size: clamp(11px, 1.2vw + 7px, 14px); min-width: 80px; text-align: center;"></span>
-        <button id="histNextBtn" style="font-size: clamp(11px, 1.2vw + 7px, 14px); padding: 6px 10px; min-width: 0; display: none;">Next &#8594;</button>
       </div>
-    </details>
+
+      <div class="sessionBar">
+        <div class="sessionBarFill" id="sessionBarFill"></div>
+      </div>
+
+      <details class="history" id="historyDetails">
+        <summary>Past sessions <button class="clearHistBtn" id="clearHistBtn">Clear</button></summary>
+        <div id="historyList"></div>
+        <div id="historyNav" style="margin-top: 12px; display: flex; gap: 6px; justify-content: center; align-items: center;">
+          <button id="histPrevBtn" style="font-size: clamp(11px, 1.2vw + 7px, 14px); padding: 6px 10px; min-width: 0; display: none;">&#8592; Prev</button>
+          <span id="pageIndicator" style="color: rgba(255,255,255,0.4); font-size: clamp(11px, 1.2vw + 7px, 14px); min-width: 80px; text-align: center;"></span>
+          <button id="histNextBtn" style="font-size: clamp(11px, 1.2vw + 7px, 14px); padding: 6px 10px; min-width: 0; display: none;">Next &#8594;</button>
+        </div>
+      </details>
+    </div>
 
   </div>
 
