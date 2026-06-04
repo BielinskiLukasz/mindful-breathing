@@ -936,6 +936,7 @@
           <line x1="17" y1="5.5" x2="13" y2="9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
       </button>
+      <button class="iconToggle" id="themeToggleBtn" title="Toggle light/dark theme" style="font-size: 14px; line-height: 1;">&#9728;</button>
     </div>
     <button class="fullscreenBtn" id="fullscreenBtn" title="Toggle fullscreen" aria-label="Toggle fullscreen">
       <svg id="fsEnterIcon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1872,6 +1873,54 @@
       updateVibeToggleUI();
       saveSettings();
     });
+
+    /******************************************************************
+     *  THEME TOGGLE
+     ******************************************************************/
+    const LIGHT_THEME = Object.freeze({
+      bg: "#f5f1ed",
+      card: "#ebe7e1",
+      accent: "#d4a574",
+      accentSoft: "rgba(212,165,116,0.18)",
+      text: "#5c4033",
+      textSoft: "#a89e8c"
+    });
+
+    const DARK_THEME = Object.freeze({
+      bg: "#111",
+      card: "#171717",
+      accent: "#9aa0a6",
+      accentSoft: "rgba(154,160,166,0.18)",
+      text: "#fff",
+      textSoft: "rgba(255,255,255,0.55)"
+    });
+
+    let isDarkMode = true;
+
+    function applyThemeColors(theme) {
+      const root = document.documentElement;
+      root.style.setProperty("--bg", theme.bg);
+      root.style.setProperty("--card", theme.card);
+      root.style.setProperty("--accent", theme.accent);
+      root.style.setProperty("--accentSoft", theme.accentSoft);
+      root.style.setProperty("--text", theme.text);
+      root.style.setProperty("--textSoft", theme.textSoft);
+    }
+
+    function updateThemeToggleUI() {
+      const btn = document.getElementById("themeToggleBtn");
+      if (btn) btn.innerHTML = isDarkMode ? "&#9728;" : "&#9790;";
+    }
+
+    function toggleTheme() {
+      isDarkMode = !isDarkMode;
+      applyThemeColors(isDarkMode ? DARK_THEME : LIGHT_THEME);
+      updateThemeToggleUI();
+      saveSettings();
+    }
+
+    document.getElementById("themeToggleBtn").addEventListener("click", toggleTheme);
+
     function clampGoalInput() {
       const raw = parseInt(goalInput.value, 10);
       if (!Number.isFinite(raw)) { goalInput.value = SESSION.defaultCycles; return; }
