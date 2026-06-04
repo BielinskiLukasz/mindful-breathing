@@ -18,14 +18,14 @@
 
 ### Theming
 
-- [ ] **THEME-01**: User can toggle between light and dark theme
-- [ ] **THEME-02**: Theme preference persists across browser sessions (localStorage)
+- [x] **THEME-01**: User can toggle between light and dark theme
+- [x] **THEME-02**: Theme preference persists across browser sessions (localStorage)
 
 ### User Experience
 
-- [ ] **UX-01**: Font sizing is consistent and readable across all UI elements
-- [ ] **UX-02**: Landscape (horizontal) orientation displays optimally on tablets and wide screens
-- [ ] **UX-03**: UI audit completed — all visual elements reviewed for usability and hierarchy
+- [x] **UX-01**: Font sizing is consistent and readable across all UI elements
+- [x] **UX-02**: Landscape (horizontal) orientation displays optimally on tablets and wide screens
+- [x] **UX-03**: UI audit completed — all visual elements reviewed for usability and hierarchy
 
 ## v2 Requirements
 
@@ -64,11 +64,11 @@
 | HIST-02 | Phase 1 | Complete |
 | HIST-03 | Phase 1 | Complete |
 | HIST-04 | Phase 1 | Complete |
-| THEME-01 | Phase 2 | Pending |
-| THEME-02 | Phase 2 | Pending |
-| UX-01 | Phase 2 | Pending |
-| UX-02 | Phase 2 | Pending |
-| UX-03 | Phase 2 | Pending |
+| THEME-01 | Phase 2 | Complete |
+| THEME-02 | Phase 2 | Complete |
+| UX-01 | Phase 2 | Complete |
+| UX-02 | Phase 2 | Complete |
+| UX-03 | Phase 2 | Complete |
 
 **Coverage:**
 

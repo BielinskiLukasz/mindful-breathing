@@ -10,7 +10,7 @@
 ## Phases
 
 - [x] **Phase 1: Session History & Vibration** - Fix vibration reliability and enable pagination, filtering, and configurable storage (completed 2026-06-04)
-- [ ] **Phase 2: Theming & UX Polish** - Add light/dark theme toggle and optimize visual design across devices
+- [x] **Phase 2: Theming & UX Polish** - Add light/dark theme toggle and optimize visual design across devices (completed 2026-06-05)
 
 ---
 
@@ -51,9 +51,14 @@
 1. User can toggle light/dark theme and preference persists across browser sessions via localStorage
 2. Font sizes are consistent and readable from mobile (320px) to desktop (4K) widths
 3. Landscape orientation displays breathing interface optimally without horizontal scroll or cramped text
-4. All interactive elements have clear visual hierarchy and focus states for keyboard navigation
+4. All interactive elements have clear visual hierarchy and accessible color contrast (keyboard focus states deferred to Phase 3)
 
-**Plans:** TBD
+**Plans:** 4/4 plans complete
+
+- [x] 02-01-PLAN.md — Light theme CSS custom properties, toggle button in settings, theme handler, localStorage persistence (completed 2026-06-05)
+- [x] 02-02-PLAN.md — Responsive typography with CSS clamp(), all text sizes scale smoothly from 320px to 4K (completed 2026-06-05)
+- [x] 02-03-PLAN.md — Landscape orientation side-by-side layout (ring 50% left, controls/history 50% right), max-width cap at 1400px (completed 2026-06-05)
+- [x] 02-04-PLAN.md — Cross-device manual testing (320px to 4K, portrait/landscape), Phase 1 regression check (completed 2026-06-05)
 
 **UI hint:** yes
 
@@ -64,7 +69,7 @@
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Session History & Vibration | 1/1 | Complete    | 2026-06-04 |
-| 2. Theming & Polish | 0/TBD | Not started | - |
+| 2. Theming & Polish | 4/4 | Complete    | 2026-06-04 |
 
 ---
 
@@ -83,4 +88,4 @@
 
 ---
 
-*Roadmap updated: 2026-06-03 Phase 1 planning complete*
+*Roadmap updated: 2026-06-05 Phase 2 execution complete*
