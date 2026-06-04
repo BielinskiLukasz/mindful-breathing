@@ -988,6 +988,13 @@
             <span class="timeEst" id="timeEst"></span>
           </div>
         </div>
+
+        <div class="settingsGroup">
+          <div class="settingsLabel">Session history cap</div>
+          <label style="font-size: 13px; color: rgba(255,255,255,0.7); display: flex; gap: 6px; align-items: center;">
+            Keep last <input type="number" id="maxHistoryInput" min="1" max="10000" value="1000" style="width: 60px; padding: 4px 6px; background: #2b2b2b; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 14px; text-align: center;"> sessions
+          </label>
+        </div>
       </div>
     </div>
     <div class="modeIndicator" id="modeIndicator">Relax</div>
@@ -1163,6 +1170,9 @@
     let soundEnabled = SOUND.enabledByDefault;
     let vibeEnabled  = VIBRATION.enabledByDefault;
 
+    // History storage cap
+    let maxHistoryEntries = 1000;
+
     /******************************************************************
      *  DOM
      ******************************************************************/
@@ -1321,6 +1331,7 @@
           preset: activePresetKey,
           goal: goalInput.value,
           durations: savedDurations,
+          maxHistoryEntries: maxHistoryEntries,
         }));
       } catch (_) {}
     }
@@ -1334,6 +1345,7 @@
         if (typeof data.vibe === "boolean") { vibeEnabled = data.vibe; updateVibeToggleUI(); }
         if (data.goal) goalInput.value = data.goal;
         if (data.durations && typeof data.durations === "object") savedDurations = data.durations;
+        maxHistoryEntries = data.maxHistoryEntries ?? 1000;
         if (data.preset && data.preset in PRESETS) {
           activePresetKey = data.preset;
           activePhases = PRESETS[activePresetKey].map(p => ({...p}));
@@ -1360,7 +1372,7 @@
         const raw = localStorage.getItem(HISTORY_KEY);
         const list = raw ? JSON.parse(raw) : [];
         list.unshift(entry);
-        if (list.length > 5) list.length = 5;
+        if (list.length > maxHistoryEntries) list.length = maxHistoryEntries;
         localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
       } catch (_) {}
     }
@@ -1814,6 +1826,14 @@
       cycleEl.textContent = `${UI.cyclePrefix} ${cycleCount} / ${getGoal()}`;
       renderSessionBar();
       updateTimeEst();
+    });
+
+    document.getElementById("maxHistoryInput").addEventListener("change", e => {
+      const val = Math.max(1, Math.min(10000, parseInt(e.target.value, 10) || 1000));
+      e.target.value = val;
+      maxHistoryEntries = val;
+      saveSettings();
+      renderHistory();
     });
 
     /******************************************************************
