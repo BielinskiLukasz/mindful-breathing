@@ -7,14 +7,14 @@
 
 ### Bug Fixes
 
-- [ ] **BUG-01**: Vibration feedback triggers reliably during phase transitions
+- [x] **BUG-01**: Vibration feedback triggers reliably during phase transitions
 
 ### Session History
 
-- [ ] **HIST-01**: User can configure maximum number of session logs to store (number input or "unlimited")
-- [ ] **HIST-02**: User can configure number of session logs visible per page (pagination items per page)
-- [ ] **HIST-03**: User can navigate between pages of session history (Page 1, 2, 3...)
-- [ ] **HIST-04**: Session history cards are visually scannable and show key metrics (duration, preset name, date)
+- [x] **HIST-01**: User can configure maximum number of session logs to store (number input or "unlimited")
+- [x] **HIST-02**: User can configure number of session logs visible per page (pagination items per page)
+- [x] **HIST-03**: User can navigate between pages of session history (Page 1, 2, 3...)
+- [x] **HIST-04**: Session history cards are visually scannable and show key metrics (duration, preset name, date)
 
 ### Theming
 
@@ -59,11 +59,11 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| BUG-01 | Phase 1 | Pending |
-| HIST-01 | Phase 1 | Pending |
-| HIST-02 | Phase 1 | Pending |
-| HIST-03 | Phase 1 | Pending |
-| HIST-04 | Phase 1 | Pending |
+| BUG-01 | Phase 1 | Complete |
+| HIST-01 | Phase 1 | Complete |
+| HIST-02 | Phase 1 | Complete |
+| HIST-03 | Phase 1 | Complete |
+| HIST-04 | Phase 1 | Complete |
 | THEME-01 | Phase 2 | Pending |
 | THEME-02 | Phase 2 | Pending |
 | UX-01 | Phase 2 | Pending |
@@ -71,6 +71,7 @@
 | UX-03 | Phase 2 | Pending |
 
 **Coverage:**
+
 - v1 requirements: 10 total
 - Mapped to phases: 10
 - Unmapped: 0 ✓
