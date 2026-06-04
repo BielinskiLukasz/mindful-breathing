@@ -19,18 +19,28 @@
       --accent: #9aa0a6;
       --accentSoft: rgba(154,160,166,0.18);
       --text: #fff;
+      --textSoft: rgba(255,255,255,0.55);
+
+      /* Light theme color values (applied via JS toggleTheme) */
+      --bg-light: #f5f1ed;
+      --card-light: #ebe7e1;
+      --accent-light: #d4a574;
+      --accentSoft-light: rgba(212,165,116,0.18);
+      --text-light: #5c4033;
+      --textSoft-light: #a89e8c;
     }
 
     body {
       font-family: Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
+      line-height: clamp(1.4, 0.5vw + 1.2, 1.8);
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
       margin: 0;
-      transition: background 220ms ease;
+      transition: background 220ms ease, color 220ms ease;
     }
 
     .container {
@@ -42,18 +52,18 @@
       border-radius: 18px;
       box-shadow: 0 12px 30px rgba(0,0,0,0.35);
       border: 2px solid var(--accentSoft);
-      transition: border-color 220ms ease;
+      transition: background 220ms ease, border-color 220ms ease;
     }
 
     .cycle {
-      font-size: 20px;
+      font-size: clamp(12px, 1.5vw + 8px, 16px);
       margin-bottom: 10px;
       color: #c7c7c7;
       opacity: 0.9;
     }
 
     .modeIndicator {
-      font-size: 11px;
+      font-size: clamp(10px, 1vw + 7px, 12px);
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.35);
@@ -61,7 +71,8 @@
     }
 
     .phase {
-      font-size: 46px;
+      font-size: clamp(18px, 3vw + 12px, 28px);
+      letter-spacing: clamp(0px, 0.2vw, 0.08em);
       margin-bottom: 10px;
       color: var(--accent);
       transition: color 220ms ease;
@@ -132,7 +143,7 @@
     }
 
     .time {
-      font-size: 78px;
+      font-size: clamp(40px, 8vw + 20px, 64px);
       font-weight: 800;
       line-height: 1;
       color: var(--accent);
@@ -141,7 +152,7 @@
 
     .subHint {
       margin-top: 8px;
-      font-size: 12px;
+      font-size: clamp(11px, 1.2vw + 7px, 14px);
       color: rgba(255,255,255,0.55);
     }
 
@@ -154,7 +165,7 @@
     }
 
     .presetBtn {
-      font-size: 13px;
+      font-size: clamp(13px, 1.75vw + 9px, 17px);
       padding: 6px 16px;
       min-width: 0;
       border-radius: 20px;
@@ -177,7 +188,7 @@
     }
 
     button {
-      font-size: 16px;
+      font-size: clamp(13px, 1.75vw + 9px, 17px);
       padding: 11px 18px;
       border: 1px solid transparent;
       border-radius: 12px;
@@ -213,7 +224,7 @@
     /* Reset: secondary, smaller */
     .resetBtn {
       min-width: 90px;
-      font-size: 14px;
+      font-size: clamp(13px, 1.75vw + 9px, 17px);
       background: transparent;
       border-color: rgba(255,255,255,0.12);
       color: rgba(255,255,255,0.5);
@@ -234,7 +245,7 @@
     }
 
     .status {
-      font-size: 14px;
+      font-size: clamp(12px, 1.5vw + 8px, 16px);
       color: #9aa0a6;
       display: inline-flex;
       align-items: center;
@@ -243,7 +254,7 @@
     }
 
     .elapsed {
-      font-size: 13px;
+      font-size: clamp(12px, 1.5vw + 8px, 16px);
       color: rgba(255,255,255,0.55);
       font-variant-numeric: tabular-nums;
       letter-spacing: 0.03em;
@@ -268,7 +279,7 @@
       justify-content: center;
       gap: 10px;
       margin-top: 14px;
-      font-size: 14px;
+      font-size: clamp(12px, 1.5vw + 8px, 16px);
       color: rgba(255,255,255,0.7);
       user-select: none;
     }
@@ -282,12 +293,12 @@
       border: 1px solid rgba(255,255,255,0.15);
       border-radius: 8px;
       color: #fff;
-      font-size: 14px;
+      font-size: clamp(12px, 1.5vw + 8px, 16px);
       text-align: center;
     }
 
     .timeEst {
-      font-size: 13px;
+      font-size: clamp(11px, 1.2vw + 7px, 14px);
       color: rgba(255,255,255,0.32);
       font-variant-numeric: tabular-nums;
     }
@@ -342,7 +353,7 @@
     }
 
     .countdownQuote {
-      font-size: 14px;
+      font-size: clamp(12px, 1.5vw + 8px, 16px);
       color: rgba(255,255,255,0.6);
       font-style: italic;
       max-width: 260px;
@@ -358,7 +369,7 @@
     }
 
     .countdownNum {
-      font-size: 96px;
+      font-size: clamp(60px, 10vw + 28px, 96px);
       font-weight: 800;
       color: var(--accent);
       line-height: 1;
@@ -374,20 +385,20 @@
     }
 
     .doneTitle {
-      font-size: 28px;
+      font-size: clamp(20px, 3vw + 12px, 28px);
       font-weight: 700;
       color: #34d399;
       letter-spacing: 0.03em;
     }
 
     .doneTime {
-      font-size: 15px;
+      font-size: clamp(12px, 1.5vw + 8px, 16px);
       color: rgba(255,255,255,0.6);
     }
 
     .doneRestartBtn {
       margin-top: 6px;
-      font-size: 16px;
+      font-size: clamp(13px, 1.75vw + 9px, 17px);
       padding: 10px 28px;
       min-width: 0;
       background: #34d399;
@@ -445,7 +456,7 @@
     }
 
     .durName {
-      font-size: 10px;
+      font-size: clamp(9px, 0.8vw + 6px, 11px);
       color: rgba(255,255,255,0.38);
       text-transform: uppercase;
       letter-spacing: 0.04em;
@@ -458,7 +469,7 @@
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: 6px;
       color: rgba(255,255,255,0.7);
-      font-size: 14px;
+      font-size: clamp(12px, 1.5vw + 8px, 16px);
       text-align: center;
     }
 
@@ -466,13 +477,13 @@
     .durInput:disabled { opacity: 0.35; }
 
     .durUnit {
-      font-size: 9px;
+      font-size: clamp(8px, 0.7vw + 5px, 10px);
       color: rgba(255,255,255,0.25);
     }
 
     /* ====== PHASE HINT ====== */
     .phaseHint {
-      font-size: 14px;
+      font-size: clamp(12px, 1.5vw + 8px, 16px);
       color: rgba(255,255,255,0.45);
       font-style: italic;
       min-height: 20px;
@@ -483,7 +494,7 @@
 
     /* ====== NEXT PHASE ====== */
     .nextPhase {
-      font-size: 12px;
+      font-size: clamp(11px, 1.2vw + 7px, 14px);
       color: rgba(255,255,255,0.32);
       letter-spacing: 0.06em;
       text-transform: uppercase;
@@ -503,7 +514,7 @@
       cursor: pointer;
       user-select: none;
       color: rgba(255,255,255,0.4);
-      font-size: 11px;
+      font-size: clamp(10px, 1vw + 7px, 12px);
       letter-spacing: 0.07em;
       text-transform: uppercase;
       list-style: none;
@@ -514,7 +525,7 @@
       padding: 2px 0;
     }
 
-    .history summary::before { content: "▸"; transition: transform 0.2s; font-size: 9px; }
+    .history summary::before { content: "▸"; transition: transform 0.2s; font-size: clamp(8px, 0.7vw + 5px, 10px); }
     .history[open] summary::before { transform: rotate(90deg); }
 
     .historyItem {
@@ -522,7 +533,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 7px 8px;
-      font-size: 13px;
+      font-size: clamp(11px, 1.2vw + 7px, 14px);
       border-radius: 8px;
       margin-top: 4px;
       background: rgba(255,255,255,0.03);
@@ -537,12 +548,12 @@
     .historyItem:hover { background: rgba(255,255,255,0.06); }
 
     .histDate  { color: rgba(255,255,255,0.5); }
-    .histStats { color: rgba(255,255,255,0.75); font-variant-numeric: tabular-nums; font-size: 12px; }
-    .historyEmpty { color: rgba(255,255,255,0.28); padding: 10px 0 4px; font-style: italic; font-size: 13px; }
+    .histStats { color: rgba(255,255,255,0.75); font-variant-numeric: tabular-nums; font-size: clamp(11px, 1.2vw + 7px, 14px); }
+    .historyEmpty { color: rgba(255,255,255,0.28); padding: 10px 0 4px; font-style: italic; font-size: clamp(11px, 1.2vw + 7px, 14px); }
 
     .clearHistBtn {
       margin-left: auto;
-      font-size: 10px;
+      font-size: clamp(9px, 0.8vw + 6px, 11px);
       padding: 2px 8px;
       min-width: 0;
       background: transparent;
@@ -624,7 +635,7 @@
     }
 
     .settingsTitle {
-      font-size: 16px;
+      font-size: clamp(13px, 1.75vw + 9px, 17px);
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.75);
@@ -646,7 +657,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
+      font-size: clamp(13px, 1.75vw + 9px, 17px);
       line-height: 1;
     }
     .settingsCloseBtn:hover {
@@ -655,7 +666,7 @@
     }
 
     .settingsPlaceholder {
-      font-size: 13px;
+      font-size: clamp(12px, 1.5vw + 8px, 16px);
       color: rgba(255,255,255,0.5);
       line-height: 1.55;
     }
@@ -686,7 +697,7 @@
     }
 
     .infoTitle {
-      font-size: 16px;
+      font-size: clamp(13px, 1.75vw + 9px, 17px);
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.75);
@@ -708,7 +719,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
+      font-size: clamp(13px, 1.75vw + 9px, 17px);
       line-height: 1;
     }
     .infoCloseBtn:hover {
@@ -720,7 +731,7 @@
     .infoSection + .infoSection { margin-top: 14px; }
 
     .infoSectionLabel {
-      font-size: 11px;
+      font-size: clamp(10px, 1vw + 7px, 12px);
       letter-spacing: 0.07em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.45);
@@ -731,7 +742,7 @@
       list-style: none;
       padding: 0;
       margin: 0;
-      font-size: 13px;
+      font-size: clamp(12px, 1.5vw + 8px, 16px);
       color: rgba(255,255,255,0.7);
       line-height: 1.6;
     }
@@ -741,7 +752,7 @@
       display: inline-block;
       padding: 1px 6px;
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: 11px;
+      font-size: clamp(10px, 1vw + 7px, 12px);
       color: rgba(255,255,255,0.85);
       background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.15);
@@ -753,7 +764,7 @@
     .settingsGroup + .settingsGroup { margin-top: 14px; }
 
     .settingsLabel {
-      font-size: 11px;
+      font-size: clamp(10px, 1vw + 7px, 12px);
       letter-spacing: 0.07em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.45);
@@ -771,7 +782,7 @@
         border-radius: 14px;
       }
 
-      .phase { font-size: 36px; }
+      /* font-size removed: clamp() handles scaling */
 
       .ringWrap {
         width: 200px;
@@ -784,27 +795,18 @@
         height: 200px;
       }
 
-      .time { font-size: 62px; }
+      .presetBtn { padding: 5px 12px; }
 
-      .presetBtn { font-size: 12px; padding: 5px 12px; }
-
-      button { font-size: 15px; padding: 10px 14px; min-width: 100px; }
-      .resetBtn { min-width: 78px; font-size: 13px; }
-
-      .goalRow { font-size: 13px; }
+      button { padding: 10px 14px; min-width: 100px; }
+      .resetBtn { min-width: 78px; }
 
       .statusRow { gap: 10px; }
-      .status { font-size: 13px; }
 
       .history { margin-top: 10px; padding-top: 6px; }
-      .historyItem { font-size: 12px; padding: 5px 6px; }
-      .histDate { font-size: 11px; }
+      .historyItem { padding: 5px 6px; }
     }
 
     @media (max-width: 360px) {
-      .phase { font-size: 30px; }
-      .time { font-size: 52px; }
-
       .ringWrap {
         width: 170px;
         height: 170px;
@@ -816,13 +818,11 @@
       }
 
       .presets { gap: 5px; }
-      .presetBtn { font-size: 11px; padding: 4px 10px; }
+      .presetBtn { padding: 4px 10px; }
 
       .history { margin-top: 6px; padding-top: 4px; }
-      .historyItem { font-size: 11px; padding: 4px 4px; }
-      .histDate { font-size: 10px; }
-      #histPrevBtn, #histNextBtn { font-size: 11px; padding: 4px 8px; }
-      #pageIndicator { font-size: 11px; }
+      .historyItem { padding: 4px 4px; }
+      #histPrevBtn, #histNextBtn { padding: 4px 8px; }
     }
 
     /* ====== LANDSCAPE MOBILE ====== */
@@ -865,12 +865,12 @@
       }
 
       .ringSvg { width: 150px; height: 150px; }
-      .time { font-size: 46px; }
+      /* font-size removed: clamp() handles scaling */
 
       .modeIndicator { margin-bottom: 4px; text-align: center; }
-      .cycle { font-size: 12px; margin: 0 0 2px; text-align: center; }
-      .phase { font-size: 26px; margin: 0 0 4px; text-align: center; }
-      .phaseHint { font-size: 12px; text-align: center; }
+      .cycle { margin: 0 0 2px; text-align: center; }
+      .phase { margin: 0 0 4px; text-align: center; }
+      .phaseHint { text-align: center; }
       .nextPhase { text-align: center; }
 
       .controls { justify-content: center; margin-top: 8px; }
@@ -878,11 +878,103 @@
       .goalRow { justify-content: center; }
       .sessionBar { margin-top: 8px; }
 
-      button { padding: 8px 12px; font-size: 14px; min-width: 100px; }
-      .resetBtn { min-width: 76px; font-size: 12px; }
+      button { padding: 8px 12px; min-width: 100px; }
+      .resetBtn { min-width: 76px; }
 
       .history { margin-top: 4px; padding-top: 2px; max-height: 180px; overflow-y: auto; }
-      .historyItem { font-size: 11px; padding: 3px 4px; margin-top: 2px; }
+      .historyItem { padding: 3px 4px; margin-top: 2px; }
+    }
+
+    /* ====== LANDSCAPE LAYOUT (50/50 SPLIT) ====== */
+    @media (orientation: landscape) and (min-height: 501px) {
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        height: auto;
+        overflow: hidden;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        max-width: 1400px;
+        height: 100vh;
+        padding: 0;
+        border-radius: 0;
+        box-shadow: none;
+        text-align: left;
+        overflow: hidden;
+      }
+
+      /* ---- Ring side (left 50%) ---- */
+      .ringSection {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .ringWrap {
+        width: clamp(200px, 25vw, 400px);
+        height: clamp(200px, 25vw, 400px);
+        margin: 8px auto 8px;
+      }
+
+      .ringSvg {
+        width: 100%;
+        height: 100%;
+      }
+
+      /* ---- Controls/History side (right 50%) ---- */
+      .controlsSection {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 20px;
+        overflow-y: auto;
+        border-left: 1px solid var(--accentSoft);
+      }
+
+      /* History scrolls above; controls/status/bar fixed at bottom */
+      .history {
+        flex: 1;
+        overflow-y: auto;
+        margin-top: 0;
+        margin-bottom: 8px;
+        padding-right: 4px;
+        order: 1;
+      }
+
+      .controls {
+        flex-shrink: 0;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        margin-top: 0;
+        padding-top: 10px;
+        border-top: 1px solid var(--accentSoft);
+        order: 2;
+      }
+
+      .statusRow {
+        flex-shrink: 0;
+        margin-top: 8px;
+        order: 3;
+      }
+
+      .sessionBar {
+        flex-shrink: 0;
+        margin-top: 8px;
+        order: 4;
+      }
     }
   </style>
 </head>
@@ -927,6 +1019,7 @@
           <line x1="17" y1="5.5" x2="13" y2="9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
       </button>
+      <button class="iconToggle" id="themeToggleBtn" title="Toggle light/dark theme" style="font-size: clamp(12px, 1.5vw + 8px, 16px); line-height: 1;">&#9728;</button>
     </div>
     <button class="fullscreenBtn" id="fullscreenBtn" title="Toggle fullscreen" aria-label="Toggle fullscreen">
       <svg id="fsEnterIcon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1010,61 +1103,65 @@
 
         <div class="settingsGroup">
           <div class="settingsLabel">Session history cap</div>
-          <label style="font-size: 13px; color: rgba(255,255,255,0.7); display: flex; gap: 6px; align-items: center;">
-            Keep last <input type="number" id="maxHistoryInput" min="1" max="10000" value="1000" style="width: 60px; padding: 4px 6px; background: #2b2b2b; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 14px; text-align: center;"> sessions
+          <label style="font-size: clamp(12px, 1.5vw + 8px, 16px); color: rgba(255,255,255,0.7); display: flex; gap: 6px; align-items: center;">
+            Keep last <input type="number" id="maxHistoryInput" min="1" max="10000" value="1000" style="width: 60px; padding: 4px 6px; background: #2b2b2b; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: clamp(12px, 1.5vw + 8px, 16px); text-align: center;"> sessions
           </label>
         </div>
       </div>
     </div>
-    <div class="modeIndicator" id="modeIndicator">Relax</div>
-    <div class="cycle" id="cycle">Cycle: 1</div>
-    <div class="phase" id="phase">Pause</div>
+    <div class="ringSection">
+      <div class="modeIndicator" id="modeIndicator">Relax</div>
+      <div class="cycle" id="cycle">Cycle: 1</div>
+      <div class="phase" id="phase">Pause</div>
 
-    <div class="ringWrap">
-      <svg class="ringSvg" viewBox="0 0 220 220" aria-hidden="true">
-        <circle class="ringBg" cx="110" cy="110" r="92" fill="transparent" stroke-width="14" />
-        <circle id="ringProgress" class="ringProgress" cx="110" cy="110" r="92" fill="transparent" stroke-width="14" />
-      </svg>
+      <div class="ringWrap">
+        <svg class="ringSvg" viewBox="0 0 220 220" aria-hidden="true">
+          <circle class="ringBg" cx="110" cy="110" r="92" fill="transparent" stroke-width="14" />
+          <circle id="ringProgress" class="ringProgress" cx="110" cy="110" r="92" fill="transparent" stroke-width="14" />
+        </svg>
 
-      <div class="ringContent">
-        <div id="breathCircle" class="breathCircle"></div>
-        <div>
-          <div class="time" id="time">2</div>
-          <div class="subHint" id="secondsLabel">seconds</div>
+        <div class="ringContent">
+          <div id="breathCircle" class="breathCircle"></div>
+          <div>
+            <div class="time" id="time">2</div>
+            <div class="subHint" id="secondsLabel">seconds</div>
+          </div>
         </div>
       </div>
+
+      <div class="phaseHint" id="phaseHint"></div>
+      <div class="nextPhase" id="nextPhase"></div>
     </div>
 
-    <div class="phaseHint" id="phaseHint"></div>
-    <div class="nextPhase" id="nextPhase"></div>
-
-    <div class="controls">
-      <button id="toggleBtn">Start</button>
-      <button id="resetBtn" class="resetBtn">Reset</button>
-    </div>
-
-    <div class="statusRow">
-      <div class="status">
-        <span class="runningDot"></span>
-        <span id="statusText">Stopped</span>
-        <span id="elapsed" class="elapsed">0:00</span>
+    <div class="controlsSection">
+      <div class="controls">
+        <button id="toggleBtn">Start</button>
+        <button id="resetBtn" class="resetBtn">Reset</button>
       </div>
 
-    </div>
+      <div class="statusRow">
+        <div class="status">
+          <span class="runningDot"></span>
+          <span id="statusText">Stopped</span>
+          <span id="elapsed" class="elapsed">0:00</span>
+        </div>
 
-    <div class="sessionBar">
-      <div class="sessionBarFill" id="sessionBarFill"></div>
-    </div>
-
-    <details class="history" id="historyDetails">
-      <summary>Past sessions <button class="clearHistBtn" id="clearHistBtn">Clear</button></summary>
-      <div id="historyList"></div>
-      <div id="historyNav" style="margin-top: 12px; display: flex; gap: 6px; justify-content: center; align-items: center;">
-        <button id="histPrevBtn" style="font-size: 12px; padding: 6px 10px; min-width: 0; display: none;">&#8592; Prev</button>
-        <span id="pageIndicator" style="color: rgba(255,255,255,0.4); font-size: 12px; min-width: 80px; text-align: center;"></span>
-        <button id="histNextBtn" style="font-size: 12px; padding: 6px 10px; min-width: 0; display: none;">Next &#8594;</button>
       </div>
-    </details>
+
+      <div class="sessionBar">
+        <div class="sessionBarFill" id="sessionBarFill"></div>
+      </div>
+
+      <details class="history" id="historyDetails">
+        <summary>Past sessions <button class="clearHistBtn" id="clearHistBtn">Clear</button></summary>
+        <div id="historyList"></div>
+        <div id="historyNav" style="margin-top: 12px; display: flex; gap: 6px; justify-content: center; align-items: center;">
+          <button id="histPrevBtn" style="font-size: clamp(11px, 1.2vw + 7px, 14px); padding: 6px 10px; min-width: 0; display: none;">&#8592; Prev</button>
+          <span id="pageIndicator" style="color: rgba(255,255,255,0.4); font-size: clamp(11px, 1.2vw + 7px, 14px); min-width: 80px; text-align: center;"></span>
+          <button id="histNextBtn" style="font-size: clamp(11px, 1.2vw + 7px, 14px); padding: 6px 10px; min-width: 0; display: none;">Next &#8594;</button>
+        </div>
+      </details>
+    </div>
 
   </div>
 
@@ -1196,6 +1293,9 @@
 
     // History storage cap
     let maxHistoryEntries = 1000;
+
+    // Theme state
+    let isDarkMode = true;
 
     /******************************************************************
      *  DOM
@@ -1356,6 +1456,7 @@
           goal: goalInput.value,
           durations: savedDurations,
           maxHistoryEntries: maxHistoryEntries,
+          isDarkMode: isDarkMode,
         }));
       } catch (_) {}
     }
@@ -1370,6 +1471,10 @@
         if (data.goal) goalInput.value = data.goal;
         if (data.durations && typeof data.durations === "object") savedDurations = data.durations;
         maxHistoryEntries = data.maxHistoryEntries ?? 1000;
+        // Theme preference: default to dark (isDarkMode = true) if not saved
+        isDarkMode = typeof data.isDarkMode === "boolean" ? data.isDarkMode : true;
+        applyThemeColors(isDarkMode ? DARK_THEME : LIGHT_THEME);
+        updateThemeToggleUI();
         if (data.preset && data.preset in PRESETS) {
           activePresetKey = data.preset;
           activePhases = PRESETS[activePresetKey].map(p => ({...p}));
@@ -1863,6 +1968,52 @@
       updateVibeToggleUI();
       saveSettings();
     });
+
+    /******************************************************************
+     *  THEME TOGGLE
+     ******************************************************************/
+    const LIGHT_THEME = Object.freeze({
+      bg: "#f5f1ed",
+      card: "#ebe7e1",
+      accent: "#d4a574",
+      accentSoft: "rgba(212,165,116,0.18)",
+      text: "#5c4033",
+      textSoft: "#a89e8c"
+    });
+
+    const DARK_THEME = Object.freeze({
+      bg: "#111",
+      card: "#171717",
+      accent: "#9aa0a6",
+      accentSoft: "rgba(154,160,166,0.18)",
+      text: "#fff",
+      textSoft: "rgba(255,255,255,0.55)"
+    });
+
+    function applyThemeColors(theme) {
+      const root = document.documentElement;
+      root.style.setProperty("--bg", theme.bg);
+      root.style.setProperty("--card", theme.card);
+      root.style.setProperty("--accent", theme.accent);
+      root.style.setProperty("--accentSoft", theme.accentSoft);
+      root.style.setProperty("--text", theme.text);
+      root.style.setProperty("--textSoft", theme.textSoft);
+    }
+
+    function updateThemeToggleUI() {
+      const btn = document.getElementById("themeToggleBtn");
+      if (btn) btn.innerHTML = isDarkMode ? "&#9728;" : "&#9790;";
+    }
+
+    function toggleTheme() {
+      isDarkMode = !isDarkMode;
+      applyThemeColors(isDarkMode ? DARK_THEME : LIGHT_THEME);
+      updateThemeToggleUI();
+      saveSettings();
+    }
+
+    document.getElementById("themeToggleBtn").addEventListener("click", toggleTheme);
+
     function clampGoalInput() {
       const raw = parseInt(goalInput.value, 10);
       if (!Number.isFinite(raw)) { goalInput.value = SESSION.defaultCycles; return; }
