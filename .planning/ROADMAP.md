@@ -50,10 +50,10 @@
 - [ ] 03-05-PLAN.md — Android Vibration Testing (real device QA)
 - [ ] 03-06-PLAN.md — Cross-Browser & Contrast Validation (audio, wake lock, FPS, theme contrast)
 
-**Phase 4: 2-Column Landscape Layout Redesign**
-- Goal: Complete horizontal view overhaul (history visibility, button placement, grid refinement)
-- Requirements: Landscape testing (480px to 2560px width), multi-device validation
-- Scope: 1 major layout item = ~2–3 plans
+**Phase 4: 2-Column Landscape Layout Redesign & Light Theme**
+- Goal: Complete horizontal view overhaul (history visibility, button placement, grid refinement); improve light theme contrast and color palette for readability and WCAG compliance
+- Requirements: Landscape testing (480px to 2560px width), multi-device validation, light theme contrast review per LIGHT-THEME-READABILITY-REPORT.md
+- Scope: 1 major layout item + 1 theme improvement item = ~3–4 plans
 - Dependencies: Phase 3
 
 **Phase 5: Advanced History Features**
@@ -71,7 +71,7 @@
 | 1. Session History & Vibration | v0.4 | 1/1 | Complete | 2026-06-04 |
 | 2. Theming & UX Polish | v0.4 | 4/4 | Complete | 2026-06-05 |
 | 3. Critical Bugs & UX Polish | v0.5 | 0/6 | Planned (6 plans created) | — |
-| 4. 2-Column Landscape Redesign | v0.5 | 0/3 | Planned | — |
+| 4. 2-Column Landscape Redesign & Light Theme | v0.5 | 0/4 | Planned | — |
 | 5. Advanced History Features | v0.5 | 0/2 | Planned | — |
 
 ---
