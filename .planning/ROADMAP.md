@@ -34,22 +34,25 @@
 
 ## Planned Phases
 
-### 🚧 v0.5 — Accessibility & Analytics
+### 🚧 v0.5 — Bug Fixes, Layout Redesign & Features
 
-**Phase 3: Accessibility Polish**
-- Goal: Keyboard focus states, focus indicators, micro-interactions
-- Requirements: A11Y keyboard nav, WCAG AA compliance audit
-- Scope: 2 plans
+**Phase 3: Critical Bugs & UX Polish**
+- Goal: Fix Phase 2 blockers (icon sizing, vibration, light theme); add micro-interactions
+- Requirements: Cross-browser testing, vibration validation on Android, light/dark contrast verification
+- Scope: 3 bug fixes + 1 UX polish = ~2–3 plans
+- Dependencies: None
 
-**Phase 4: Analytics Dashboard**
-- Goal: Session statistics and trends visualization
-- Requirements: Total sessions, weekly/monthly breakdown, streak tracking
-- Scope: 2 plans
+**Phase 4: 2-Column Landscape Layout Redesign**
+- Goal: Complete horizontal view overhaul (history visibility, button placement, grid refinement)
+- Requirements: Landscape testing (480px to 2560px width), multi-device validation
+- Scope: 1 major layout item = ~2–3 plans
+- Dependencies: Phase 3
 
-**Phase 5: Advanced History**
-- Goal: Filtering, export, and session deletion
-- Requirements: Filter by preset, export CSV/JSON, delete individual sessions
-- Scope: 2 plans
+**Phase 5: Advanced History Features**
+- Goal: Add import/export and safe data deletion with confirmation
+- Requirements: JSON/CSV format validation, localStorage quota planning
+- Scope: 2 features = ~1–2 plans
+- Dependencies: Phase 3
 
 ---
 
@@ -59,9 +62,9 @@
 |-------|-----------|----------------|--------|-----------|
 | 1. Session History & Vibration | v0.4 | 1/1 | Complete | 2026-06-04 |
 | 2. Theming & UX Polish | v0.4 | 4/4 | Complete | 2026-06-05 |
-| 3. Accessibility Polish | v0.5 | 0/2 | Planned | — |
-| 4. Analytics Dashboard | v0.5 | 0/2 | Planned | — |
-| 5. Advanced History | v0.5 | 0/2 | Planned | — |
+| 3. Critical Bugs & UX Polish | v0.5 | 0/3 | Planned | — |
+| 4. 2-Column Landscape Redesign | v0.5 | 0/3 | Planned | — |
+| 5. Advanced History Features | v0.5 | 0/2 | Planned | — |
 
 ---
 
