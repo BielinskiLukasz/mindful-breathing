@@ -4,22 +4,21 @@
 
 High-priority items from Phase 2 testing + micro-interactions polish.
 
-### Bug Fixes (3 items)
+### Bug Fixes (2 items)
 1. **Icon Size Inconsistencies** — Standardize info/fullscreen icons to 32x32 across all views
 2. **Vibration API Not Working** — Debug navigator.vibrate() on Android/Chrome; verify pattern arrays
-3. **Light Theme Visibility** — Improve contrast and color palette for light mode usability
 
 ### UX Polish (1 item)
 4. **Micro-Interactions & Visual Polish** — Smooth theme transitions, button hover states, countdown timing
 
-**Scope estimate:** 2–3 plans  
-**Priority:** High (fixes Phase 2 blockers; accessibility groundwork)
+**Scope estimate:** 1–2 plans  
+**Priority:** High (fixes Phase 2 blockers)
 
 ---
 
-## 📋 Phase 4: 2-Column Landscape Layout Redesign
+## 📋 Phase 4: 2-Column Landscape Layout Redesign & Light Theme
 
-Substantial visual redesign for horizontal view (landscape orientation).
+Substantial visual redesign for horizontal view (landscape orientation) + light theme readability improvements.
 
 ### Layout Fixes (1 major item)
 1. **2-Column Landscape Layout Complete Overhaul**
@@ -29,9 +28,13 @@ Substantial visual redesign for horizontal view (landscape orientation).
    - Session row positioning — reposition below ring in left column
    - Overall grid layout — refinement to accommodate all elements without overlap
 
-**Scope estimate:** 2–3 plans  
-**Priority:** High (Phase 2 regression; major UX gap in landscape mode)  
+### Theme Improvements (1 item)
+2. **Light Theme Readability & Contrast** — Increase text/background contrast and improve color palette per LIGHT-THEME-READABILITY-REPORT.md (WCAG 4.5:1 compliance for normal text, 3:1 for large text)
+
+**Scope estimate:** 3–4 plans  
+**Priority:** High (Phase 2 regression; major UX gap in landscape mode; accessibility/usability issue in light mode)  
 **Dependencies:** Phase 3 (icon sizing must be resolved first)
+**Reference:** See LIGHT-THEME-READABILITY-REPORT.md for detailed contrast analysis
 
 ---
 
