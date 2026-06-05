@@ -1,10 +1,10 @@
 ---
 gsd_state_version: 1.0
 milestone: v0.4
-milestone_name: milestone
-current_plan: Not started
-status: completed
-last_updated: "2026-06-04T22:59:10.655Z"
+milestone_name: Session History, Vibration & Theming
+current_plan: Archived — ready for v0.5
+status: archived
+last_updated: "2026-06-05T02:30:00.000Z"
 progress:
   total_phases: 2
   completed_phases: 2
