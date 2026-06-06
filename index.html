@@ -85,6 +85,14 @@
 
     .phase.phaseChange { animation: phaseFadeIn 280ms ease forwards; }
 
+    @keyframes ringFlash {
+      0%   { filter: brightness(1); }
+      50%  { filter: brightness(1.3); }
+      100% { filter: brightness(1); }
+    }
+
+    .ringFlash { animation: ringFlash 200ms ease-out forwards; }
+
     /* ====== PROGRESS RING ====== */
     .ringWrap {
       position: relative;
@@ -201,7 +209,11 @@
     }
 
     button:hover { background: #383838; }
-    button:active { transform: scale(0.97); }
+    button:active {
+      transform: scale(0.97);
+      background: rgba(255,255,255,0.1);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+    }
 
     /* Primary action: highlight with accent when idle (Ready state) */
     .container:not(.running) #toggleBtn {
@@ -376,6 +388,16 @@
     }
 
     .countdownNum.pop { animation: countdownPop 900ms ease forwards; }
+
+    @keyframes inputErrorFlash {
+      0%, 100% { background: transparent; }
+      50% { background: rgba(229, 115, 115, 0.2); }
+    }
+
+    .durInput.error {
+      animation: inputErrorFlash 400ms ease-out;
+      border-color: #e57373;
+    }
 
     .doneContent {
       display: flex;
@@ -1134,6 +1156,9 @@
     </div>
 
     <div class="controlsSection">
+      <div id="gestureHint" style="opacity: 0; transition: opacity 300ms ease; margin-bottom: 12px; padding: 8px 12px; background: rgba(52,211,153,0.15); border-radius: 8px; border: 1px solid rgba(52,211,153,0.3); font-size: 13px; color: var(--accent); text-align: center;">
+        Press Start or Space to begin
+      </div>
       <div class="controls">
         <button id="toggleBtn">Start</button>
         <button id="resetBtn" class="resetBtn">Reset</button>
@@ -1160,6 +1185,7 @@
           <span id="pageIndicator" style="color: rgba(255,255,255,0.4); font-size: clamp(11px, 1.2vw + 7px, 14px); min-width: 80px; text-align: center;"></span>
           <button id="histNextBtn" style="font-size: clamp(11px, 1.2vw + 7px, 14px); padding: 6px 10px; min-width: 0; display: none;">Next &#8594;</button>
         </div>
+        <div id="storageWarning" style="display: none; padding: 8px 12px; background: #e57373; border-radius: 8px; font-size: 12px; margin: 8px 0; text-align: center; color: #fff;"></div>
       </details>
     </div>
 
@@ -1254,6 +1280,9 @@
       "Peace begins with a single conscious breath.",
       "You don't have to control your thoughts — just stop letting them control you.",
     ];
+
+    // Duration input range bounds (seconds)
+    const DURATION_RANGE = Object.freeze({ min: 1, max: 300 });
 
     /******************************************************************
      *  STATE
@@ -1411,8 +1440,8 @@
         const input = document.createElement("input");
         input.type = "number";
         input.className = "durInput";
-        input.min = 1;
-        input.max = 30;
+        input.min = DURATION_RANGE.min;
+        input.max = DURATION_RANGE.max;
         input.value = phase.durationSec;
         input.dataset.index = i;
         input.disabled = isRunning;
@@ -1432,11 +1461,23 @@
       if (!input || isRunning) return;
       const idx = parseInt(input.dataset.index, 10);
       const raw = parseInt(input.value, 10);
+
+      // Handle non-numeric input
       if (!Number.isFinite(raw)) {
         input.value = activePhases[idx].durationSec;
+        input.classList.add("error");
+        setTimeout(() => input.classList.remove("error"), 400);
         return;
       }
-      const val = Math.min(30, Math.max(1, raw));
+
+      // Clamp to DURATION_RANGE and show error if value changed
+      const val = Math.min(DURATION_RANGE.max, Math.max(DURATION_RANGE.min, raw));
+      if (val !== raw) {
+        input.classList.add("error");
+        setTimeout(() => input.classList.remove("error"), 400);
+      }
+
+      // Update input, state, and persist
       input.value = val;
       activePhases[idx] = { ...activePhases[idx], durationSec: val };
       reset();
@@ -1481,7 +1522,7 @@
           const saved = savedDurations[activePresetKey];
           if (Array.isArray(saved)) {
             saved.forEach((sec, i) => {
-              if (i < activePhases.length && Number.isFinite(sec) && sec >= 1) {
+              if (i < activePhases.length && Number.isFinite(sec) && sec >= DURATION_RANGE.min && sec <= DURATION_RANGE.max) {
                 activePhases[i] = { ...activePhases[i], durationSec: sec };
               }
             });
@@ -1503,7 +1544,16 @@
         list.unshift(entry);
         if (list.length > maxHistoryEntries) list.length = maxHistoryEntries;
         localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
-      } catch (_) {}
+      } catch (e) {
+        if (e.name === "QuotaExceededError") {
+          const warningEl = document.getElementById("storageWarning");
+          if (warningEl) {
+            warningEl.textContent = "History storage full. Oldest sessions removed.";
+            warningEl.style.display = "block";
+            setTimeout(() => { warningEl.style.display = "none"; }, 5000);
+          }
+        }
+      }
     }
 
     function renderHistory() {
@@ -1732,6 +1782,11 @@
       phaseStartTs = nowTs;
 
       cueOnPhaseEnter(currentPhaseIndex);
+
+      // Trigger ring flash animation on phase transition
+      ringProgressEl.classList.remove("ringFlash");
+      void ringProgressEl.offsetWidth;  // Force reflow to restart animation
+      ringProgressEl.classList.add("ringFlash");
     }
 
     function finishSession() {
@@ -1787,6 +1842,24 @@
     /******************************************************************
      *  CONTROLS
      ******************************************************************/
+    function showGestureHint() {
+      const hintEl = document.getElementById("gestureHint");
+      if (!hintEl) return;
+
+      hintEl.style.opacity = "1";
+
+      // Hide hint after first interaction (click or keydown anywhere)
+      const hideHint = () => {
+        hintEl.style.opacity = "0";
+        localStorage.setItem("gestureHintShown", "true");
+        document.removeEventListener("click", hideHint);
+        document.removeEventListener("keydown", hideHint);
+      };
+
+      document.addEventListener("click", hideHint);
+      document.addEventListener("keydown", hideHint);
+    }
+
     const countdownOverlay = document.getElementById("countdownOverlay");
     const countdownNumEl   = document.getElementById("countdownNum");
 
@@ -1871,6 +1944,9 @@
 
     function stop() {
       if (!isRunning) return;
+      if (isCountingDown) {
+        cancelCountdown();
+      }
       isRunning = false;
 
       if (rafId) cancelAnimationFrame(rafId);
@@ -1914,7 +1990,7 @@
       const savedD = savedDurations[key];
       if (Array.isArray(savedD)) {
         savedD.forEach((sec, i) => {
-          if (i < activePhases.length && Number.isFinite(sec) && sec >= 1) {
+          if (i < activePhases.length && Number.isFinite(sec) && sec >= DURATION_RANGE.min && sec <= DURATION_RANGE.max) {
             activePhases[i] = { ...activePhases[i], durationSec: sec };
           }
         });
@@ -2159,6 +2235,11 @@
     render(0, getPhase().durationSec);
     updateStatusUI();
     breathCircleEl.classList.add("idle");
+
+    // Show gesture hint on first visit
+    if (!localStorage.getItem("gestureHintShown")) {
+      showGestureHint();
+    }
   </script>
 </body>
 </html>

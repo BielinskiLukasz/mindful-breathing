@@ -34,22 +34,33 @@
 
 ## Planned Phases
 
-### 🚧 v0.5 — Accessibility & Analytics
+### 🚧 v0.5 — Bug Fixes, Layout Redesign & Features
 
-**Phase 3: Accessibility Polish**
-- Goal: Keyboard focus states, focus indicators, micro-interactions
-- Requirements: A11Y keyboard nav, WCAG AA compliance audit
-- Scope: 2 plans
+**Phase 3: Critical Bugs & UX Polish**
+- Goal: Fix Phase 2 blockers (countdown timer cleanup, duration input validation, wake lock robustness); add 4 CSS-based micro-interactions; validate vibration on Android; complete Chrome/Edge cross-browser testing
+- Requirements: BUG-01, BUG-02, BUG-03, MICRO-01, MICRO-02, MICRO-03, MICRO-04, TEST-01, TEST-02, TEST-03
+- Scope: 6 plans across 6 waves (bug fixes → micro-interactions → testing)
+- Dependencies: None
 
-**Phase 4: Analytics Dashboard**
-- Goal: Session statistics and trends visualization
-- Requirements: Total sessions, weekly/monthly breakdown, streak tracking
-- Scope: 2 plans
+**Plans:**
+- [ ] 03-01-PLAN.md — Bug Fixes (countdown timer cleanup, duration validation, wake lock/localStorage robustness)
+- [ ] 03-02-PLAN.md — Button Press Feedback (CSS :active enhancement)
+- [ ] 03-03-PLAN.md — Phase Transition Ring Flash & Gesture Hint (CSS animations + DOM)
+- [ ] 03-04-PLAN.md — Duration Input Error Feedback (red flash animation)
+- [ ] 03-05-PLAN.md — Android Vibration Testing (real device QA)
+- [ ] 03-06-PLAN.md — Cross-Browser & Contrast Validation (audio, wake lock, FPS, theme contrast)
 
-**Phase 5: Advanced History**
-- Goal: Filtering, export, and session deletion
-- Requirements: Filter by preset, export CSV/JSON, delete individual sessions
-- Scope: 2 plans
+**Phase 4: 2-Column Landscape Layout Redesign & Light Theme**
+- Goal: Complete horizontal view overhaul (history visibility, button placement, grid refinement); improve light theme contrast and color palette for readability and WCAG compliance
+- Requirements: Landscape testing (480px to 2560px width), multi-device validation, light theme contrast review per LIGHT-THEME-READABILITY-REPORT.md
+- Scope: 1 major layout item + 1 theme improvement item = ~3–4 plans
+- Dependencies: Phase 3
+
+**Phase 5: Advanced History Features**
+- Goal: Add import/export and safe data deletion with confirmation
+- Requirements: JSON/CSV format validation, localStorage quota planning
+- Scope: 2 features = ~1–2 plans
+- Dependencies: Phase 3
 
 ---
 
@@ -59,10 +70,10 @@
 |-------|-----------|----------------|--------|-----------|
 | 1. Session History & Vibration | v0.4 | 1/1 | Complete | 2026-06-04 |
 | 2. Theming & UX Polish | v0.4 | 4/4 | Complete | 2026-06-05 |
-| 3. Accessibility Polish | v0.5 | 0/2 | Planned | — |
-| 4. Analytics Dashboard | v0.5 | 0/2 | Planned | — |
-| 5. Advanced History | v0.5 | 0/2 | Planned | — |
+| 3. Critical Bugs & UX Polish | v0.5 | 0/6 | Planned (6 plans created) | — |
+| 4. 2-Column Landscape Redesign & Light Theme | v0.5 | 0/4 | Planned | — |
+| 5. Advanced History Features | v0.5 | 0/2 | Planned | — |
 
 ---
 
-**Last updated:** 2026-06-05 after v0.4 milestone completion
+**Last updated:** 2026-06-05 after Phase 3 planning
