@@ -85,6 +85,14 @@
 
     .phase.phaseChange { animation: phaseFadeIn 280ms ease forwards; }
 
+    @keyframes ringFlash {
+      0%   { filter: brightness(1); }
+      50%  { filter: brightness(1.3); }
+      100% { filter: brightness(1); }
+    }
+
+    .ringFlash { animation: ringFlash 200ms ease-out forwards; }
+
     /* ====== PROGRESS RING ====== */
     .ringWrap {
       position: relative;
@@ -1749,6 +1757,11 @@
       phaseStartTs = nowTs;
 
       cueOnPhaseEnter(currentPhaseIndex);
+
+      // Trigger ring flash animation on phase transition
+      ringProgressEl.classList.remove("ringFlash");
+      void ringProgressEl.offsetWidth;  // Force reflow to restart animation
+      ringProgressEl.classList.add("ringFlash");
     }
 
     function finishSession() {
