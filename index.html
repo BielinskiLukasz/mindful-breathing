@@ -389,6 +389,16 @@
 
     .countdownNum.pop { animation: countdownPop 900ms ease forwards; }
 
+    @keyframes inputErrorFlash {
+      0%, 100% { background: transparent; }
+      50% { background: rgba(229, 115, 115, 0.2); }
+    }
+
+    .durInput.error {
+      animation: inputErrorFlash 400ms ease-out;
+      border-color: #e57373;
+    }
+
     .doneContent {
       display: flex;
       flex-direction: column;
@@ -1451,11 +1461,23 @@
       if (!input || isRunning) return;
       const idx = parseInt(input.dataset.index, 10);
       const raw = parseInt(input.value, 10);
+
+      // Handle non-numeric input
       if (!Number.isFinite(raw)) {
         input.value = activePhases[idx].durationSec;
+        input.classList.add("error");
+        setTimeout(() => input.classList.remove("error"), 400);
         return;
       }
+
+      // Clamp to DURATION_RANGE and show error if value changed
       const val = Math.min(DURATION_RANGE.max, Math.max(DURATION_RANGE.min, raw));
+      if (val !== raw) {
+        input.classList.add("error");
+        setTimeout(() => input.classList.remove("error"), 400);
+      }
+
+      // Update input, state, and persist
       input.value = val;
       activePhases[idx] = { ...activePhases[idx], durationSec: val };
       reset();
