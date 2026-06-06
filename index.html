@@ -1146,6 +1146,9 @@
     </div>
 
     <div class="controlsSection">
+      <div id="gestureHint" style="opacity: 0; transition: opacity 300ms ease; margin-bottom: 12px; padding: 8px 12px; background: rgba(52,211,153,0.15); border-radius: 8px; border: 1px solid rgba(52,211,153,0.3); font-size: 13px; color: var(--accent); text-align: center;">
+        Press Start or Space to begin
+      </div>
       <div class="controls">
         <button id="toggleBtn">Start</button>
         <button id="resetBtn" class="resetBtn">Reset</button>
@@ -1817,6 +1820,24 @@
     /******************************************************************
      *  CONTROLS
      ******************************************************************/
+    function showGestureHint() {
+      const hintEl = document.getElementById("gestureHint");
+      if (!hintEl) return;
+
+      hintEl.style.opacity = "1";
+
+      // Hide hint after first interaction (click or keydown anywhere)
+      const hideHint = () => {
+        hintEl.style.opacity = "0";
+        localStorage.setItem("gestureHintShown", "true");
+        document.removeEventListener("click", hideHint);
+        document.removeEventListener("keydown", hideHint);
+      };
+
+      document.addEventListener("click", hideHint);
+      document.addEventListener("keydown", hideHint);
+    }
+
     const countdownOverlay = document.getElementById("countdownOverlay");
     const countdownNumEl   = document.getElementById("countdownNum");
 
@@ -2192,6 +2213,11 @@
     render(0, getPhase().durationSec);
     updateStatusUI();
     breathCircleEl.classList.add("idle");
+
+    // Show gesture hint on first visit
+    if (!localStorage.getItem("gestureHintShown")) {
+      showGestureHint();
+    }
   </script>
 </body>
 </html>
