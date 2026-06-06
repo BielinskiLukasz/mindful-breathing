@@ -1160,6 +1160,7 @@
           <span id="pageIndicator" style="color: rgba(255,255,255,0.4); font-size: clamp(11px, 1.2vw + 7px, 14px); min-width: 80px; text-align: center;"></span>
           <button id="histNextBtn" style="font-size: clamp(11px, 1.2vw + 7px, 14px); padding: 6px 10px; min-width: 0; display: none;">Next &#8594;</button>
         </div>
+        <div id="storageWarning" style="display: none; padding: 8px 12px; background: #e57373; border-radius: 8px; font-size: 12px; margin: 8px 0; text-align: center; color: #fff;"></div>
       </details>
     </div>
 
@@ -1506,7 +1507,16 @@
         list.unshift(entry);
         if (list.length > maxHistoryEntries) list.length = maxHistoryEntries;
         localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
-      } catch (_) {}
+      } catch (e) {
+        if (e.name === "QuotaExceededError") {
+          const warningEl = document.getElementById("storageWarning");
+          if (warningEl) {
+            warningEl.textContent = "History storage full. Oldest sessions removed.";
+            warningEl.style.display = "block";
+            setTimeout(() => { warningEl.style.display = "none"; }, 5000);
+          }
+        }
+      }
     }
 
     function renderHistory() {
