@@ -1255,6 +1255,9 @@
       "You don't have to control your thoughts — just stop letting them control you.",
     ];
 
+    // Duration input range bounds (seconds)
+    const DURATION_RANGE = Object.freeze({ min: 1, max: 300 });
+
     /******************************************************************
      *  STATE
      ******************************************************************/
@@ -1411,8 +1414,8 @@
         const input = document.createElement("input");
         input.type = "number";
         input.className = "durInput";
-        input.min = 1;
-        input.max = 30;
+        input.min = DURATION_RANGE.min;
+        input.max = DURATION_RANGE.max;
         input.value = phase.durationSec;
         input.dataset.index = i;
         input.disabled = isRunning;
@@ -1436,7 +1439,7 @@
         input.value = activePhases[idx].durationSec;
         return;
       }
-      const val = Math.min(30, Math.max(1, raw));
+      const val = Math.min(DURATION_RANGE.max, Math.max(DURATION_RANGE.min, raw));
       input.value = val;
       activePhases[idx] = { ...activePhases[idx], durationSec: val };
       reset();
@@ -1481,7 +1484,7 @@
           const saved = savedDurations[activePresetKey];
           if (Array.isArray(saved)) {
             saved.forEach((sec, i) => {
-              if (i < activePhases.length && Number.isFinite(sec) && sec >= 1) {
+              if (i < activePhases.length && Number.isFinite(sec) && sec >= DURATION_RANGE.min && sec <= DURATION_RANGE.max) {
                 activePhases[i] = { ...activePhases[i], durationSec: sec };
               }
             });
@@ -1917,7 +1920,7 @@
       const savedD = savedDurations[key];
       if (Array.isArray(savedD)) {
         savedD.forEach((sec, i) => {
-          if (i < activePhases.length && Number.isFinite(sec) && sec >= 1) {
+          if (i < activePhases.length && Number.isFinite(sec) && sec >= DURATION_RANGE.min && sec <= DURATION_RANGE.max) {
             activePhases[i] = { ...activePhases[i], durationSec: sec };
           }
         });
