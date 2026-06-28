@@ -1872,6 +1872,7 @@
 
       [3, 2, 1].forEach((n, i) => {
         const t = setTimeout(() => {
+          playBeep(350);
           if (vibeEnabled && "vibrate" in navigator) {
             try { navigator.vibrate(40); } catch (_) {}
           }
