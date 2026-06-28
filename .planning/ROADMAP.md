@@ -47,8 +47,10 @@
 - [ ] 03-02-PLAN.md — Button Press Feedback (CSS :active enhancement)
 - [ ] 03-03-PLAN.md — Phase Transition Ring Flash & Gesture Hint (CSS animations + DOM)
 - [ ] 03-04-PLAN.md — Duration Input Error Feedback (red flash animation)
-- [ ] 03-05-PLAN.md — Android Vibration Testing (real device QA)
-- [ ] 03-06-PLAN.md — Cross-Browser & Contrast Validation (audio, wake lock, FPS, theme contrast)
+- [x] 03-05-PLAN.md — Android Vibration Testing (real device QA)
+- [x] 03-06-PLAN.md — Cross-Browser & Contrast Validation (audio, wake lock, FPS, theme contrast)
+- [x] 03-07-PLAN.md — Gap closure: Countdown audio beeps + skip capability (TEST-02, TEST-03)
+- [ ] 03-08-PLAN.md — Gap closure: Vibration normalization + Android DevTools diagnostic (TEST-01)
 
 **Phase 4: 2-Column Landscape Layout Redesign & Light Theme**
 - Goal: Complete horizontal view overhaul (history visibility, button placement, grid refinement); improve light theme contrast and color palette for readability and WCAG compliance
@@ -70,7 +72,7 @@
 |-------|-----------|----------------|--------|-----------|
 | 1. Session History & Vibration | v0.4 | 1/1 | Complete | 2026-06-04 |
 | 2. Theming & UX Polish | v0.4 | 4/4 | Complete | 2026-06-05 |
-| 3. Critical Bugs & UX Polish | v0.5 | 0/6 | Planned (6 plans created) | — |
+| 3. Critical Bugs & UX Polish | v0.5 | 7/8 | Gap closure (1 plan remaining) | — |
 | 4. 2-Column Landscape Redesign & Light Theme | v0.5 | 0/4 | Planned | — |
 | 5. Advanced History Features | v0.5 | 0/2 | Planned | — |
 
