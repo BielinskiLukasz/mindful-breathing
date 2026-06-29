@@ -1,5 +1,5 @@
 ---
-status: failed
+status: known_limitation
 phase: 03-critical-bugs-ux-polish
 tested_date: "2026-06-06"
 tester: user
@@ -66,3 +66,28 @@ Once vibration is fixed:
 - Test on additional Android devices (different manufacturers)
 - Verify pattern consistency across Edge browser
 - Check low-battery/power-saver impact on vibration
+
+---
+
+## Phase 3 Gap Closure — 2026-06-29
+
+### Code Normalization Applied (commit 5ec13e8)
+- Replaced inline `navigator.vibrate(40)` in `showCountdown()` with `vibrate([40])` wrapper call
+- All vibration calls now route through centralized `vibrate()` function
+
+### DevTools Console Diagnostic
+Skipped — team decision made to defer vibration rather than invest in device-specific debugging.
+
+### Resolution: Vibration UI Hidden
+
+Decision (commits f61d83c, a816ca3):
+- `vibeToggle` button hidden with `display:none` — removed from user-visible settings
+- Vibration note removed from info panel
+- Underlying code path (`vibrate()` wrapper, `vibeEnabled` state) kept intact for future re-enable
+
+**Root cause:** Samsung One UI / Android OS restriction on Vibration API for web apps. The API is non-functional on Samsung Galaxy A33 5G (Android 16, Chrome) regardless of call pattern. Hiding the UI is the pragmatic resolution — no user-facing promise of a feature that cannot deliver.
+
+### Conclusion
+**Status: KNOWN_LIMITATION — deferred to future phase**
+
+Vibration remains implemented but is not exposed in UI. If future testing on other devices confirms the API works, the toggle can be re-shown by removing `display:none` from `vibeToggle`.
