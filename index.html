@@ -2237,7 +2237,7 @@
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       switch (e.code) {
         case "Escape":
-          if (isCountingDown) { e.preventDefault(); stop(); }
+          if (isCountingDown) { e.preventDefault(); cancelCountdown(); }
           break;
         case "Space": e.preventDefault(); toggleBtn.click(); break;
         case "KeyR":  resetBtn.click();    break;
