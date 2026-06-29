@@ -1329,6 +1329,7 @@
     // Countdown
     let isCountingDown = false;
     let countdownTimers = [];
+    let countdownCallback = null;
 
     // Sound/vibration toggle states (replace checkbox .checked)
     let soundEnabled = SOUND.enabledByDefault;
@@ -1878,10 +1879,15 @@
     const countdownNumEl   = document.getElementById("countdownNum");
     const countdownSkipBtn = document.getElementById("countdownSkipBtn");
     countdownSkipBtn.addEventListener("click", () => {
-      if (isCountingDown) { cancelCountdown(); goalInput.disabled = false; }
+      if (isCountingDown) {
+        const cb = countdownCallback;
+        cancelCountdown();
+        if (cb) cb();
+      }
     });
 
     function showCountdown(callback) {
+      countdownCallback = callback;
       isCountingDown = true;
       countdownOverlay.classList.add("visible");
       toggleBtn.textContent = UI.btnStop;
@@ -1914,6 +1920,7 @@
       countdownTimers = [];
       countdownOverlay.classList.remove("visible");
       isCountingDown = false;
+      countdownCallback = null;
       updateStatusUI();
     }
 
