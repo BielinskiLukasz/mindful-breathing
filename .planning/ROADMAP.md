@@ -56,7 +56,7 @@
 
 ### 📋 v0.6 — Layout & History
 
-- [ ] **Phase 4: Layout & Light Theme** - 2-column landscape CSS Grid and WCAG AA contrast fixes
+- [ ] **Phase 4: Layout & Light Theme** - 2 plans — CSS Grid landscape layout + WCAG AA contrast fixes + light-mode phase tints
 - [ ] **Phase 5: History Data Management** - JSON/CSV export, JSON import, and clear history with confirmation
 
 ---
@@ -72,7 +72,12 @@
   2. All light theme text and interactive element labels pass WCAG AA contrast ratios (4.5:1 normal text, 3:1 large text) verified against all color pairs
   3. Portrait layout on mobile is unchanged — existing phone UX is not regressed
   4. Landscape layout renders correctly across phone landscape (667px), tablet (768–1024px), and desktop (1280px+)
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — CSS Grid landscape layout + LIGHT_THEME WCAG AA contrast fixes + body transition
+- [ ] 04-02-PLAN.md — Per-phase bgLight/accentLight in PRESETS + applyThemeForCurrentPhase() isDarkMode branching
+
 **UI hint**: yes
 
 ### Phase 5: History Data Management
