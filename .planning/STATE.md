@@ -4,17 +4,17 @@ milestone: v0.6
 milestone_name: — Layout & History
 current_phase: 04
 current_phase_name: Layout & Light Theme
-status: executing
-stopped_at: Completed 04-01-PLAN.md
-last_updated: "2026-06-30T11:26:46.427Z"
+status: verifying
+stopped_at: Completed 04-02-PLAN.md
+last_updated: "2026-06-30T11:45:38.198Z"
 last_activity: 2026-06-30
 last_activity_desc: Phase 04 execution started
 progress:
   total_phases: 2
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
-  percent: 0
+  completed_plans: 2
+  percent: 50
 ---
 
 # Project State: Mindful Breathing v0.6
@@ -38,7 +38,7 @@ See: .planning/PROJECT.md (updated 2026-06-30)
 
 Phase: 04 (Layout & Light Theme) — EXECUTING
 Plan: 2 of 2
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-06-30 — Phase 04 execution started
 
 Progress: [░░░░░░░░░░] 0%
@@ -60,6 +60,7 @@ Progress: [░░░░░░░░░░] 0%
 
 ---
 | Phase 04 P01 | 15min | 2 tasks | 1 files |
+| Phase 04 P02 | 6min | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -96,8 +97,8 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-06-30T11:26:46.393Z
-Stopped at: Completed 04-01-PLAN.md
+Last session: 2026-06-30T11:45:38.088Z
+Stopped at: Completed 04-02-PLAN.md
 Resume file: None
 
 **Next Steps:**
@@ -115,3 +116,5 @@ Resume file: None
 - [Phase ?]: CSS Grid 1fr 1fr for landscape layout replaces flex-direction:row
 - [Phase ?]: LIGHT_THEME accent darkened to #a0662e (5.2:1 WCAG AA) and textSoft to #6b6058 (5.3:1 WCAG AA) on cream #f5f1ed, warm brown family
 - [Phase ?]: body transition uses background-color not background shorthand for smooth light-mode phase tint transitions
+- [Phase ?]: Per-phase light-mode colors stored as bgLight/accentLight in PRESETS theme objects; isDarkMode branching in applyThemeForCurrentPhase() selects correct pair at runtime
+- [Phase ?]: toggleTheme() calls applyThemeForCurrentPhase() when isRunning for immediate mid-session phase tint update on theme toggle
