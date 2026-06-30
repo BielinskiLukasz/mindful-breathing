@@ -1,91 +1,85 @@
-# Mindful Breathing v0.4 — Roadmap
+# Mindful Breathing — Roadmap
 
-**Milestone:** v0.4  
-**Created:** 2026-06-03  
-**Granularity:** Coarse  
-**Coverage:** 11/11 v1 requirements mapped ✓
+**Current Status:** v0.5 shipped, v0.6 in planning
 
 ---
 
-## Phases
+## Milestones
 
-- [x] **Phase 1: Session History & Vibration** - Fix vibration reliability and enable pagination, filtering, and configurable storage (completed 2026-06-04)
-- [x] **Phase 2: Theming & UX Polish** - Add light/dark theme toggle and optimize visual design across devices (completed 2026-06-05)
-
----
-
-## Phase Details
-
-### Phase 1: Session History & Vibration
-
-**Goal:** Users can configure session history storage, navigate logs, and receive haptic feedback during active breathing.  
-**Mode:** mvp  
-**Depends on:** None (foundation)  
-**Requirements:** BUG-01, HIST-01, HIST-02, HIST-03, HIST-04  
-
-**Success Criteria** (what must be TRUE):
-
-1. Vibration haptics trigger reliably at each phase transition during active breathing session
-2. User can configure maximum session logs to store (numeric input or "unlimited" option, persisted to localStorage)
-3. User can set pagination size (number of logs visible per page) and see changes apply immediately
-4. User can navigate between pages of session history (Page 1, 2, 3...) with next/previous controls
-5. Session history cards are visually scannable, displaying duration, preset name, and date in clear format
-
-**Plans:** 1/1 plans complete
-
-- [x] 01-01-PLAN.md — Vibration reliability verification, history cap configuration, pagination controls, enhanced card rendering, responsive CSS
-
-**UI hint:** yes
+- ✅ **v0.4** — Session History, Vibration & Theming (shipped 2026-06-05)
+- ✅ **v0.5** — Critical Bugs & UX Polish (shipped 2026-06-29)
+- 📋 **v0.6** — Landscape Redesign, Light Theme & Advanced History (planned)
 
 ---
 
-### Phase 2: Theming & UX Polish
+## Shipped Milestones
 
-**Goal:** Users have personalized theme preferences and optimized visual experience across all screen sizes and orientations.  
-**Mode:** mvp  
-**Depends on:** Phase 1  
-**Requirements:** THEME-01, THEME-02, UX-01, UX-02, UX-03  
+<details>
+<summary>✅ v0.4 (Phases 1–2) — SHIPPED 2026-06-05</summary>
 
-**Success Criteria** (what must be TRUE):
+- [x] Phase 1: Session History & Vibration (1 plan) — completed 2026-06-04
+- [x] Phase 2: Theming & UX Polish (4 plans) — completed 2026-06-05
 
-1. User can toggle light/dark theme and preference persists across browser sessions via localStorage
-2. Font sizes are consistent and readable from mobile (320px) to desktop (4K) widths
-3. Landscape orientation displays breathing interface optimally without horizontal scroll or cramped text
-4. All interactive elements have clear visual hierarchy and accessible color contrast (keyboard focus states deferred to Phase 3)
+**What Shipped:**
+- Paginated session history with preset badge and configurable storage cap (default 1,000 entries)
+- Vibration reliability verified correct per W3C spec
+- Light/dark theme toggle with 220ms smooth transitions
+- Responsive typography with CSS clamp() (320px to 4K, no breakpoint jumps)
+- Landscape 50/50 flexbox layout with scrollable history and fixed controls
 
-**Plans:** 4/4 plans complete
+**Archive:** `.planning/milestones/v0.4-ROADMAP.md`
 
-- [x] 02-01-PLAN.md — Light theme CSS custom properties, toggle button in settings, theme handler, localStorage persistence (completed 2026-06-05)
-- [x] 02-02-PLAN.md — Responsive typography with CSS clamp(), all text sizes scale smoothly from 320px to 4K (completed 2026-06-05)
-- [x] 02-03-PLAN.md — Landscape orientation side-by-side layout (ring 50% left, controls/history 50% right), max-width cap at 1400px (completed 2026-06-05)
-- [x] 02-04-PLAN.md — Cross-device manual testing (320px to 4K, portrait/landscape), Phase 1 regression check (completed 2026-06-05)
+</details>
 
-**UI hint:** yes
+<details>
+<summary>✅ v0.5 (Phase 3) — SHIPPED 2026-06-29</summary>
+
+- [x] Phase 3: Critical Bugs & UX Polish (8 plans) — completed 2026-06-29
+
+**What Shipped:**
+- Countdown timer orphan prevention (`cancelCountdown()` in `stop()`)
+- `DURATION_RANGE` constant enforcing 1–300s duration bounds across all call sites
+- localStorage `QuotaExceededError` surfaced with inline warning banner
+- Button `:active` enhanced with inset shadow + semi-transparent overlay (CSS-only)
+- Phase transition ring flash animation (200ms brightness pulse) + first-visit gesture hint
+- Duration input error flash (400ms red highlight) for invalid values
+- Countdown audio beeps (350 Hz), Skip button, and ESC key handler
+- Vibration UI hidden as pragmatic resolution to Samsung/Android OS restriction
+
+**Archive:** `.planning/milestones/v0.5-ROADMAP.md`
+
+</details>
+
+---
+
+## Planned Phases
+
+### 📋 v0.6 — Landscape Redesign, Light Theme & Advanced History
+
+**Phase 4: 2-Column Landscape Layout Redesign & Light Theme**
+- Goal: Complete horizontal view overhaul (history visibility, button placement, grid refinement); improve light theme contrast and color palette for readability and WCAG compliance
+- Requirements: Landscape testing (480px to 2560px width), multi-device validation, light theme contrast review per LIGHT-THEME-READABILITY-REPORT.md
+- Scope: 1 major layout item + 1 theme improvement item = ~3–4 plans
+- Dependencies: Phase 3
+
+**Phase 5: Advanced History Features**
+- Goal: Add import/export and safe data deletion with confirmation
+- Requirements: JSON/CSV format validation, localStorage quota planning
+- Scope: 2 features = ~1–2 plans
+- Dependencies: Phase 3
 
 ---
 
 ## Progress
 
-| Phase | Plans Complete | Status | Completed |
-|-------|----------------|--------|-----------|
-| 1. Session History & Vibration | 1/1 | Complete    | 2026-06-04 |
-| 2. Theming & Polish | 4/4 | Complete    | 2026-06-04 |
+| Phase | Milestone | Plans Complete | Status | Completed |
+|-------|-----------|----------------|--------|-----------|
+| 1. Session History & Vibration | v0.4 | 1/1 | Complete | 2026-06-04 |
+| 2. Theming & UX Polish | v0.4 | 4/4 | Complete | 2026-06-05 |
+| 3. Critical Bugs & UX Polish | v0.5 | 8/8 | Complete | 2026-06-29 |
+| 4. 2-Column Landscape Redesign & Light Theme | v0.6 | 0/4 | Planned | — |
+| 5. Advanced History Features | v0.6 | 0/2 | Planned | — |
 
 ---
 
-## Coverage Summary
-
-**Total v1 requirements:** 10  
-**Mapped to phases:** 10  
-**Unmapped:** 0 ✓
-
-| Category | Requirements | Phase |
-|----------|--------------|-------|
-| Bug Fixes | BUG-01 | 1 |
-| Session History | HIST-01, HIST-02, HIST-03, HIST-04 | 1 |
-| Theming | THEME-01, THEME-02 | 2 |
-| User Experience | UX-01, UX-02, UX-03 | 2 |
-
----
-
-*Roadmap updated: 2026-06-05 Phase 2 execution complete*
+**Last updated:** 2026-06-29 after v0.5 milestone completion
