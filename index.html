@@ -60,7 +60,7 @@
     .cycle {
       font-size: clamp(12px, 1.5vw + 8px, 16px);
       margin-bottom: 10px;
-      color: #c7c7c7;
+      color: var(--textSoft);
       opacity: 0.9;
     }
 
@@ -68,7 +68,7 @@
       font-size: clamp(10px, 1vw + 7px, 12px);
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.35);
+      color: var(--textSoft);
       margin-bottom: 2px;
     }
 
@@ -163,7 +163,7 @@
     .subHint {
       margin-top: 8px;
       font-size: clamp(11px, 1.2vw + 7px, 14px);
-      color: rgba(255,255,255,0.55);
+      color: var(--textSoft);
     }
 
     /* ====== PRESETS ====== */
@@ -179,12 +179,12 @@
       padding: 6px 16px;
       min-width: 0;
       border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.15);
-      background: #222;
-      color: rgba(255,255,255,0.55);
+      border: 1px solid var(--accentSoft);
+      background: var(--card);
+      color: var(--textSoft);
     }
 
-    .presetBtn:hover { background: #2e2e2e; color: rgba(255,255,255,0.85); }
+    .presetBtn:hover { background: var(--cardHover); color: var(--text); }
     .presetBtn.active { border-color: var(--accent); color: var(--accent); }
 
     /* ====== CONTROLS ====== */
@@ -203,17 +203,17 @@
       border: 1px solid transparent;
       border-radius: 12px;
       cursor: pointer;
-      background: #2b2b2b;
-      color: #fff;
+      background: var(--card);
+      color: var(--text);
       transition: transform 0.05s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
       min-width: 120px;
       font-weight: 500;
     }
 
-    button:hover { background: #383838; }
+    button:hover { background: var(--cardHover); }
     button:active {
       transform: scale(0.97);
-      background: rgba(255,255,255,0.1);
+      background: var(--accentSoft);
       box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
     }
 
@@ -221,10 +221,10 @@
     .container:not(.running) #toggleBtn {
       border-color: var(--accent);
       color: var(--accent);
-      background: rgba(0,0,0,0.2);
+      background: var(--accentSoft);
     }
     .container:not(.running) #toggleBtn:hover {
-      background: rgba(255,255,255,0.06);
+      background: var(--cardHover);
     }
 
     /* Stop state: subtle red tint */
@@ -240,13 +240,13 @@
       min-width: 90px;
       font-size: clamp(13px, 1.75vw + 9px, 17px);
       background: transparent;
-      border-color: rgba(255,255,255,0.12);
-      color: rgba(255,255,255,0.5);
+      border-color: var(--accentSoft);
+      color: var(--textSoft);
     }
     .resetBtn:hover {
-      background: rgba(255,255,255,0.06);
-      border-color: rgba(255,255,255,0.25);
-      color: rgba(255,255,255,0.8);
+      background: var(--accentSoft);
+      border-color: var(--accent);
+      color: var(--text);
     }
 
     .statusRow{
@@ -393,16 +393,16 @@
 
     .countdownSkipBtn {
       background: none;
-      border: 1px solid rgba(255,255,255,0.35);
+      border: 1px solid var(--accentSoft);
       border-radius: 6px;
-      color: rgba(255,255,255,0.65);
+      color: var(--textSoft);
       font-size: 0.8rem;
       letter-spacing: 0.06em;
       cursor: pointer;
       padding: 4px 14px;
       margin-top: 8px;
     }
-    .countdownSkipBtn:hover { color: #fff; border-color: rgba(255,255,255,0.7); }
+    .countdownSkipBtn:hover { color: var(--text); border-color: var(--accent); }
 
     @keyframes inputErrorFlash {
       0%, 100% { background: transparent; }
@@ -430,7 +430,7 @@
 
     .doneTime {
       font-size: clamp(12px, 1.5vw + 8px, 16px);
-      color: rgba(255,255,255,0.6);
+      color: var(--textSoft);
     }
 
     .doneRestartBtn {
@@ -462,18 +462,18 @@
       min-width: 0;
       padding: 0;
       background: transparent;
-      border: 1px solid rgba(255,255,255,0.12);
+      border: 1px solid var(--accentSoft);
       border-radius: 8px;
-      color: rgba(255,255,255,0.4);
+      color: var(--textSoft);
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .infoBtn:hover {
-      background: rgba(255,255,255,0.06);
-      color: rgba(255,255,255,0.8);
-      border-color: rgba(255,255,255,0.25);
+      background: var(--accentSoft);
+      color: var(--text);
+      border-color: var(--accent);
     }
 
     /* ====== CUSTOM DURATIONS ====== */
@@ -615,36 +615,36 @@
       min-width: 0;
       padding: 0;
       background: transparent;
-      border: 1px solid rgba(255,255,255,0.12);
+      border: 1px solid var(--accentSoft);
       border-radius: 8px;
-      color: rgba(255,255,255,0.4);
+      color: var(--textSoft);
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .fullscreenBtn:hover {
-      background: rgba(255,255,255,0.06);
-      color: rgba(255,255,255,0.8);
-      border-color: rgba(255,255,255,0.25);
+      background: var(--accentSoft);
+      color: var(--text);
+      border-color: var(--accent);
     }
 
     /* ====== SOUND ICON TOGGLE ====== */
     .iconToggle {
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       min-width: 0;
       padding: 0;
       background: transparent;
-      border: 1px solid rgba(255,255,255,0.12);
+      border: 1px solid var(--accentSoft);
       border-radius: 8px;
-      color: rgba(255,255,255,0.65);
+      color: var(--textSoft);
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .iconToggle:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.9); }
-    .iconToggle.muted { color: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.06); }
+    .iconToggle:hover { background: var(--accentSoft); color: var(--text); }
+    .iconToggle.muted { color: var(--textSoft); border-color: var(--accentSoft); opacity: 0.45; }
 
     /* ====== SETTINGS PANEL ====== */
     .settingsOverlay {
