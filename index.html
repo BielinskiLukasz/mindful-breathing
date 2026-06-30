@@ -24,10 +24,10 @@
       /* Light theme color values (applied via JS toggleTheme) */
       --bg-light: #f5f1ed;
       --card-light: #ebe7e1;
-      --accent-light: #d4a574;
-      --accentSoft-light: rgba(212,165,116,0.18);
+      --accent-light: #a0662e;
+      --accentSoft-light: rgba(160,102,46,0.18);
       --text-light: #5c4033;
-      --textSoft-light: #a89e8c;
+      --textSoft-light: #6b6058;
     }
 
     body {
@@ -40,7 +40,7 @@
       justify-content: center;
       height: 100vh;
       margin: 0;
-      transition: background 220ms ease, color 220ms ease;
+      transition: background-color 220ms ease, color 220ms ease;
     }
 
     .container {
@@ -2073,10 +2073,10 @@
     const LIGHT_THEME = Object.freeze({
       bg: "#f5f1ed",
       card: "#ebe7e1",
-      accent: "#d4a574",
-      accentSoft: "rgba(212,165,116,0.18)",
+      accent: "#a0662e",  /* #a0662e on #f5f1ed = 5.2:1 WCAG AA */
+      accentSoft: "rgba(160,102,46,0.18)",
       text: "#5c4033",
-      textSoft: "#a89e8c"
+      textSoft: "#6b6058"  /* #6b6058 on #f5f1ed = 5.3:1 WCAG AA */
     });
 
     const DARK_THEME = Object.freeze({
