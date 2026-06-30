@@ -1,14 +1,14 @@
 # Mindful Breathing v0.6
 
-## Current Milestone: v0.6 Layout & History
+## Current State: v0.6 Shipped
 
-**Goal:** Improve the landscape UX with a 2-column layout, bring light theme contrast to WCAG standards, and give users full control over their session data via import/export and clear history.
+**Shipped:** 2026-07-01
+**Next:** `/gsd-new-milestone` to define v0.7
 
-**Target features:**
-- 2-column landscape layout — history panel always visible alongside the ring in landscape orientation
-- Light theme contrast improvements — WCAG 4.5:1 (normal text), 3:1 (large text)
-- Import/export session history — JSON and/or CSV format
-- Clear history with confirmation dialog
+**v0.6 delivered:**
+- CSS Grid 2-column landscape layout — history panel visible alongside the breathing ring
+- WCAG AA light theme contrast fixes and per-phase atmospheric bgLight/accentLight colors
+- Full session history data management: JSON/CSV export, JSON import with merge/dedup, clear with native dialog
 
 ## What This Is
 
@@ -45,13 +45,16 @@ Reliable, uninterrupted breathing guidance with verifiable history — users nee
 - ✓ First-visit gesture hint shown once and dismissed on interaction — v0.5
 - ✓ Duration input error flash on invalid/out-of-range values — v0.5
 - ✓ 3-second countdown has audible beeps (350 Hz) and can be skipped (Skip button or ESC) — v0.5
+- ✓ History panel visible alongside ring in landscape orientation (CSS Grid 2-column layout) — v0.6
+- ✓ Light theme contrast meets WCAG AA (4.5:1 normal, 3:1 large) across all UI elements — v0.6
+- ✓ Per-phase atmospheric colors in light mode (sage/lavender/sky/cream per phase) — v0.6
+- ✓ Session history export as JSON and CSV file downloads — v0.6
+- ✓ Session history import from JSON with merge/dedup — v0.6
+- ✓ Clear session history with native confirmation dialog — v0.6
 
 ### Active
 
-- [ ] 2-column landscape layout — history panel visible in landscape, optimized grid
-- [ ] Light theme contrast improvements (WCAG 4.5:1 for normal text, 3:1 for large text)
-- [ ] Import/export session history (JSON/CSV)
-- [ ] Clear history with confirmation dialog
+*(Define with `/gsd-new-milestone` for v0.7)*
 
 ### Out of Scope
 
@@ -63,21 +66,20 @@ Reliable, uninterrupted breathing guidance with verifiable history — users nee
 
 ## Context
 
-**v0.6 Status:** Planning started 2026-06-30. v0.5 shipped 2026-06-29.
+**v0.6 shipped 2026-07-01.**
 
-The app has received significant stability and UX polish. Bug fixes address countdown timer accumulation, duration input clamping, and localStorage error handling. Four CSS micro-interactions added: ring flash, button press feedback, gesture hint, and error flash. Countdown audio and skip capability gap-closed. Vibration deferred as known limitation.
+Codebase: single `index.html` file (2,487 lines) with clear internal sections. No build step, no dependencies, no transpilation. Deployed via GitHub Pages.
 
-Codebase: single `index.html` file (2,272 lines) with clear internal sections. No build step, no dependencies, no transpilation. Deployed via GitHub Pages.
-
-**Recent Updates (v0.5):**
-- `DURATION_RANGE` constant (1–300s) as single source of truth for duration clamping
-- localStorage `QuotaExceededError` caught and displayed as inline warning (5s, non-blocking)
-- Button `:active` CSS enhanced with inset shadow + semi-transparent overlay (CSS-only)
-- Phase transition ring flash (`@keyframes ringFlash`, 200ms brightness pulse)
-- First-visit gesture hint with localStorage persistence flag
-- Duration input error flash (`@keyframes inputErrorFlash`, 400ms red highlight)
-- Countdown: `playBeep(350)` at 3/2/1s, Skip button, ESC key handler
-- Vibration UI hidden — Samsung/Android OS blocks `navigator.vibrate()` at OS level
+**Recent Updates (v0.6):**
+- CSS Grid `1fr 1fr` landscape layout — ring left, history/controls right on 600px+ landscape screens
+- WCAG AA light theme: accent #a0662e (5.2:1), textSoft #6b6058 (5.3:1) on cream #f5f1ed
+- Per-phase bgLight/accentLight in all PRESETS (11 phase entries) — atmospheric tints in light mode sessions
+- `applyThemeForCurrentPhase()` with isDarkMode branching; `toggleTheme()` updates mid-session immediately
+- `#historyActions` row: Export JSON, Export CSV, Import buttons in history panel
+- `exportJson()`, `exportCsv()` via Blob + URL.createObjectURL (M:SS duration in CSV)
+- `importJson()` via FileReader: schema validation, dedup by date, merge, sort, cap, feedback flash
+- Native `<dialog>` for clear-history: "Delete all sessions" + Cancel + backdrop dismiss
+- Post-release debug fix: startup crash, icon regression, history init issue (3 bugs in one session)
 
 ## Constraints
 
@@ -107,6 +109,14 @@ Codebase: single `index.html` file (2,272 lines) with clear internal sections. N
 | ESC key first in switch (v0.5) | Browser-native dismiss convention; ESC before Space | ✓ Good — predictable keyboard behavior |
 | Vibration UI hidden with display:none (v0.5) | Samsung/Android OS restriction blocks Vibration API; ship clean UI over broken toggle | ✓ Good — no user-visible broken feature; code retained for future re-enable |
 | Error.name check for QuotaExceededError (v0.5) | instanceof fails across browser implementations | ✓ Good — cross-browser compatible error detection |
+| CSS Grid `1fr 1fr` for landscape layout (v0.6) | Cleaner equal-column semantics than flex; children need only min-width:0 | ✓ Good — no flex:1 hacks needed |
+| WCAG AA contrast: #a0662e / #6b6058 on cream (v0.6) | Darkened warm brown values stay in brand family while passing 4.5:1 | ✓ Good — visually warm, accessible |
+| Per-phase bgLight/accentLight in PRESETS (v0.6) | Collocates light/dark pairs per phase object; isDarkMode branches at runtime | ✓ Good — single source of truth per phase |
+| Blob + URL.createObjectURL for export (v0.6) | No server needed; works offline; revoked after click | ✓ Good — zero infrastructure |
+| CSV duration M:SS inline (not formatDuration()) (v0.6) | formatDuration() returns "N min N sec" which breaks spreadsheet parsing | ✓ Good — D-08 compliant |
+| Import dedup by exact date string (v0.6) | Safer than replace; no accidental data loss on re-import | ✓ Good — conservative merge |
+| Native `<dialog>` for clear confirmation (v0.6) | ESC, backdrop dismiss, focus trap all free from browser | ✓ Good — zero JS for dismissal |
+| CSV import deferred to v0.7 (v0.6) | RFC 4180 edge cases too complex without a parser library | ✓ Good — JSON covers the use case safely |
 
 ## Phases
 
@@ -128,10 +138,17 @@ Codebase: single `index.html` file (2,272 lines) with clear internal sections. N
 - Gap closure (TEST-02, TEST-03) — countdown audio beeps, Skip button, ESC key handler
 - Gap closure (TEST-01) — vibration deferred as known_limitation; UI hidden
 
-**v0.6 (Planned)**
+**v0.6 (Shipped 2026-07-01)**
 
-**Phase 4: 2-Column Landscape Layout Redesign & Light Theme** (planned)
-**Phase 5: Advanced History Features** (planned)
+**Phase 4: Layout & Light Theme** ✓ Complete
+- CSS Grid 2-column landscape layout (UX-04) — ring left, history right on 600px+ landscape
+- WCAG AA light theme contrast fixes (THEME-03) — #a0662e / #6b6058 on cream
+- Per-phase atmospheric bgLight/accentLight for all PRESETS entries
+
+**Phase 5: History Data Management** ✓ Complete
+- JSON/CSV export (HIST-08, HIST-09) — Blob downloads, no server
+- JSON import with merge/dedup (HIST-10) — FileReader, schema validation, exact-date dedup
+- Clear history with native dialog confirmation (HIST-11) — ESC + backdrop dismiss
 
 ## Evolution
 
@@ -151,4 +168,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-06-30 — v0.6 milestone started*
+*Last updated: 2026-07-01 after v0.6 milestone*

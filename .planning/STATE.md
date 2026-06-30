@@ -96,6 +96,30 @@ None.
 
 ---
 
+## Deferred Items
+
+Items acknowledged and deferred at milestone close on 2026-07-01:
+
+| Category | Item | Status |
+|----------|------|--------|
+| uat/sound | Audible beep on phase transition | unchecked |
+| uat/haptics | Haptic feedback on mobile | unchecked |
+| uat/wake-lock | Wake Lock on mobile (screen stays on) | unchecked |
+| uat/light-mode | Body background regression on dark→light toggle while stopped | unchecked |
+| uat/safari | Light mode CSS custom property inheritance on iOS Safari | unchecked |
+| uat/landscape | Grid split on real phone in landscape (height >500px) | unchecked |
+| uat/landscape | Compact layout on small phone landscape (height ≤500px) | unchecked |
+| uat/history | JSON export in browser | unchecked |
+| uat/history | CSV export column verification in spreadsheet | unchecked |
+| uat/history | JSON import feedback in browser | unchecked |
+| uat/history | Invalid file import error message | unchecked |
+| uat/history | Duplicate import dedup count | unchecked |
+| uat/history | Clear dialog open/cancel/backdrop/confirm | unchecked |
+| uat/pwa | Add to Home Screen prompt | unchecked |
+| uat/pwa | Standalone launch + icon | unchecked |
+
+Known verification overrides: 15 (see above)
+
 ## Session Continuity
 
 Last session: 2026-06-30T20:29:36.873Z
