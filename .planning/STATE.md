@@ -1,16 +1,16 @@
 ---
 gsd_state_version: 1.0
-milestone: v0.5
-milestone_name: Critical Bugs & UX Polish
-current_plan: 0
-status: milestone_complete
-last_updated: "2026-06-29T00:00:00.000Z"
+milestone: v0.6
+milestone_name: Layout & History
+status: planning
+last_updated: "2026-06-30T07:44:24.157Z"
+last_activity: 2026-06-30
 progress:
-  total_phases: 3
-  completed_phases: 3
-  total_plans: 13
-  completed_plans: 13
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State: Mindful Breathing v0.5
@@ -32,17 +32,10 @@ See: .planning/PROJECT.md (updated 2026-06-29)
 
 ## Current Position
 
-Phase 3 complete — v0.5 milestone archived.
-
-```
-Phase 1: ---------- (complete)
-Phase 2: ────────── (100% - Plan 4/4 complete)
-Phase 3: ────────── (100% - Plan 8/8 complete) ← v0.5 complete
-Phase 4: (planned — v0.6)
-Phase 5: (planned — v0.6)
-```
-
----
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-06-30 — Milestone v0.6 started
 
 ## Roadmap Snapshot
 
