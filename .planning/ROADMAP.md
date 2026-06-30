@@ -102,7 +102,10 @@ Plans:
   3. User can import a previously exported JSON file and see existing sessions merged with imported ones (duplicate dates skipped, no data corruption)
   4. User can clear all session history only after a confirmation dialog that uses destructive-action language ("Delete all sessions") — accidental dismissal does not delete data
 
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [ ] 05-01-PLAN.md — DOM structure + export/import/clear-dialog JS (HIST-08, HIST-09, HIST-10, HIST-11)
 
 ---
 
