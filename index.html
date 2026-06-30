@@ -269,7 +269,7 @@
 
     .elapsed {
       font-size: clamp(12px, 1.5vw + 8px, 16px);
-      color: rgba(255,255,255,0.55);
+      color: var(--textSoft);
       font-variant-numeric: tabular-nums;
       letter-spacing: 0.03em;
     }
@@ -294,7 +294,7 @@
       gap: 10px;
       margin-top: 14px;
       font-size: clamp(12px, 1.5vw + 8px, 16px);
-      color: rgba(255,255,255,0.7);
+      color: var(--textSoft);
       user-select: none;
     }
 
@@ -303,17 +303,17 @@
     .goalRow input[type="number"] {
       width: 52px;
       padding: 4px 6px;
-      background: #2b2b2b;
-      border: 1px solid rgba(255,255,255,0.15);
+      background: var(--card);
+      border: 1px solid var(--accentSoft);
       border-radius: 8px;
-      color: #fff;
+      color: var(--text);
       font-size: clamp(12px, 1.5vw + 8px, 16px);
       text-align: center;
     }
 
     .timeEst {
       font-size: clamp(11px, 1.2vw + 7px, 14px);
-      color: rgba(255,255,255,0.32);
+      color: var(--textSoft);
       font-variant-numeric: tabular-nums;
     }
 
@@ -321,7 +321,7 @@
       margin-top: 10px;
       height: 6px;
       border-radius: 3px;
-      background: rgba(255,255,255,0.1);
+      background: var(--accentSoft);
       overflow: hidden;
     }
 
@@ -494,7 +494,7 @@
 
     .durName {
       font-size: clamp(9px, 0.8vw + 6px, 11px);
-      color: rgba(255,255,255,0.38);
+      color: var(--textSoft);
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
@@ -502,10 +502,10 @@
     .durInput {
       width: 42px;
       padding: 4px 2px;
-      background: #1e1e1e;
-      border: 1px solid rgba(255,255,255,0.1);
+      background: var(--card);
+      border: 1px solid var(--accentSoft);
       border-radius: 6px;
-      color: rgba(255,255,255,0.7);
+      color: var(--text);
       font-size: clamp(12px, 1.5vw + 8px, 16px);
       text-align: center;
     }
@@ -515,13 +515,13 @@
 
     .durUnit {
       font-size: clamp(8px, 0.7vw + 5px, 10px);
-      color: rgba(255,255,255,0.25);
+      color: var(--textSoft);
     }
 
     /* ====== PHASE HINT ====== */
     .phaseHint {
       font-size: clamp(12px, 1.5vw + 8px, 16px);
-      color: rgba(255,255,255,0.45);
+      color: var(--textSoft);
       font-style: italic;
       min-height: 20px;
       margin-top: -4px;
@@ -532,7 +532,7 @@
     /* ====== NEXT PHASE ====== */
     .nextPhase {
       font-size: clamp(11px, 1.2vw + 7px, 14px);
-      color: rgba(255,255,255,0.32);
+      color: var(--textSoft);
       letter-spacing: 0.06em;
       text-transform: uppercase;
       min-height: 16px;
@@ -550,7 +550,7 @@
     .history summary {
       cursor: pointer;
       user-select: none;
-      color: rgba(255,255,255,0.4);
+      color: var(--textSoft);
       font-size: clamp(10px, 1vw + 7px, 12px);
       letter-spacing: 0.07em;
       text-transform: uppercase;
@@ -573,7 +573,7 @@
       font-size: clamp(11px, 1.2vw + 7px, 14px);
       border-radius: 8px;
       margin-top: 4px;
-      background: rgba(255,255,255,0.03);
+      background: transparent;
     }
 
     .historyItem span {
@@ -582,11 +582,11 @@
       text-overflow: ellipsis;
     }
 
-    .historyItem:hover { background: rgba(255,255,255,0.06); }
+    .historyItem:hover { background: var(--accentSoft); }
 
-    .histDate  { color: rgba(255,255,255,0.5); }
-    .histStats { color: rgba(255,255,255,0.75); font-variant-numeric: tabular-nums; font-size: clamp(11px, 1.2vw + 7px, 14px); }
-    .historyEmpty { color: rgba(255,255,255,0.28); padding: 10px 0 4px; font-style: italic; font-size: clamp(11px, 1.2vw + 7px, 14px); }
+    .histDate  { color: var(--textSoft); }
+    .histStats { color: var(--text); font-variant-numeric: tabular-nums; font-size: clamp(11px, 1.2vw + 7px, 14px); }
+    .historyEmpty { color: var(--textSoft); padding: 10px 0 4px; font-style: italic; font-size: clamp(11px, 1.2vw + 7px, 14px); }
 
     .clearHistBtn {
       margin-left: auto;
@@ -594,14 +594,14 @@
       padding: 2px 8px;
       min-width: 0;
       background: transparent;
-      border: 1px solid rgba(255,255,255,0.12);
-      color: rgba(255,255,255,0.3);
+      border: 1px solid var(--accentSoft);
+      color: var(--textSoft);
       border-radius: 6px;
       font-weight: 400;
     }
     .clearHistBtn:hover {
-      border-color: rgba(255,255,255,0.28);
-      color: rgba(255,255,255,0.65);
+      border-color: var(--accent);
+      color: var(--text);
       background: transparent;
     }
 
