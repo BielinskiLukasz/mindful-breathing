@@ -1,7 +1,7 @@
 # Mindful Breathing
 
 ![Status](https://img.shields.io/badge/status-active_development-brightgreen)
-![Version](https://img.shields.io/badge/version-0.4.0-blue)
+![Version](https://img.shields.io/badge/version-0.5.0-blue)
 ![HTML5](https://img.shields.io/badge/HTML-5-E34F26?logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS-3-1572B6?logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/ECMAScript-2023-F7DF1E?logo=javascript&logoColor=black)
@@ -35,7 +35,7 @@ No backend. No dependencies. No installation. Works offline.
 - **Sound cues** via Web Audio API — speaker icon toggle, per-phase sine tones
 - **Haptic feedback** via Vibration API — vibration icon toggle, supported on Android/Chrome
 - **Screen Wake Lock** — prevents display sleep during a session
-- **Session history** with last 5 sessions and a one-tap Clear button
+- **Session history** with last 14 sessions and a one-tap Clear button
 - **Dedicated info panel** — the `ⓘ` icon now opens a modal with keyboard shortcuts and platform notes (replacing the previous inline collapsible block)
 - **Keyboard shortcuts** — `Space` start/stop · `R` reset · `F` fullscreen
 - **Fullscreen mode** for an immersive, distraction-free experience
@@ -88,7 +88,6 @@ It also became an experiment in how far you can push a single HTML file before i
 
 ## What's Next
 
-- Expand session history beyond 5 entries with scroll
 - Custom breathing preset builder (name, phases, durations)
 - Streak tracking — consecutive days with completed sessions
 - Ambient background sound option (white noise, rain)
