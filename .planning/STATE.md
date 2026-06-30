@@ -2,18 +2,18 @@
 gsd_state_version: 1.0
 milestone: v0.6
 milestone_name: — Layout & History
-current_phase: 4
+current_phase: 04
 current_phase_name: Layout & Light Theme
 status: executing
-stopped_at: Phase 4 context gathered
-last_updated: "2026-06-30T11:10:02.469Z"
+stopped_at: Completed 04-01-PLAN.md
+last_updated: "2026-06-30T11:26:46.427Z"
 last_activity: 2026-06-30
-last_activity_desc: v0.6 roadmap created
+last_activity_desc: Phase 04 execution started
 progress:
   total_phases: 2
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_plans: 2
+  completed_plans: 1
   percent: 0
 ---
 
@@ -29,17 +29,17 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-30)
 
 **Core value:** Reliable, uninterrupted breathing guidance with verifiable history
-**Current focus:** Phase 4 ready to plan
+**Current focus:** Phase 04 — Layout & Light Theme
 **Stack:** Vanilla JS, single-file HTML, localStorage persistence, no dependencies
 
 ---
 
 ## Current Position
 
-Phase: Phase 4 of 5 (Layout & Light Theme)
-Plan: — (not started)
+Phase: 04 (Layout & Light Theme) — EXECUTING
+Plan: 2 of 2
 Status: Ready to execute
-Last activity: 2026-06-30 — v0.6 roadmap created
+Last activity: 2026-06-30 — Phase 04 execution started
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -59,6 +59,7 @@ Progress: [░░░░░░░░░░] 0%
 | 5. History Data Management | TBD | — | — |
 
 ---
+| Phase 04 P01 | 15min | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -95,9 +96,9 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-06-30T09:53:27.041Z
-Stopped at: Phase 4 context gathered
-Resume file: .planning/phases/04-layout-light-theme/04-CONTEXT.md
+Last session: 2026-06-30T11:26:46.393Z
+Stopped at: Completed 04-01-PLAN.md
+Resume file: None
 
 **Next Steps:**
 
@@ -108,3 +109,9 @@ Resume file: .planning/phases/04-layout-light-theme/04-CONTEXT.md
 *State initialized: 2026-06-03*
 *Last milestone: v0.5 shipped 2026-06-29*
 *Current milestone: v0.6 started 2026-06-30*
+
+## Decisions
+
+- [Phase ?]: CSS Grid 1fr 1fr for landscape layout replaces flex-direction:row
+- [Phase ?]: LIGHT_THEME accent darkened to #a0662e (5.2:1 WCAG AA) and textSoft to #6b6058 (5.3:1 WCAG AA) on cream #f5f1ed, warm brown family
+- [Phase ?]: body transition uses background-color not background shorthand for smooth light-mode phase tint transitions
