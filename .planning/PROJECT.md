@@ -1,4 +1,14 @@
-# Mindful Breathing v0.5
+# Mindful Breathing v0.6
+
+## Current Milestone: v0.6 Layout & History
+
+**Goal:** Improve the landscape UX with a 2-column layout, bring light theme contrast to WCAG standards, and give users full control over their session data via import/export and clear history.
+
+**Target features:**
+- 2-column landscape layout — history panel always visible alongside the ring in landscape orientation
+- Light theme contrast improvements — WCAG 4.5:1 (normal text), 3:1 (large text)
+- Import/export session history — JSON and/or CSV format
+- Clear history with confirmation dialog
 
 ## What This Is
 
@@ -53,7 +63,7 @@ Reliable, uninterrupted breathing guidance with verifiable history — users nee
 
 ## Context
 
-**v0.5 Status:** Shipped 2026-06-29 with Phase 3 complete.
+**v0.6 Status:** Planning started 2026-06-30. v0.5 shipped 2026-06-29.
 
 The app has received significant stability and UX polish. Bug fixes address countdown timer accumulation, duration input clamping, and localStorage error handling. Four CSS micro-interactions added: ring flash, button press feedback, gesture hint, and error flash. Countdown audio and skip capability gap-closed. Vibration deferred as known limitation.
 
@@ -141,4 +151,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-06-29 after v0.5 milestone completion*
+*Last updated: 2026-06-30 — v0.6 milestone started*
