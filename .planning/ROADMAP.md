@@ -77,12 +77,12 @@
   3. Portrait layout on mobile is unchanged — existing phone UX is not regressed
   4. Landscape layout renders correctly across phone landscape (667px), tablet (768–1024px), and desktop (1280px+)
 
-**Plans**: 2 plans
+**Plans**: 1/2 plans executed
 
 Plans:
 **Wave 1**
 
-- [ ] 04-01-PLAN.md — CSS Grid landscape layout + LIGHT_THEME WCAG AA contrast fixes + body transition
+- [x] 04-01-PLAN.md — CSS Grid landscape layout + LIGHT_THEME WCAG AA contrast fixes + body transition
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -113,7 +113,7 @@ Plans:
 | 1. Session History & Vibration | v0.4 | 1/1 | Complete | 2026-06-04 |
 | 2. Theming & UX Polish | v0.4 | 4/4 | Complete | 2026-06-05 |
 | 3. Critical Bugs & UX Polish | v0.5 | 8/8 | Complete | 2026-06-29 |
-| 4. Layout & Light Theme | v0.6 | 0/? | Not started | - |
+| 4. Layout & Light Theme | v0.6 | 1/2 | In Progress|  |
 | 5. History Data Management | v0.6 | 0/? | Not started | - |
 
 ---

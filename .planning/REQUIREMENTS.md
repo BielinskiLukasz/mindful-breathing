@@ -7,11 +7,11 @@
 
 ### Layout & Responsive Design
 
-- [ ] **UX-04**: User can view the history panel alongside the breathing ring in landscape orientation on tablet-width screens and above (2-column CSS Grid layout)
+- [x] **UX-04**: User can view the history panel alongside the breathing ring in landscape orientation on tablet-width screens and above (2-column CSS Grid layout)
 
 ### Theming & Accessibility
 
-- [ ] **THEME-03**: Light theme text and interactive elements meet WCAG AA contrast ratios (4.5:1 for normal text, 3:1 for large text) across all UI elements
+- [x] **THEME-03**: Light theme text and interactive elements meet WCAG AA contrast ratios (4.5:1 for normal text, 3:1 for large text) across all UI elements
 
 ### History Data Management
 
@@ -42,14 +42,15 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| UX-04 | Phase 4 | Pending |
-| THEME-03 | Phase 4 | Pending |
+| UX-04 | Phase 4 | Complete |
+| THEME-03 | Phase 4 | Complete |
 | HIST-08 | Phase 5 | Pending |
 | HIST-09 | Phase 5 | Pending |
 | HIST-10 | Phase 5 | Pending |
 | HIST-11 | Phase 5 | Pending |
 
 **Coverage:**
+
 - v1 requirements: 6 total
 - Mapped to phases: 6
 - Unmapped: 0 ✓
