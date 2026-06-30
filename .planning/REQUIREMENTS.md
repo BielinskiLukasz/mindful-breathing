@@ -15,10 +15,10 @@
 
 ### History Data Management
 
-- [ ] **HIST-08**: User can export session history as a JSON file download
-- [ ] **HIST-09**: User can export session history as a CSV file download
-- [ ] **HIST-10**: User can import session history from a previously exported JSON file, merged with existing history (skip duplicates by date)
-- [ ] **HIST-11**: User can clear all session history after a confirmation dialog with destructive-action language
+- [x] **HIST-08**: User can export session history as a JSON file download
+- [x] **HIST-09**: User can export session history as a CSV file download
+- [x] **HIST-10**: User can import session history from a previously exported JSON file, merged with existing history (skip duplicates by date)
+- [x] **HIST-11**: User can clear all session history after a confirmation dialog with destructive-action language
 
 ## v2 Requirements
 
@@ -44,10 +44,10 @@
 |-------------|-------|--------|
 | UX-04 | Phase 4 | Complete |
 | THEME-03 | Phase 4 | Complete |
-| HIST-08 | Phase 5 | Pending |
-| HIST-09 | Phase 5 | Pending |
-| HIST-10 | Phase 5 | Pending |
-| HIST-11 | Phase 5 | Pending |
+| HIST-08 | Phase 5 | Complete |
+| HIST-09 | Phase 5 | Complete |
+| HIST-10 | Phase 5 | Complete |
+| HIST-11 | Phase 5 | Complete |
 
 **Coverage:**
 
