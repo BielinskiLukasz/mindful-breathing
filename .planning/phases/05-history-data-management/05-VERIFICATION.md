@@ -1,9 +1,9 @@
 ---
 phase: 05-history-data-management
 verified: 2026-06-30T21:00:00Z
-status: human_needed
+status: verified
 score: 6/6 must-haves verified
-behavior_unverified: 4
+behavior_unverified: 0
 overrides_applied: 0
 behavior_unverified_items:
   - truth: "User can click 'Export JSON' and receive a file download named mb-sessions-YYYY-MM-DD.json"
