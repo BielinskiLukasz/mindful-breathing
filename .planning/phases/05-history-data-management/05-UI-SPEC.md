@@ -37,14 +37,23 @@ Declared values (multiples of 4, existing project standard):
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| xs | 2px | Button borders, minimal gaps |
-| sm | 6px | Compact button padding, small gaps |
+| xs | 4px | Standard minimal gaps |
+| sm | 8px | Compact button padding, small gaps |
 | md | 8px | Standard padding, element spacing |
 | lg | 12px | Panel/button row spacing |
 | xl | 16px | Section spacing, larger buttons |
 | 2xl | 24px | Major section breaks |
 
-**Exceptions:** None — all new elements align with existing spacing pattern observed in `.presetBtn` (6px padding), `.clearHistBtn` (2px/8px), and button controls (11px/18px).
+### Exceptions
+
+Two non-4-aligned values inherited from existing preset button patterns:
+
+| Value | Context | Justification |
+|-------|---------|---------------|
+| 2px | `.clearHistBtn` margin (existing) | Inherited from existing codebase padding/margin rules; exception accepted to match established button spacing rhythm in `index.html` |
+| 6px | `.presetBtn` padding (existing) | Inherited from existing preset button style pattern; Export/Import button row reuses `.presetBtn` class for visual consistency and minimal DOM complexity |
+
+**Rationale:** The 2px and 6px values are locked into the existing codebase (`.presetBtn` and `.clearHistBtn` CSS) and cannot be changed without breaking visual alignment of currently-shipping preset buttons. Accepting these exceptions ensures Phase 5 implementation avoids visual regression.
 
 ---
 
@@ -62,6 +71,29 @@ Declared values (multiples of 4, existing project standard):
 - All sizes use `clamp()` for fluid responsive scaling (320px–4K, no breakpoints)
 - Line height: inherited from body `line-height: clamp(1.4, 0.5vw + 1.2, 1.8);`
 - No additional font weights added; 400 used throughout except dialog headings which infer semibold intent via CSS
+
+---
+
+## Visual Focus Hierarchy
+
+**History Panel Actions (`#historyActions` button row):**
+
+| Button | Hierarchy | Sizing | Border Highlight |
+|--------|-----------|--------|-------------------|
+| Export JSON | Primary | Standard preset button size (~44px min touch target) | Subtle accent border (inherits from `.presetBtn` default) |
+| Export CSV | Secondary | Matches Export JSON (visual pairing) | Inherits from `.presetBtn` |
+| Import | Secondary | Matches other buttons | Inherits from `.presetBtn` |
+
+**Design Rationale:** Export JSON is listed first and serves as the primary download action (broadest use case — preserves full precision data). Export CSV is secondary (format choice). Import is secondary (less frequent operation). All three buttons use the same visual treatment (`.presetBtn` style) to keep the row compact and cohesive. No button is visually prominent over the others (no bold, no color distinction).
+
+**Dialog Actions (`#clearConfirmDialog` buttons):**
+
+| Button | Hierarchy | Styling |
+|--------|-----------|---------|
+| Delete all sessions | Destructive | Implementer defines (e.g., red background, white text, or inverted style) |
+| Cancel | Primary action | Default button style (matches `.presetBtn`) |
+
+**Design Rationale:** Cancel is the safe/primary action (returns to normal state). Delete is destructive and should be visually distinguished by the implementer using color or prominence to reduce accidental clicks.
 
 ---
 
