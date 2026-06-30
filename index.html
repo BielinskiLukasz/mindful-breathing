@@ -21,6 +21,8 @@
       --text: #fff;
       --textSoft: rgba(255,255,255,0.55);
 
+      --cardHover: #2e2e2e;
+
       /* Light theme color values (applied via JS toggleTheme) */
       --bg-light: #f5f1ed;
       --card-light: #ebe7e1;
@@ -2077,6 +2079,7 @@
       card: "#ebe7e1",
       accent: "#a0662e",  /* #a0662e on #f5f1ed = 5.2:1 WCAG AA */
       accentSoft: "rgba(160,102,46,0.18)",
+      cardHover: "#dedad4",
       text: "#5c4033",
       textSoft: "#6b6058"  /* #6b6058 on #f5f1ed = 5.3:1 WCAG AA */
     });
@@ -2086,6 +2089,7 @@
       card: "#171717",
       accent: "#9aa0a6",
       accentSoft: "rgba(154,160,166,0.18)",
+      cardHover: "#2e2e2e",
       text: "#fff",
       textSoft: "rgba(255,255,255,0.55)"
     });
@@ -2096,6 +2100,7 @@
       root.style.setProperty("--card", theme.card);
       root.style.setProperty("--accent", theme.accent);
       root.style.setProperty("--accentSoft", theme.accentSoft);
+      root.style.setProperty("--cardHover", theme.cardHover || "#2e2e2e");
       root.style.setProperty("--text", theme.text);
       root.style.setProperty("--textSoft", theme.textSoft);
     }
