@@ -40,22 +40,20 @@
 
 ## Traceability
 
-Populated during roadmap creation.
-
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| UX-04 | — | Pending |
-| THEME-03 | — | Pending |
-| HIST-08 | — | Pending |
-| HIST-09 | — | Pending |
-| HIST-10 | — | Pending |
-| HIST-11 | — | Pending |
+| UX-04 | Phase 4 | Pending |
+| THEME-03 | Phase 4 | Pending |
+| HIST-08 | Phase 5 | Pending |
+| HIST-09 | Phase 5 | Pending |
+| HIST-10 | Phase 5 | Pending |
+| HIST-11 | Phase 5 | Pending |
 
 **Coverage:**
 - v1 requirements: 6 total
-- Mapped to phases: 0
-- Unmapped: 6 ⚠️
+- Mapped to phases: 6
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-06-30*
-*Last updated: 2026-06-30 after initial definition*
+*Last updated: 2026-06-30 — traceability populated after roadmap creation*

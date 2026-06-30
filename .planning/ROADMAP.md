@@ -8,7 +8,7 @@
 
 - ✅ **v0.4** — Session History, Vibration & Theming (shipped 2026-06-05)
 - ✅ **v0.5** — Critical Bugs & UX Polish (shipped 2026-06-29)
-- 📋 **v0.6** — Landscape Redesign, Light Theme & Advanced History (planned)
+- 📋 **v0.6** — Layout & History (planned)
 
 ---
 
@@ -54,19 +54,37 @@
 
 ## Planned Phases
 
-### 📋 v0.6 — Landscape Redesign, Light Theme & Advanced History
+### 📋 v0.6 — Layout & History
 
-**Phase 4: 2-Column Landscape Layout Redesign & Light Theme**
-- Goal: Complete horizontal view overhaul (history visibility, button placement, grid refinement); improve light theme contrast and color palette for readability and WCAG compliance
-- Requirements: Landscape testing (480px to 2560px width), multi-device validation, light theme contrast review per LIGHT-THEME-READABILITY-REPORT.md
-- Scope: 1 major layout item + 1 theme improvement item = ~3–4 plans
-- Dependencies: Phase 3
+- [ ] **Phase 4: Layout & Light Theme** - 2-column landscape CSS Grid and WCAG AA contrast fixes
+- [ ] **Phase 5: History Data Management** - JSON/CSV export, JSON import, and clear history with confirmation
 
-**Phase 5: Advanced History Features**
-- Goal: Add import/export and safe data deletion with confirmation
-- Requirements: JSON/CSV format validation, localStorage quota planning
-- Scope: 2 features = ~1–2 plans
-- Dependencies: Phase 3
+---
+
+## Phase Details
+
+### Phase 4: Layout & Light Theme
+**Goal**: Users get a readable, accessible layout in both orientations — history panel always visible alongside the ring in landscape, and light theme text passes WCAG AA contrast everywhere
+**Depends on**: Phase 3
+**Requirements**: UX-04, THEME-03
+**Success Criteria** (what must be TRUE):
+  1. User can see the history panel alongside the breathing ring without scrolling in landscape on a tablet-width screen (600px+)
+  2. All light theme text and interactive element labels pass WCAG AA contrast ratios (4.5:1 normal text, 3:1 large text) verified against all color pairs
+  3. Portrait layout on mobile is unchanged — existing phone UX is not regressed
+  4. Landscape layout renders correctly across phone landscape (667px), tablet (768–1024px), and desktop (1280px+)
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 5: History Data Management
+**Goal**: Users have full control over their session data — they can back it up, restore it, and permanently delete it with a clear confirmation step
+**Depends on**: Phase 4
+**Requirements**: HIST-08, HIST-09, HIST-10, HIST-11
+**Success Criteria** (what must be TRUE):
+  1. User can download session history as a JSON file that contains all recorded sessions
+  2. User can download session history as a CSV file that opens correctly in a spreadsheet
+  3. User can import a previously exported JSON file and see existing sessions merged with imported ones (duplicate dates skipped, no data corruption)
+  4. User can clear all session history only after a confirmation dialog that uses destructive-action language ("Delete all sessions") — accidental dismissal does not delete data
+**Plans**: TBD
 
 ---
 
@@ -77,9 +95,9 @@
 | 1. Session History & Vibration | v0.4 | 1/1 | Complete | 2026-06-04 |
 | 2. Theming & UX Polish | v0.4 | 4/4 | Complete | 2026-06-05 |
 | 3. Critical Bugs & UX Polish | v0.5 | 8/8 | Complete | 2026-06-29 |
-| 4. 2-Column Landscape Redesign & Light Theme | v0.6 | 0/4 | Planned | — |
-| 5. Advanced History Features | v0.6 | 0/2 | Planned | — |
+| 4. Layout & Light Theme | v0.6 | 0/? | Not started | - |
+| 5. History Data Management | v0.6 | 0/? | Not started | - |
 
 ---
 
-**Last updated:** 2026-06-29 after v0.5 milestone completion
+**Last updated:** 2026-06-30 — v0.6 roadmap created
