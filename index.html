@@ -1658,6 +1658,115 @@
     }
 
     /******************************************************************
+     *  EXPORT / IMPORT
+     ******************************************************************/
+    function exportJson() {
+      let list = [];
+      try {
+        const raw = localStorage.getItem(HISTORY_KEY);
+        list = raw ? JSON.parse(raw) : [];
+      } catch (_) {}
+      const blob = new Blob([JSON.stringify(list, null, 2)], { type: "application/json" });
+      const filename = "mb-sessions-" + new Date().toISOString().slice(0, 10) + ".json";
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function exportCsv() {
+      let list = [];
+      try {
+        const raw = localStorage.getItem(HISTORY_KEY);
+        list = raw ? JSON.parse(raw) : [];
+      } catch (_) {}
+      const escape = v => '"' + String(v).replace(/"/g, '""') + '"';
+      const rows = [["date", "duration", "cycles", "preset"].map(escape).join(",")];
+      list.forEach(s => {
+        const totalSec = Math.round((s.durationMs || 0) / 1000);
+        const mins = Math.floor(totalSec / 60);
+        const secs = String(totalSec % 60).padStart(2, "0");
+        const duration = mins + ":" + secs;
+        rows.push([s.date, duration, s.cycles, s.preset || "relax"].map(escape).join(","));
+      });
+      const blob = new Blob([rows.join("\r\n")], { type: "text/csv" });
+      const filename = "mb-sessions-" + new Date().toISOString().slice(0, 10) + ".csv";
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function showImportFeedback(message) {
+      const warningEl = document.getElementById("storageWarning");
+      if (!warningEl) return;
+      warningEl.textContent = message;
+      warningEl.style.display = "block";
+      setTimeout(() => { warningEl.style.display = "none"; }, 5000);
+    }
+
+    function importJson(file) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function() {
+        try {
+          let imported;
+          try {
+            imported = JSON.parse(reader.result);
+          } catch (_) {
+            showImportFeedback("Import failed: invalid file format");
+            return;
+          }
+          if (!Array.isArray(imported)) {
+            showImportFeedback("Import failed: invalid file format");
+            return;
+          }
+          let importedCount = 0, dupCount = 0, invalidCount = 0;
+          let existing = [];
+          try {
+            const raw = localStorage.getItem(HISTORY_KEY);
+            existing = raw ? JSON.parse(raw) : [];
+          } catch (_) { existing = []; }
+          const existingDates = new Set(existing.map(s => s.date));
+          imported.forEach(entry => {
+            if (typeof entry.date !== "string" || !Number.isFinite(entry.durationMs) || !Number.isFinite(entry.cycles)) {
+              invalidCount++;
+              return;
+            }
+            if (existingDates.has(entry.date)) {
+              dupCount++;
+              return;
+            }
+            existing.push({ date: entry.date, durationMs: entry.durationMs, cycles: entry.cycles, preset: entry.preset || "relax" });
+            existingDates.add(entry.date);
+            importedCount++;
+          });
+          existing.sort((a, b) => b.date.localeCompare(a.date));
+          if (existing.length > maxHistoryEntries) existing.length = maxHistoryEntries;
+          localStorage.setItem(HISTORY_KEY, JSON.stringify(existing));
+          renderHistory();
+          sessionStorage.setItem("historyPage", "1");
+          let message;
+          if (importedCount === 0 && invalidCount === 0 && dupCount > 0) {
+            message = "Imported 0 sessions (" + dupCount + " duplicates skipped)";
+          } else if (invalidCount > 0) {
+            message = "Imported " + importedCount + " sessions (" + invalidCount + " invalid entries skipped)";
+          } else if (dupCount > 0) {
+            message = "Imported " + importedCount + " sessions (" + dupCount + " duplicates skipped)";
+          } else {
+            message = "Imported " + importedCount + " sessions";
+          }
+          showImportFeedback(message);
+        } catch (_) {
+          showImportFeedback("Import failed: invalid file format");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    /******************************************************************
      *  WAKE LOCK
      ******************************************************************/
     async function acquireWakeLock() {
@@ -2235,12 +2344,36 @@
     });
 
     /******************************************************************
+     *  HISTORY ACTIONS
+     ******************************************************************/
+    document.getElementById("exportJsonBtn").addEventListener("click", exportJson);
+    document.getElementById("exportCsvBtn").addEventListener("click", exportCsv);
+    document.getElementById("importBtn").addEventListener("click", () => document.getElementById("importFileInput").click());
+    document.getElementById("importFileInput").addEventListener("change", function() { importJson(this.files[0]); this.value = ""; });
+
+    /******************************************************************
      *  CLEAR HISTORY
      ******************************************************************/
     document.getElementById("clearHistBtn").addEventListener("click", e => {
       e.stopPropagation();
+      document.getElementById("clearConfirmDialog").showModal();
+    });
+
+    document.getElementById("clearConfirmDelete").addEventListener("click", () => {
       try { localStorage.removeItem(HISTORY_KEY); } catch (_) {}
+      sessionStorage.setItem("historyPage", "1");
       renderHistory();
+      document.getElementById("clearConfirmDialog").close();
+    });
+
+    document.getElementById("clearConfirmCancel").addEventListener("click", () => {
+      document.getElementById("clearConfirmDialog").close();
+    });
+
+    document.getElementById("clearConfirmDialog").addEventListener("click", e => {
+      if (e.target === document.getElementById("clearConfirmDialog")) {
+        document.getElementById("clearConfirmDialog").close();
+      }
     });
 
     /******************************************************************
