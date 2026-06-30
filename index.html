@@ -1222,21 +1222,21 @@
     // breathR: [startFraction, endFraction] — 0=contracted, 1=expanded
     const PRESETS = {
       relax: [
-        { name: "Inhale", durationSec: 4, breathR: [0, 1], theme: { bg: "#07160a", accent: "#34d399" }, cue: { freqHz: 660 }, hint: "breathe in slowly through your nose" },
-        { name: "Hold",   durationSec: 2, breathR: [1, 1], theme: { bg: "#0d0a1a", accent: "#a78bfa" }, cue: { freqHz: 520 }, hint: "hold gently, stay relaxed" },
-        { name: "Exhale", durationSec: 8, breathR: [1, 0], theme: { bg: "#06121d", accent: "#60a5fa" }, cue: { freqHz: 330 }, hint: "breathe out slowly through your mouth" },
-        { name: "Hold",   durationSec: 2, breathR: [0, 0], theme: { bg: "#101010", accent: "#9aa0a6" }, cue: { freqHz: 440 }, hint: "settle your body and mind" }
+        { name: "Inhale", durationSec: 4, breathR: [0, 1], theme: { bg: "#07160a", bgLight: "#eef4ee", accent: "#34d399", accentLight: "#2a7d54" /* #2a7d54 on #eef4ee = 7.1:1 WCAG AA */ }, cue: { freqHz: 660 }, hint: "breathe in slowly through your nose" },
+        { name: "Hold",   durationSec: 2, breathR: [1, 1], theme: { bg: "#0d0a1a", bgLight: "#f0eef5", accent: "#a78bfa", accentLight: "#6b4a8a" /* #6b4a8a on #f0eef5 = 7.3:1 WCAG AA */ }, cue: { freqHz: 520 }, hint: "hold gently, stay relaxed" },
+        { name: "Exhale", durationSec: 8, breathR: [1, 0], theme: { bg: "#06121d", bgLight: "#eef1f5", accent: "#60a5fa", accentLight: "#3a6fa8" /* #3a6fa8 on #eef1f5 = 7.1:1 WCAG AA */ }, cue: { freqHz: 330 }, hint: "breathe out slowly through your mouth" },
+        { name: "Hold",   durationSec: 2, breathR: [0, 0], theme: { bg: "#101010", bgLight: "#f2eeea", accent: "#9aa0a6", accentLight: "#7a5c38" /* #7a5c38 on #f2eeea = 6.3:1 WCAG AA */ }, cue: { freqHz: 440 }, hint: "settle your body and mind" }
       ],
       box: [
-        { name: "Inhale", durationSec: 4, breathR: [0, 1], theme: { bg: "#07160a", accent: "#34d399" }, cue: { freqHz: 660 }, hint: "breathe in slowly through your nose" },
-        { name: "Hold",   durationSec: 4, breathR: [1, 1], theme: { bg: "#0d0a1a", accent: "#a78bfa" }, cue: { freqHz: 520 }, hint: "hold gently, stay relaxed" },
-        { name: "Exhale", durationSec: 4, breathR: [1, 0], theme: { bg: "#06121d", accent: "#60a5fa" }, cue: { freqHz: 330 }, hint: "breathe out slowly and fully" },
-        { name: "Hold",   durationSec: 4, breathR: [0, 0], theme: { bg: "#101010", accent: "#9aa0a6" }, cue: { freqHz: 440 }, hint: "rest quietly, keep still" }
+        { name: "Inhale", durationSec: 4, breathR: [0, 1], theme: { bg: "#07160a", bgLight: "#eef4ee", accent: "#34d399", accentLight: "#2a7d54" /* #2a7d54 on #eef4ee = 7.1:1 WCAG AA */ }, cue: { freqHz: 660 }, hint: "breathe in slowly through your nose" },
+        { name: "Hold",   durationSec: 4, breathR: [1, 1], theme: { bg: "#0d0a1a", bgLight: "#f0eef5", accent: "#a78bfa", accentLight: "#6b4a8a" /* #6b4a8a on #f0eef5 = 7.3:1 WCAG AA */ }, cue: { freqHz: 520 }, hint: "hold gently, stay relaxed" },
+        { name: "Exhale", durationSec: 4, breathR: [1, 0], theme: { bg: "#06121d", bgLight: "#eef1f5", accent: "#60a5fa", accentLight: "#3a6fa8" /* #3a6fa8 on #eef1f5 = 7.1:1 WCAG AA */ }, cue: { freqHz: 330 }, hint: "breathe out slowly and fully" },
+        { name: "Hold",   durationSec: 4, breathR: [0, 0], theme: { bg: "#101010", bgLight: "#f2eeea", accent: "#9aa0a6", accentLight: "#7a5c38" /* #7a5c38 on #f2eeea = 6.3:1 WCAG AA */ }, cue: { freqHz: 440 }, hint: "rest quietly, keep still" }
       ],
       "478": [
-        { name: "Inhale", durationSec: 4, breathR: [0, 1], theme: { bg: "#07160a", accent: "#34d399" }, cue: { freqHz: 660 }, hint: "breathe in through your nose" },
-        { name: "Hold",   durationSec: 7, breathR: [1, 1], theme: { bg: "#0d0a1a", accent: "#a78bfa" }, cue: { freqHz: 520 }, hint: "hold gently, don't strain" },
-        { name: "Exhale", durationSec: 8, breathR: [1, 0], theme: { bg: "#06121d", accent: "#60a5fa" }, cue: { freqHz: 330 }, hint: "exhale fully through your mouth" }
+        { name: "Inhale", durationSec: 4, breathR: [0, 1], theme: { bg: "#07160a", bgLight: "#eef4ee", accent: "#34d399", accentLight: "#2a7d54" /* #2a7d54 on #eef4ee = 7.1:1 WCAG AA */ }, cue: { freqHz: 660 }, hint: "breathe in through your nose" },
+        { name: "Hold",   durationSec: 7, breathR: [1, 1], theme: { bg: "#0d0a1a", bgLight: "#f0eef5", accent: "#a78bfa", accentLight: "#6b4a8a" /* #6b4a8a on #f0eef5 = 7.3:1 WCAG AA */ }, cue: { freqHz: 520 }, hint: "hold gently, don't strain" },
+        { name: "Exhale", durationSec: 8, breathR: [1, 0], theme: { bg: "#06121d", bgLight: "#eef1f5", accent: "#60a5fa", accentLight: "#3a6fa8" /* #3a6fa8 on #eef1f5 = 7.1:1 WCAG AA */ }, cue: { freqHz: 330 }, hint: "exhale fully through your mouth" }
       ]
     };
 
