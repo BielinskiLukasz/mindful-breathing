@@ -1421,7 +1421,9 @@
     }
 
     function applyThemeForCurrentPhase() {
-      const { bg, accent } = getPhase().theme;
+      const phase = getPhase().theme;
+      const bg = isDarkMode ? phase.bg : phase.bgLight;
+      const accent = isDarkMode ? phase.accent : phase.accentLight;
       document.body.style.setProperty("--bg", bg);
       document.documentElement.style.setProperty("--accent", accent);
       document.documentElement.style.setProperty("--accentSoft", hexToRgba(accent, 0.22));
@@ -2106,6 +2108,7 @@
     function toggleTheme() {
       isDarkMode = !isDarkMode;
       applyThemeColors(isDarkMode ? DARK_THEME : LIGHT_THEME);
+      if (isRunning) applyThemeForCurrentPhase();
       updateThemeToggleUI();
       saveSettings();
     }
