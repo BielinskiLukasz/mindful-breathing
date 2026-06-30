@@ -194,6 +194,19 @@
     .presetBtn:hover { background: var(--cardHover); color: var(--text); }
     .presetBtn.active { border-color: var(--accent); color: var(--accent); }
 
+    #clearConfirmDialog {
+      border: 1px solid var(--accentSoft);
+      border-radius: 12px;
+      background: var(--panelBg);
+      color: var(--text);
+      padding: 20px;
+      min-width: 260px;
+      max-width: 90vw;
+    }
+    #clearConfirmDialog::backdrop {
+      background: rgba(0,0,0,0.55);
+    }
+
     /* ====== CONTROLS ====== */
     .controls {
       display: flex;
@@ -1200,6 +1213,12 @@
 
       <details class="history" id="historyDetails">
         <summary>Past sessions <button class="clearHistBtn" id="clearHistBtn">Clear</button></summary>
+        <div id="historyActions" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:8px 0;">
+          <button id="exportJsonBtn" class="presetBtn">Export JSON</button>
+          <button id="exportCsvBtn" class="presetBtn">Export CSV</button>
+          <button id="importBtn" class="presetBtn">Import</button>
+          <input type="file" id="importFileInput" accept=".json" style="display:none">
+        </div>
         <div id="historyList"></div>
         <div id="historyNav" style="margin-top: 12px; display: flex; gap: 6px; justify-content: center; align-items: center;">
           <button id="histPrevBtn" style="font-size: clamp(11px, 1.2vw + 7px, 14px); padding: 6px 10px; min-width: 0; display: none;">&#8592; Prev</button>
@@ -2320,5 +2339,14 @@
       showGestureHint();
     }
   </script>
+
+  <dialog id="clearConfirmDialog">
+    <h2 style="margin:0 0 8px;font-size:clamp(16px,1.5vw + 12px,20px);font-weight:500;color:var(--text);">Delete all sessions?</h2>
+    <div style="margin-bottom:12px;font-size:clamp(11px,1.2vw + 7px,14px);color:var(--textSoft);">This action cannot be undone.</div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;">
+      <button id="clearConfirmCancel" class="presetBtn">Cancel</button>
+      <button id="clearConfirmDelete" class="presetBtn" style="background:var(--accent);color:var(--bg);">Delete all sessions</button>
+    </div>
+  </dialog>
 </body>
 </html>
