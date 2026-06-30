@@ -1,6 +1,6 @@
 # Mindful Breathing — Roadmap
 
-**Current Status:** v0.5 shipped, v0.6 in planning
+**Current Status:** v0.6 shipped 2026-07-01
 
 ---
 
@@ -8,7 +8,8 @@
 
 - ✅ **v0.4** — Session History, Vibration & Theming (shipped 2026-06-05)
 - ✅ **v0.5** — Critical Bugs & UX Polish (shipped 2026-06-29)
-- 📋 **v0.6** — Layout & History (planned)
+- ✅ **v0.6** — Layout & History (shipped 2026-07-01)
+- 📋 **v0.7** — (planned)
 
 ---
 
@@ -52,61 +53,32 @@
 
 </details>
 
+<details>
+<summary>✅ v0.6 (Phases 4–5) — SHIPPED 2026-07-01</summary>
+
+- [x] Phase 4: Layout & Light Theme (2 plans) — completed 2026-06-30
+- [x] Phase 5: History Data Management (1 plan) — completed 2026-06-30
+
+**What Shipped:**
+
+- CSS Grid 2-column landscape layout (ring left, history right) on 600px+ landscape screens
+- WCAG AA light theme contrast: accent #a0662e (5.2:1), textSoft #6b6058 (5.3:1) on cream
+- Per-phase atmospheric bgLight/accentLight colors for all PRESETS (sage/lavender/sky/cream)
+- JSON and CSV session history export via Blob download
+- JSON import with merge/dedup/validation and feedback flash
+- Native `<dialog>` clear-history confirmation with ESC and backdrop dismiss
+
+**Archive:** `.planning/milestones/v0.6-ROADMAP.md`
+
+</details>
+
 ---
 
 ## Planned Phases
 
-### 📋 v0.6 — Layout & History
+### 📋 v0.7 — (to be defined)
 
-- [x] **Phase 4: Layout & Light Theme** - 2 plans — CSS Grid landscape layout + WCAG AA contrast fixes + light-mode phase tints (completed 2026-06-30)
-- [x] **Phase 5: History Data Management** - JSON/CSV export, JSON import, and clear history with confirmation (completed 2026-06-30)
-
----
-
-## Phase Details
-
-### Phase 4: Layout & Light Theme
-
-**Goal**: Users get a readable, accessible layout in both orientations — history panel always visible alongside the ring in landscape, and light theme text passes WCAG AA contrast everywhere
-**Depends on**: Phase 3
-**Requirements**: UX-04, THEME-03
-**Success Criteria** (what must be TRUE):
-
-  1. User can see the history panel alongside the breathing ring without scrolling in landscape on a tablet-width screen (600px+)
-  2. All light theme text and interactive element labels pass WCAG AA contrast ratios (4.5:1 normal text, 3:1 large text) verified against all color pairs
-  3. Portrait layout on mobile is unchanged — existing phone UX is not regressed
-  4. Landscape layout renders correctly across phone landscape (667px), tablet (768–1024px), and desktop (1280px+)
-
-**Plans**: 2/2 plans complete
-
-Plans:
-**Wave 1**
-
-- [x] 04-01-PLAN.md — CSS Grid landscape layout + LIGHT_THEME WCAG AA contrast fixes + body transition
-
-**Wave 2** *(blocked on Wave 1 completion)*
-
-- [x] 04-02-PLAN.md — Per-phase bgLight/accentLight in PRESETS + applyThemeForCurrentPhase() isDarkMode branching
-
-**UI hint**: yes
-
-### Phase 5: History Data Management
-
-**Goal**: Users have full control over their session data — they can back it up, restore it, and permanently delete it with a clear confirmation step
-**Depends on**: Phase 4
-**Requirements**: HIST-08, HIST-09, HIST-10, HIST-11
-**Success Criteria** (what must be TRUE):
-
-  1. User can download session history as a JSON file that contains all recorded sessions
-  2. User can download session history as a CSV file that opens correctly in a spreadsheet
-  3. User can import a previously exported JSON file and see existing sessions merged with imported ones (duplicate dates skipped, no data corruption)
-  4. User can clear all session history only after a confirmation dialog that uses destructive-action language ("Delete all sessions") — accidental dismissal does not delete data
-
-**Plans**: 1/1 plans complete
-
-Plans:
-
-- [x] 05-01-PLAN.md — DOM structure + export/import/clear-dialog JS (HIST-08, HIST-09, HIST-10, HIST-11)
+*Start with `/gsd-new-milestone` to define v0.7 requirements and roadmap.*
 
 ---
 
@@ -117,9 +89,9 @@ Plans:
 | 1. Session History & Vibration | v0.4 | 1/1 | Complete | 2026-06-04 |
 | 2. Theming & UX Polish | v0.4 | 4/4 | Complete | 2026-06-05 |
 | 3. Critical Bugs & UX Polish | v0.5 | 8/8 | Complete | 2026-06-29 |
-| 4. Layout & Light Theme | v0.6 | 2/2 | Complete   | 2026-06-30 |
-| 5. History Data Management | v0.6 | 1/1 | Complete   | 2026-06-30 |
+| 4. Layout & Light Theme | v0.6 | 2/2 | Complete | 2026-06-30 |
+| 5. History Data Management | v0.6 | 1/1 | Complete | 2026-06-30 |
 
 ---
 
-**Last updated:** 2026-06-30 — v0.6 roadmap created
+**Last updated:** 2026-07-01 — v0.6 milestone archived
