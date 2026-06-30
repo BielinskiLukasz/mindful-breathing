@@ -59,7 +59,7 @@
 ### 📋 v0.6 — Layout & History
 
 - [x] **Phase 4: Layout & Light Theme** - 2 plans — CSS Grid landscape layout + WCAG AA contrast fixes + light-mode phase tints (completed 2026-06-30)
-- [ ] **Phase 5: History Data Management** - JSON/CSV export, JSON import, and clear history with confirmation
+- [x] **Phase 5: History Data Management** - JSON/CSV export, JSON import, and clear history with confirmation (completed 2026-06-30)
 
 ---
 
@@ -102,10 +102,11 @@ Plans:
   3. User can import a previously exported JSON file and see existing sessions merged with imported ones (duplicate dates skipped, no data corruption)
   4. User can clear all session history only after a confirmation dialog that uses destructive-action language ("Delete all sessions") — accidental dismissal does not delete data
 
-**Plans**: 1 plan
+**Plans**: 1/1 plans complete
 
 Plans:
-- [ ] 05-01-PLAN.md — DOM structure + export/import/clear-dialog JS (HIST-08, HIST-09, HIST-10, HIST-11)
+
+- [x] 05-01-PLAN.md — DOM structure + export/import/clear-dialog JS (HIST-08, HIST-09, HIST-10, HIST-11)
 
 ---
 
@@ -117,7 +118,7 @@ Plans:
 | 2. Theming & UX Polish | v0.4 | 4/4 | Complete | 2026-06-05 |
 | 3. Critical Bugs & UX Polish | v0.5 | 8/8 | Complete | 2026-06-29 |
 | 4. Layout & Light Theme | v0.6 | 2/2 | Complete   | 2026-06-30 |
-| 5. History Data Management | v0.6 | 0/? | Not started | - |
+| 5. History Data Management | v0.6 | 1/1 | Complete   | 2026-06-30 |
 
 ---
 
