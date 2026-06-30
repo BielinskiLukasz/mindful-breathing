@@ -21,6 +21,7 @@
 - [x] Phase 2: Theming & UX Polish (4 plans) — completed 2026-06-05
 
 **What Shipped:**
+
 - Paginated session history with preset badge and configurable storage cap (default 1,000 entries)
 - Vibration reliability verified correct per W3C spec
 - Light/dark theme toggle with 220ms smooth transitions
@@ -37,6 +38,7 @@
 - [x] Phase 3: Critical Bugs & UX Polish (8 plans) — completed 2026-06-29
 
 **What Shipped:**
+
 - Countdown timer orphan prevention (`cancelCountdown()` in `stop()`)
 - `DURATION_RANGE` constant enforcing 1–300s duration bounds across all call sites
 - localStorage `QuotaExceededError` surfaced with inline warning banner
@@ -64,31 +66,42 @@
 ## Phase Details
 
 ### Phase 4: Layout & Light Theme
+
 **Goal**: Users get a readable, accessible layout in both orientations — history panel always visible alongside the ring in landscape, and light theme text passes WCAG AA contrast everywhere
 **Depends on**: Phase 3
 **Requirements**: UX-04, THEME-03
 **Success Criteria** (what must be TRUE):
+
   1. User can see the history panel alongside the breathing ring without scrolling in landscape on a tablet-width screen (600px+)
   2. All light theme text and interactive element labels pass WCAG AA contrast ratios (4.5:1 normal text, 3:1 large text) verified against all color pairs
   3. Portrait layout on mobile is unchanged — existing phone UX is not regressed
   4. Landscape layout renders correctly across phone landscape (667px), tablet (768–1024px), and desktop (1280px+)
+
 **Plans**: 2 plans
 
 Plans:
+**Wave 1**
+
 - [ ] 04-01-PLAN.md — CSS Grid landscape layout + LIGHT_THEME WCAG AA contrast fixes + body transition
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
 - [ ] 04-02-PLAN.md — Per-phase bgLight/accentLight in PRESETS + applyThemeForCurrentPhase() isDarkMode branching
 
 **UI hint**: yes
 
 ### Phase 5: History Data Management
+
 **Goal**: Users have full control over their session data — they can back it up, restore it, and permanently delete it with a clear confirmation step
 **Depends on**: Phase 4
 **Requirements**: HIST-08, HIST-09, HIST-10, HIST-11
 **Success Criteria** (what must be TRUE):
+
   1. User can download session history as a JSON file that contains all recorded sessions
   2. User can download session history as a CSV file that opens correctly in a spreadsheet
   3. User can import a previously exported JSON file and see existing sessions merged with imported ones (duplicate dates skipped, no data corruption)
   4. User can clear all session history only after a confirmation dialog that uses destructive-action language ("Delete all sessions") — accidental dismissal does not delete data
+
 **Plans**: TBD
 
 ---
