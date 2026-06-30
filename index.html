@@ -933,8 +933,8 @@
       }
 
       .container {
-        display: flex;
-        flex-direction: row;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         width: 100%;
         max-width: 1400px;
         height: 100vh;
@@ -947,7 +947,6 @@
 
       /* ---- Ring side (left 50%) ---- */
       .ringSection {
-        flex: 1;
         min-width: 0;
         display: flex;
         flex-direction: column;
@@ -969,7 +968,6 @@
 
       /* ---- Controls/History side (right 50%) ---- */
       .controlsSection {
-        flex: 1;
         min-width: 0;
         display: flex;
         flex-direction: column;
