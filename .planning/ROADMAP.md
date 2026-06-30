@@ -58,7 +58,7 @@
 
 ### 📋 v0.6 — Layout & History
 
-- [ ] **Phase 4: Layout & Light Theme** - 2 plans — CSS Grid landscape layout + WCAG AA contrast fixes + light-mode phase tints
+- [x] **Phase 4: Layout & Light Theme** - 2 plans — CSS Grid landscape layout + WCAG AA contrast fixes + light-mode phase tints (completed 2026-06-30)
 - [ ] **Phase 5: History Data Management** - JSON/CSV export, JSON import, and clear history with confirmation
 
 ---
@@ -77,7 +77,7 @@
   3. Portrait layout on mobile is unchanged — existing phone UX is not regressed
   4. Landscape layout renders correctly across phone landscape (667px), tablet (768–1024px), and desktop (1280px+)
 
-**Plans**: 1/2 plans executed
+**Plans**: 2/2 plans complete
 
 Plans:
 **Wave 1**
@@ -86,7 +86,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 04-02-PLAN.md — Per-phase bgLight/accentLight in PRESETS + applyThemeForCurrentPhase() isDarkMode branching
+- [x] 04-02-PLAN.md — Per-phase bgLight/accentLight in PRESETS + applyThemeForCurrentPhase() isDarkMode branching
 
 **UI hint**: yes
 
@@ -113,7 +113,7 @@ Plans:
 | 1. Session History & Vibration | v0.4 | 1/1 | Complete | 2026-06-04 |
 | 2. Theming & UX Polish | v0.4 | 4/4 | Complete | 2026-06-05 |
 | 3. Critical Bugs & UX Polish | v0.5 | 8/8 | Complete | 2026-06-29 |
-| 4. Layout & Light Theme | v0.6 | 1/2 | In Progress|  |
+| 4. Layout & Light Theme | v0.6 | 2/2 | Complete   | 2026-06-30 |
 | 5. History Data Management | v0.6 | 0/? | Not started | - |
 
 ---
