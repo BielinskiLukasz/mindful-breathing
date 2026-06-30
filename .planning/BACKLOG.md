@@ -63,3 +63,6 @@ User-facing feature additions for history management and data portability.
 - Log Unfinished Sessions — Track incomplete sessions (cycle count, elapsed time)
 - Enhance History Data — Add preset mode, phase-level timing per session
 - Version Number in Info Popup — Display app version (v0.4.0, etc.)
+
+### Visual
+- Background tint transitions in dark mode
