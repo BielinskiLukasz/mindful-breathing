@@ -23,13 +23,20 @@
 
       --cardHover: #2e2e2e;
 
-      /* Light theme color values (applied via JS toggleTheme) */
-      --bg-light: #f5f1ed;
-      --card-light: #ebe7e1;
-      --accent-light: #a0662e;
-      --accentSoft-light: rgba(160,102,46,0.18);
-      --text-light: #5c4033;
-      --textSoft-light: #6b6058;
+      /* Panel + ring variables (JS-driven per theme) */
+      --ringBg: rgba(255,255,255,0.12);
+      --overlayBg: rgba(0,0,0,0.85);
+      --panelBg: #1a1a1a;
+      --panelBorder: rgba(255,255,255,0.12);
+      --panelTitle: rgba(255,255,255,0.75);
+      --panelSubtext: rgba(255,255,255,0.45);
+      --panelText: rgba(255,255,255,0.70);
+      --panelCloseColor: rgba(255,255,255,0.55);
+      --panelCloseHoverBg: rgba(255,255,255,0.06);
+      --panelCloseHoverColor: rgba(255,255,255,0.9);
+      --panelKbdBg: rgba(255,255,255,0.08);
+      --panelKbdBorder: rgba(255,255,255,0.15);
+      --panelKbdColor: rgba(255,255,255,0.85);
     }
 
     body {
@@ -113,7 +120,7 @@
     }
 
     .ringBg {
-      stroke: rgba(255,255,255,0.12);
+      stroke: var(--ringBg);
     }
 
     .ringProgress {
@@ -652,7 +659,7 @@
       position: absolute;
       inset: 0;
       border-radius: 16px;
-      background: rgba(0,0,0,0.85);
+      background: var(--overlayBg);
       place-items: center;
       z-index: 30;
       padding: 24px;
@@ -663,8 +670,8 @@
     .settingsPanel {
       width: 100%;
       max-width: 360px;
-      background: #1a1a1a;
-      border: 1px solid rgba(255,255,255,0.12);
+      background: var(--panelBg);
+      border: 1px solid var(--panelBorder);
       border-radius: 12px;
       padding: 20px 22px;
       text-align: left;
@@ -675,7 +682,7 @@
       font-size: clamp(13px, 1.75vw + 9px, 17px);
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.75);
+      color: var(--panelTitle);
       margin: 0 0 14px;
     }
 
@@ -688,9 +695,9 @@
       min-width: 0;
       padding: 0;
       background: transparent;
-      border: 1px solid rgba(255,255,255,0.12);
+      border: 1px solid var(--panelBorder);
       border-radius: 8px;
-      color: rgba(255,255,255,0.55);
+      color: var(--panelCloseColor);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -698,13 +705,13 @@
       line-height: 1;
     }
     .settingsCloseBtn:hover {
-      background: rgba(255,255,255,0.06);
-      color: rgba(255,255,255,0.9);
+      background: var(--panelCloseHoverBg);
+      color: var(--panelCloseHoverColor);
     }
 
     .settingsPlaceholder {
       font-size: clamp(12px, 1.5vw + 8px, 16px);
-      color: rgba(255,255,255,0.5);
+      color: var(--panelSubtext);
       line-height: 1.55;
     }
 
@@ -714,7 +721,7 @@
       position: absolute;
       inset: 0;
       border-radius: 16px;
-      background: rgba(0,0,0,0.85);
+      background: var(--overlayBg);
       place-items: center;
       z-index: 30;
       padding: 24px;
@@ -725,8 +732,8 @@
     .infoPanel {
       width: 100%;
       max-width: 360px;
-      background: #1a1a1a;
-      border: 1px solid rgba(255,255,255,0.12);
+      background: var(--panelBg);
+      border: 1px solid var(--panelBorder);
       border-radius: 12px;
       padding: 20px 22px;
       text-align: left;
@@ -737,7 +744,7 @@
       font-size: clamp(13px, 1.75vw + 9px, 17px);
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.75);
+      color: var(--panelTitle);
       margin: 0 0 14px;
     }
 
@@ -750,9 +757,9 @@
       min-width: 0;
       padding: 0;
       background: transparent;
-      border: 1px solid rgba(255,255,255,0.12);
+      border: 1px solid var(--panelBorder);
       border-radius: 8px;
-      color: rgba(255,255,255,0.55);
+      color: var(--panelCloseColor);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -760,8 +767,8 @@
       line-height: 1;
     }
     .infoCloseBtn:hover {
-      background: rgba(255,255,255,0.06);
-      color: rgba(255,255,255,0.9);
+      background: var(--panelCloseHoverBg);
+      color: var(--panelCloseHoverColor);
     }
 
     .infoSection { margin-top: 8px; }
@@ -771,7 +778,7 @@
       font-size: clamp(10px, 1vw + 7px, 12px);
       letter-spacing: 0.07em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.45);
+      color: var(--panelSubtext);
       margin-bottom: 6px;
     }
 
@@ -780,7 +787,7 @@
       padding: 0;
       margin: 0;
       font-size: clamp(12px, 1.5vw + 8px, 16px);
-      color: rgba(255,255,255,0.7);
+      color: var(--panelText);
       line-height: 1.6;
     }
     .infoList li + li { margin-top: 4px; }
@@ -790,9 +797,9 @@
       padding: 1px 6px;
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
       font-size: clamp(10px, 1vw + 7px, 12px);
-      color: rgba(255,255,255,0.85);
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--panelKbdColor);
+      background: var(--panelKbdBg);
+      border: 1px solid var(--panelKbdBorder);
       border-radius: 4px;
       margin-right: 4px;
     }
@@ -804,7 +811,7 @@
       font-size: clamp(10px, 1vw + 7px, 12px);
       letter-spacing: 0.07em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.45);
+      color: var(--panelSubtext);
       margin-bottom: 6px;
     }
 
@@ -1139,8 +1146,8 @@
 
         <div class="settingsGroup">
           <div class="settingsLabel">Session history cap</div>
-          <label style="font-size: clamp(12px, 1.5vw + 8px, 16px); color: rgba(255,255,255,0.7); display: flex; gap: 6px; align-items: center;">
-            Keep last <input type="number" id="maxHistoryInput" min="1" max="10000" value="1000" style="width: 60px; padding: 4px 6px; background: #2b2b2b; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: clamp(12px, 1.5vw + 8px, 16px); text-align: center;"> sessions
+          <label style="font-size: clamp(12px, 1.5vw + 8px, 16px); color: var(--panelText); display: flex; gap: 6px; align-items: center;">
+            Keep last <input type="number" id="maxHistoryInput" min="1" max="10000" value="1000" style="width: 60px; padding: 4px 6px; background: var(--card); border: 1px solid var(--panelBorder); border-radius: 8px; color: var(--text); font-size: clamp(12px, 1.5vw + 8px, 16px); text-align: center;"> sessions
           </label>
         </div>
       </div>
@@ -1196,7 +1203,7 @@
         <div id="historyList"></div>
         <div id="historyNav" style="margin-top: 12px; display: flex; gap: 6px; justify-content: center; align-items: center;">
           <button id="histPrevBtn" style="font-size: clamp(11px, 1.2vw + 7px, 14px); padding: 6px 10px; min-width: 0; display: none;">&#8592; Prev</button>
-          <span id="pageIndicator" style="color: rgba(255,255,255,0.4); font-size: clamp(11px, 1.2vw + 7px, 14px); min-width: 80px; text-align: center;"></span>
+          <span id="pageIndicator" style="color: var(--textSoft); font-size: clamp(11px, 1.2vw + 7px, 14px); min-width: 80px; text-align: center;"></span>
           <button id="histNextBtn" style="font-size: clamp(11px, 1.2vw + 7px, 14px); padding: 6px 10px; min-width: 0; display: none;">Next &#8594;</button>
         </div>
         <div id="storageWarning" style="display: none; padding: 8px 12px; background: #e57373; border-radius: 8px; font-size: 12px; margin: 8px 0; text-align: center; color: #fff;"></div>
@@ -2081,7 +2088,20 @@
       accentSoft: "rgba(160,102,46,0.18)",
       cardHover: "#dedad4",
       text: "#5c4033",
-      textSoft: "#6b6058"  /* #6b6058 on #f5f1ed = 5.3:1 WCAG AA */
+      textSoft: "#6b6058",  /* #6b6058 on #f5f1ed = 5.3:1 WCAG AA */
+      ringBg: "rgba(92,64,51,0.15)",
+      overlayBg: "rgba(0,0,0,0.55)",
+      panelBg: "#ebe7e1",
+      panelBorder: "rgba(92,64,51,0.20)",
+      panelTitle: "#5c4033",
+      panelSubtext: "rgba(92,64,51,0.60)",
+      panelText: "rgba(92,64,51,0.80)",
+      panelCloseColor: "rgba(92,64,51,0.55)",
+      panelCloseHoverBg: "rgba(92,64,51,0.08)",
+      panelCloseHoverColor: "#5c4033",
+      panelKbdBg: "rgba(92,64,51,0.08)",
+      panelKbdBorder: "rgba(92,64,51,0.20)",
+      panelKbdColor: "#5c4033"
     });
 
     const DARK_THEME = Object.freeze({
@@ -2091,7 +2111,20 @@
       accentSoft: "rgba(154,160,166,0.18)",
       cardHover: "#2e2e2e",
       text: "#fff",
-      textSoft: "rgba(255,255,255,0.55)"
+      textSoft: "rgba(255,255,255,0.55)",
+      ringBg: "rgba(255,255,255,0.12)",
+      overlayBg: "rgba(0,0,0,0.85)",
+      panelBg: "#1a1a1a",
+      panelBorder: "rgba(255,255,255,0.12)",
+      panelTitle: "rgba(255,255,255,0.75)",
+      panelSubtext: "rgba(255,255,255,0.45)",
+      panelText: "rgba(255,255,255,0.70)",
+      panelCloseColor: "rgba(255,255,255,0.55)",
+      panelCloseHoverBg: "rgba(255,255,255,0.06)",
+      panelCloseHoverColor: "rgba(255,255,255,0.9)",
+      panelKbdBg: "rgba(255,255,255,0.08)",
+      panelKbdBorder: "rgba(255,255,255,0.15)",
+      panelKbdColor: "rgba(255,255,255,0.85)"
     });
 
     function applyThemeColors(theme) {
@@ -2103,6 +2136,19 @@
       root.style.setProperty("--cardHover", theme.cardHover || "#2e2e2e");
       root.style.setProperty("--text", theme.text);
       root.style.setProperty("--textSoft", theme.textSoft);
+      root.style.setProperty("--ringBg", theme.ringBg);
+      root.style.setProperty("--overlayBg", theme.overlayBg);
+      root.style.setProperty("--panelBg", theme.panelBg);
+      root.style.setProperty("--panelBorder", theme.panelBorder);
+      root.style.setProperty("--panelTitle", theme.panelTitle);
+      root.style.setProperty("--panelSubtext", theme.panelSubtext);
+      root.style.setProperty("--panelText", theme.panelText);
+      root.style.setProperty("--panelCloseColor", theme.panelCloseColor);
+      root.style.setProperty("--panelCloseHoverBg", theme.panelCloseHoverBg);
+      root.style.setProperty("--panelCloseHoverColor", theme.panelCloseHoverColor);
+      root.style.setProperty("--panelKbdBg", theme.panelKbdBg);
+      root.style.setProperty("--panelKbdBorder", theme.panelKbdBorder);
+      root.style.setProperty("--panelKbdColor", theme.panelKbdColor);
     }
 
     function updateThemeToggleUI() {
