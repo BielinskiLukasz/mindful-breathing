@@ -3,49 +3,55 @@ gsd_state_version: 1.0
 milestone: v0.6
 milestone_name: Layout & History
 status: planning
-last_updated: "2026-06-30T07:44:24.157Z"
+last_updated: "2026-06-30"
 last_activity: 2026-06-30
 progress:
-  total_phases: 0
+  total_phases: 2
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
   percent: 0
 ---
 
-# Project State: Mindful Breathing v0.5
+# Project State: Mindful Breathing v0.6
 
-**Milestone:** v0.5 — Critical Bugs & UX Polish
-**Last Updated:** 2026-06-29
+**Milestone:** v0.6 — Layout & History
+**Last Updated:** 2026-06-30
 
 ---
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-06-29)
+See: .planning/PROJECT.md (updated 2026-06-30)
 
 **Core value:** Reliable, uninterrupted breathing guidance with verifiable history
-**Current focus:** v0.5 shipped — planning v0.6 next milestone
+**Current focus:** Phase 4 ready to plan
 **Stack:** Vanilla JS, single-file HTML, localStorage persistence, no dependencies
 
 ---
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-06-30 — Milestone v0.6 started
+Phase: Phase 4 of 5 (Layout & Light Theme)
+Plan: — (not started)
+Status: Ready to plan
+Last activity: 2026-06-30 — v0.6 roadmap created
 
-## Roadmap Snapshot
+Progress: [░░░░░░░░░░] 0%
 
-| Phase | Milestone | Goal | Status |
-|-------|-----------|------|--------|
-| 1 | v0.4 | Session history, pagination, & vibration | Complete |
-| 2 | v0.4 | Theme toggle & responsive UX | Complete |
-| 3 | v0.5 | Critical bugs & UX polish | Complete |
-| 4 | v0.6 | 2-column landscape redesign & light theme | Planned |
-| 5 | v0.6 | Advanced history features | Planned |
+## Performance Metrics
+
+**Velocity:**
+- Total plans completed: 0 (this milestone)
+- Average duration: —
+- Total execution time: —
+
+**By Phase:**
+
+| Phase | Plans | Total | Avg/Plan |
+|-------|-------|-------|----------|
+| 4. Layout & Light Theme | TBD | — | — |
+| 5. History Data Management | TBD | — | — |
 
 ---
 
@@ -60,33 +66,40 @@ Last activity: 2026-06-30 — Milestone v0.6 started
 
 ### Key Technical Decisions
 
-1. **Single-file vanilla JS** — keep it that way (no frameworks, no npm)
-2. **localStorage for persistence** — reliable, offline-first
-3. **Responsive design** — mobile first, landscape optimized
-4. **No external network requests** — fully offline capable
-5. **`DURATION_RANGE` constant** — single source of truth for 1–300s bounds (v0.5)
-6. **CSS-only micro-interactions** — ring flash, button :active, error flash all CSS-only (v0.5)
-7. **Vibration UI hidden** — Samsung/Android OS blocks API; `display:none` on toggle; code retained (v0.5)
+1. **CSS Grid for landscape** — replace flexbox 50/50 with `grid-template-columns: 1fr 1fr` inside `@media (orientation: landscape) and (min-width: 600px)`
+2. **File API for export** — Blob + URL.createObjectURL + `<a download>` (no server needed)
+3. **FileReader API for import** — JSON schema validation required; atomic write (read → merge → write once)
+4. **CSV import deferred** — RFC 4180 edge cases too risky; JSON-only import for v0.6
+5. **Import merge strategy** — skip duplicates by date (safer than replace)
+6. **Native dialog for clear-history** — focus-trapping and ESC handling free; destructive-language button
 
 ### Known Limitations
 
-- **Vibration API on Android** — non-functional on Samsung Galaxy A33 5G (Android 16, Chrome); believed to be OS-level restriction. Vibration toggle hidden (`display:none`); code kept for future re-enable. Deferred to v0.6+ if a workaround is found.
-- **CONTRAST-REVIEW.md** — dark theme contrast review not formally documented; planned for v0.6 Phase 4
+- **Vibration API on Android** — Samsung/Android OS blocks API; toggle hidden (`display:none`); code retained for future re-enable
+- **CSV import** — deferred to v0.7 (RFC 4180 edge cases); JSON import covers use case safely
+
+### Pending Todos
+
+None.
+
+### Blockers/Concerns
+
+None.
 
 ---
 
 ## Session Continuity
 
-**Last Completed:** v0.5 milestone archived (2026-06-29)
-**Current Plan:** None — milestone complete
-**Open Blockers:** None
-**TODO Items:** None
+Last session: 2026-06-30
+Stopped at: Roadmap created — ready to plan Phase 4
+Resume file: None
 
 **Next Steps:**
 
-1. Run `/gsd-new-milestone` to start v0.6 planning (requirements → roadmap → Phase 4)
+1. Run `/gsd-plan-phase 4` to plan Phase 4 (Layout & Light Theme)
 
 ---
 
 *State initialized: 2026-06-03*
 *Last milestone: v0.5 shipped 2026-06-29*
+*Current milestone: v0.6 started 2026-06-30*
