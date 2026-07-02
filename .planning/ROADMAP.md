@@ -1,6 +1,6 @@
 # Mindful Breathing — Roadmap
 
-**Current Status:** v0.5 shipped, v0.6 in planning
+**Current Status:** v0.6 shipped 2026-07-01
 
 ---
 
@@ -8,7 +8,8 @@
 
 - ✅ **v0.4** — Session History, Vibration & Theming (shipped 2026-06-05)
 - ✅ **v0.5** — Critical Bugs & UX Polish (shipped 2026-06-29)
-- 📋 **v0.6** — Landscape Redesign, Light Theme & Advanced History (planned)
+- ✅ **v0.6** — Layout & History (shipped 2026-07-01)
+- 📋 **v0.7** — (planned)
 
 ---
 
@@ -21,6 +22,7 @@
 - [x] Phase 2: Theming & UX Polish (4 plans) — completed 2026-06-05
 
 **What Shipped:**
+
 - Paginated session history with preset badge and configurable storage cap (default 1,000 entries)
 - Vibration reliability verified correct per W3C spec
 - Light/dark theme toggle with 220ms smooth transitions
@@ -37,6 +39,7 @@
 - [x] Phase 3: Critical Bugs & UX Polish (8 plans) — completed 2026-06-29
 
 **What Shipped:**
+
 - Countdown timer orphan prevention (`cancelCountdown()` in `stop()`)
 - `DURATION_RANGE` constant enforcing 1–300s duration bounds across all call sites
 - localStorage `QuotaExceededError` surfaced with inline warning banner
@@ -50,23 +53,32 @@
 
 </details>
 
+<details>
+<summary>✅ v0.6 (Phases 4–5) — SHIPPED 2026-07-01</summary>
+
+- [x] Phase 4: Layout & Light Theme (2 plans) — completed 2026-06-30
+- [x] Phase 5: History Data Management (1 plan) — completed 2026-06-30
+
+**What Shipped:**
+
+- CSS Grid 2-column landscape layout (ring left, history right) on 600px+ landscape screens
+- WCAG AA light theme contrast: accent #a0662e (5.2:1), textSoft #6b6058 (5.3:1) on cream
+- Per-phase atmospheric bgLight/accentLight colors for all PRESETS (sage/lavender/sky/cream)
+- JSON and CSV session history export via Blob download
+- JSON import with merge/dedup/validation and feedback flash
+- Native `<dialog>` clear-history confirmation with ESC and backdrop dismiss
+
+**Archive:** `.planning/milestones/v0.6-ROADMAP.md`
+
+</details>
+
 ---
 
 ## Planned Phases
 
-### 📋 v0.6 — Landscape Redesign, Light Theme & Advanced History
+### 📋 v0.7 — (to be defined)
 
-**Phase 4: 2-Column Landscape Layout Redesign & Light Theme**
-- Goal: Complete horizontal view overhaul (history visibility, button placement, grid refinement); improve light theme contrast and color palette for readability and WCAG compliance
-- Requirements: Landscape testing (480px to 2560px width), multi-device validation, light theme contrast review per LIGHT-THEME-READABILITY-REPORT.md
-- Scope: 1 major layout item + 1 theme improvement item = ~3–4 plans
-- Dependencies: Phase 3
-
-**Phase 5: Advanced History Features**
-- Goal: Add import/export and safe data deletion with confirmation
-- Requirements: JSON/CSV format validation, localStorage quota planning
-- Scope: 2 features = ~1–2 plans
-- Dependencies: Phase 3
+*Start with `/gsd-new-milestone` to define v0.7 requirements and roadmap.*
 
 ---
 
@@ -77,9 +89,9 @@
 | 1. Session History & Vibration | v0.4 | 1/1 | Complete | 2026-06-04 |
 | 2. Theming & UX Polish | v0.4 | 4/4 | Complete | 2026-06-05 |
 | 3. Critical Bugs & UX Polish | v0.5 | 8/8 | Complete | 2026-06-29 |
-| 4. 2-Column Landscape Redesign & Light Theme | v0.6 | 0/4 | Planned | — |
-| 5. Advanced History Features | v0.6 | 0/2 | Planned | — |
+| 4. Layout & Light Theme | v0.6 | 2/2 | Complete | 2026-06-30 |
+| 5. History Data Management | v0.6 | 1/1 | Complete | 2026-06-30 |
 
 ---
 
-**Last updated:** 2026-06-29 after v0.5 milestone completion
+**Last updated:** 2026-07-01 — v0.6 milestone archived
