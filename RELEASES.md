@@ -1,5 +1,67 @@
 # Release Notes
 
+## 🟩 **v0.6.0**  
+📅 *Release date: 2026‑07‑01*  
+🔖 Commit: `2cdbcb3`  
+👤 Author: @BielinskiLukasz  
+
+### **What's Changed**
+- CSS Grid landscape layout, WCAG AA light theme, and session history data management (export, import, clear)
+
+### **Added**
+- CSS Grid `1fr 1fr` landscape layout — history panel visible alongside the breathing ring on 600px+ screens  
+- Per-phase atmospheric light-mode colors (sage/lavender/sky/cream tints for Inhale/Hold/Exhale/Hold2)  
+- JSON export — downloads `mb-sessions-YYYY-MM-DD.json` with all sessions  
+- CSV export — downloads with date, duration (M:SS), cycles, and preset columns  
+- JSON import — merges with existing history, skips exact-date duplicates, shows import feedback  
+- Clear history with native `<dialog>` confirmation — "Delete all sessions" required; ESC/backdrop dismiss handled natively  
+
+### **Changed**
+- WCAG AA light theme contrast: accent `#d4a574` → `#a0662e` (5.2:1), textSoft `#a89e8c` → `#6b6058` (5.3:1)  
+- `applyThemeForCurrentPhase()` branches on `isDarkMode` for per-phase light and dark color application  
+- Body `transition: background-color` (not shorthand) for smooth phase-tint animation in light mode  
+- Compact scrollable layout retained for small-phone landscape (height ≤500px)  
+
+### **Fixed**
+- Startup crash and icon regression introduced during history data management implementation  
+- Light theme CSS gaps: info/settings panels and ring had hardcoded dark-only rgba values  
+
+### **Full Changelog**
+`v0.5.0...v0.6.0`
+
+---
+
+## 🟧 **v0.5.0**  
+📅 *Release date: 2026‑06‑30*  
+🔖 Commit: `051bbe2`  
+👤 Author: @BielinskiLukasz  
+
+### **What's Changed**
+- Critical bug fixes, CSS micro-interactions, countdown audio, and cross-browser validation
+
+### **Added**
+- Countdown audio beeps (350 Hz) at 3s/2s/1s marks, distinct from the 520 Hz phase-transition beep  
+- Skip button and ESC key handler to dismiss the countdown overlay  
+- Button press feedback via CSS `:active` inset shadow and semi-transparent overlay  
+- Phase transition ring flash — SVG ring brightens briefly (200ms) on each phase advance  
+- First-visit gesture hint shown once, dismissed on any user interaction, persisted via localStorage  
+- Duration input error flash — 400ms red highlight on out-of-range or non-numeric values  
+- `localStorage` `QuotaExceededError` surfaced as an inline warning banner (5-second display)  
+
+### **Changed**
+- `DURATION_RANGE = { min: 1, max: 300 }` constant as single source of truth for all phase duration clamping  
+- Vibration toggle UI hidden (`display:none`) as known limitation — Samsung/Android OS restriction  
+
+### **Fixed**
+- Countdown timer orphan accumulation on rapid Start/Stop — `cancelCountdown()` now called in `stop()`  
+- Duration inputs accepted out-of-range values — clamped to 1–300s via `DURATION_RANGE` constant  
+- localStorage quota exceeded silently — `QuotaExceededError` now caught and shown to user  
+
+### **Full Changelog**
+`v0.4.1...v0.5.0`
+
+---
+
 ## 🟦 **v0.4.1**  
 📅 *Release date: 2026-06-05*  
 🔖 Commit: `8015112`  
