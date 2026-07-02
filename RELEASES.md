@@ -1,7 +1,7 @@
 # Release Notes
 
 ## 🟩 **v0.6.0**  
-📅 *Release date: 2026‑07‑01*  
+📅 *Release date: 2026‑07‑02*  
 🔖 Commit: `2cdbcb3`  
 👤 Author: @BielinskiLukasz  
 
