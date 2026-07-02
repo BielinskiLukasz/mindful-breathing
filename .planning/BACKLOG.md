@@ -54,6 +54,9 @@ User-facing feature additions for history management and data portability.
 
 ## Backlog: Deferred for v0.6+
 
+### Bugs (from UAT release-0-6)
+- **Landscape Media Query Bug** — On tall phones (e.g. iPhone 14 Pro Max) in landscape, the 50/50 grid split triggers based on width > 500px instead of height; the compact layout should activate based on the rotated height (≤ 500px), not width. Confirmed [NOK] in UAT.
+
 ### Accessibility (full keyboard + screen reader support)
 - Keyboard Focus States & Tab Navigation — Add visible focus outlines, logical tab order
 - ARIA Labels & Accessibility Attributes — Screen reader support for buttons, inputs, sliders
@@ -62,7 +65,7 @@ User-facing feature additions for history management and data portability.
 ### Data & Analytics
 - Log Unfinished Sessions — Track incomplete sessions (cycle count, elapsed time)
 - Enhance History Data — Add preset mode, phase-level timing per session
-- Version Number in Info Popup — Display app version (v0.4.0, etc.)
+- **Version Number in Info Panel** — Display current app version (e.g. v0.6) in the info popup _(surfaced from UAT release-0-6)_
 
 ### Visual
 - Background tint transitions in dark mode
