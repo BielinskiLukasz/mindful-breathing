@@ -55,3 +55,31 @@ Historical record of shipped versions.
 ---
 
 *Historical record updated 2026-06-29 after v0.5 milestone*
+
+---
+
+## v0.6 — Layout & History
+
+**Shipped:** 2026-07-01
+**Phases:** 4–5 | **Plans:** 3 total | **Requirements:** 6 v1
+**Closeout type:** override_closeout
+
+**Key Accomplishments:**
+
+1. CSS Grid 2-column landscape layout (`1fr 1fr`) replacing flex — history panel visible alongside the breathing ring in landscape on 600px+ screens
+2. WCAG AA light theme contrast: accent #a0662e (5.2:1) and textSoft #6b6058 (5.3:1) on cream #f5f1ed — warm brown/gold family maintained
+3. Per-phase atmospheric bgLight/accentLight colors across all 11 PRESETS entries — sage/lavender/sky/cream for Inhale/Hold/Exhale/Hold2 in light mode
+4. JSON and CSV session history export via Blob + URL.createObjectURL (no server required)
+5. JSON import with FileReader, schema validation, exact-date dedup, merge, and `#storageWarning` flash feedback
+6. Native `<dialog>.showModal()` clear-history confirmation with "Delete all sessions" — ESC and backdrop dismiss without data loss
+
+**Known Deferred Items:** 15 manual UAT items (sound, haptics, Wake Lock, mobile Safari, landscape on device, browser-verified import/export, PWA install — see STATE.md Deferred Items)
+
+**Archive:** `.planning/milestones/v0.6-ROADMAP.md`
+**Requirements:** `.planning/milestones/v0.6-REQUIREMENTS.md`
+
+**Git tag:** v0.6
+
+---
+
+*Historical record updated 2026-07-01 after v0.6 milestone*
