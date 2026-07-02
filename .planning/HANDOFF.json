@@ -1,0 +1,38 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-07-03T00:00:00.000Z",
+  "phase": null,
+  "phase_name": null,
+  "phase_dir": null,
+  "plan": null,
+  "task": null,
+  "total_tasks": null,
+  "status": "paused",
+  "completed_tasks": [
+    {"id": 1, "name": "v0.4 — Session History & Vibration + Theming & UX Polish", "status": "done", "commit": "shipped 2026-06-05"},
+    {"id": 2, "name": "v0.5 — Critical Bugs & UX Polish", "status": "done", "commit": "shipped 2026-06-29"},
+    {"id": 3, "name": "v0.6 — Layout & History (phases 4+5)", "status": "done", "commit": "69d646a"}
+  ],
+  "remaining_tasks": [
+    {"id": 4, "name": "Define v0.7 milestone requirements", "status": "not_started"},
+    {"id": 5, "name": "Run manual UAT against 15 deferred items (optional pre-v0.7)", "status": "not_started"}
+  ],
+  "blockers": [],
+  "async_jobs": [],
+  "human_actions_pending": [
+    {
+      "action": "Run /gsd-new-milestone to define v0.7 requirements",
+      "context": "v0.6 shipped; roadmap has v0.7 as 'to be defined'",
+      "blocking": false
+    },
+    {
+      "action": "Optional manual UAT of 15 deferred items before v0.7",
+      "context": "15 items verified in code but not manually tested on devices (sound, haptics, wake lock, Safari iOS, landscape on real phone, export/import, PWA)",
+      "blocking": false
+    }
+  ],
+  "decisions": [],
+  "uncommitted_files": [],
+  "next_action": "Run /gsd-new-milestone to kick off v0.7 planning, or /gsd-verify-work to close out UAT items first",
+  "context_notes": "Clean inter-milestone stop. v0.6 fully shipped and merged. No in-progress work. 15 deferred UAT items remain from the v0.6 milestone that were verified in code but never manually tested on physical devices."
+}
