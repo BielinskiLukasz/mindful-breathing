@@ -1,7 +1,7 @@
 # Mindful Breathing
 
 ![Status](https://img.shields.io/badge/status-active_development-brightgreen)
-![Version](https://img.shields.io/badge/version-0.5.0-blue)
+![Version](https://img.shields.io/badge/version-0.6.0-blue)
 ![HTML5](https://img.shields.io/badge/HTML-5-E34F26?logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS-3-1572B6?logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/ECMAScript-2023-F7DF1E?logo=javascript&logoColor=black)
@@ -35,12 +35,14 @@ No backend. No dependencies. No installation. Works offline.
 - **Sound cues** via Web Audio API — speaker icon toggle, per-phase sine tones
 - **Haptic feedback** via Vibration API — vibration icon toggle, supported on Android/Chrome
 - **Screen Wake Lock** — prevents display sleep during a session
-- **Session history** with last 14 sessions and a one-tap Clear button
+- **Session history** with last 14 sessions — export as JSON or CSV, import from JSON (merge/dedup), and clear all with a native confirmation dialog
 - **Dedicated info panel** — the `ⓘ` icon now opens a modal with keyboard shortcuts and platform notes (replacing the previous inline collapsible block)
 - **Keyboard shortcuts** — `Space` start/stop · `R` reset · `F` fullscreen
 - **Fullscreen mode** for an immersive, distraction-free experience
 - **Installable PWA** — works offline and can be added to home screen on mobile
-- **Landscape-aware layout** — main UI re-centers, corner icons reflow into a row, and Start/Reset buttons stay centered when the device is rotated
+- **Landscape CSS Grid layout** — on screens ≥600px wide in landscape, the history panel sits in a `1fr 1fr` grid alongside the breathing ring; narrower devices get a compact scrollable layout
+- **WCAG AA light theme** — contrast-checked across every UI element (accent 5.2:1, secondary text 5.3:1 on the cream background)
+- **Per-phase atmospheric tints** — in light mode each breathing phase (Inhale/Hold/Exhale/Hold2) shifts the background to a distinct warm tint (sage, lavender, sky, cream)
 
 ---
 
@@ -69,12 +71,23 @@ Dismiss the same way as the settings panel: the `×` button or a click outside t
 
 ## Landscape Layout
 
-When the device is rotated horizontally (`max-height: 500px` and `orientation: landscape`), the layout adapts so nothing crowds or overlaps:
+When the device is rotated horizontally, the layout adapts based on available height:
 
-- **Centered main UI** — the title row, mode indicator, cycle counter, phase label, timer ring, and status text all stay horizontally centered.
-- **Corner icons reflow into a row** — the (i), gear, and sound/vibration toggles sit horizontally across the top of the card so they no longer stack down into the ring area. All four icons (plus the fullscreen toggle in the top-right) are normalised to the same 32×32 size with consistent spacing, so nothing touches or overlaps.
-- **Centered controls** — Start / Reset buttons, status row, goal row, and session bar are explicitly centered in landscape, matching portrait alignment.
-- **Consistent vertical rhythm** — top padding reserves room for the icon row, and the surrounding elements share a uniform 8 px rhythm so spacing reads the same way in either orientation.
+- **CSS Grid two-column split (height > 500px)** — the breathing ring and the history panel sit side by side in a `1fr 1fr` grid, so session history is visible without scrolling while a session runs.
+- **Compact scrollable layout (height ≤ 500px)** — on small phones the single-column layout is preserved with reduced spacing so the ring and controls remain reachable.
+- **Corner icons reflow into a row** — the (i), gear, and sound/vibration toggles sit horizontally across the top so they no longer stack into the ring area. All icons are normalised to 32×32 with consistent spacing.
+- **Centered controls** — Start / Reset buttons, status row, goal row, and session bar stay centered in landscape, matching portrait alignment.
+
+---
+
+## History Data Management
+
+The history panel footer exposes three controls for managing your session data:
+
+- **Export JSON** — downloads `mb-sessions-YYYY-MM-DD.json` containing all stored sessions; suitable for backup or inspection.
+- **Export CSV** — downloads a spreadsheet-ready file with `date`, `duration` (M:SS), `cycles`, and `preset` columns.
+- **Import JSON** — loads a previously exported JSON file and merges it with existing history; duplicate dates are silently skipped, so re-importing is safe.
+- **Clear** — opens a native `<dialog>` with destructive-action language ("Delete all sessions") before wiping the history; ESC and backdrop click dismiss safely without deleting anything.
 
 ---
 
@@ -88,6 +101,7 @@ It also became an experiment in how far you can push a single HTML file before i
 
 ## What's Next
 
+- CSV import (deferred from v0.6 — RFC 4180 edge cases require a proper parser)
 - Custom breathing preset builder (name, phases, durations)
 - Streak tracking — consecutive days with completed sessions
 - Ambient background sound option (white noise, rain)
