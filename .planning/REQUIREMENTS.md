@@ -10,14 +10,14 @@
 
 ### Landscape Layout & Responsiveness
 
-- [ ] **LAYOUT-01**: Landscape compact layout activates on tall phones based on viewport height (≤500px), not width, ensuring correct display in portrait-rotated-to-landscape orientation on iPhone 14 Pro Max and similar tall devices
+- [x] **LAYOUT-01**: Landscape compact layout activates on tall phones based on viewport height (≤500px), not width, ensuring correct display in portrait-rotated-to-landscape orientation on iPhone 14 Pro Max and similar tall devices
   - **Acceptance**: Media query uses `(orientation: landscape) and (max-height: 500px)` for compact layout instead of width-based check
   - **Dependencies**: None
   - **Complexity**: Low
 
 ### Visual Polish & Transitions
 
-- [ ] **VISUAL-01**: Body background color transitions smoothly (220ms) in dark mode when phase changes, instead of jumping abruptly
+- [x] **VISUAL-01**: Body background color transitions smoothly (220ms) in dark mode when phase changes, instead of jumping abruptly
   - **Acceptance**: Background tint change is animated/transitioned during phase updates in dark mode; light mode remains unchanged (not needed)
   - **Dependencies**: None
   - **Complexity**: Low
@@ -31,7 +31,7 @@
 
 ### Info Panel Enhancement
 
-- [ ] **INFO-01**: App version number is displayed in the info panel (e.g. "v1.0"), updated automatically when app updates
+- [x] **INFO-01**: App version number is displayed in the info panel (e.g. "v1.0"), updated automatically when app updates
   - **Acceptance**: Version hardcoded in CONFIG section (e.g. `APP_VERSION: "1.0"`); displayed in info panel footer; matches git tags
   - **Dependencies**: None
   - **Complexity**: Low
@@ -75,6 +75,7 @@
 | INFO-01 | 6 | Roadmap created | Version display in info panel |
 
 **Coverage:**
+
 - v1 requirements: 4 total
 - Mapped to Phase 6: 4/4 (100%)
 - Status: Roadmap created; ready for phase planning

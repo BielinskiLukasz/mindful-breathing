@@ -99,16 +99,18 @@
 **Requirements:** LAYOUT-01, VISUAL-01, TRACK-01, INFO-01
 
 **Success Criteria** (what must be TRUE):
+
 1. Landscape mode on tall phones (height ≤ 500px) displays correct compact layout without content overflow
 2. Background color transitions smoothly (220ms) when phase changes in dark mode instead of jumping abruptly
 3. Unfinished sessions appear in history list with distinct "Incomplete" styling showing cycle count and elapsed time
 4. App version (v1.0) is visible in the info panel footer
 5. All existing features (light theme, export/import, controls) continue to work without regression
 
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
-- [ ] 06-01-PLAN.md — CSS/HTML improvements: smooth background transition, compact landscape height fix, app version display
+
+- [x] 06-01-PLAN.md — CSS/HTML improvements: smooth background transition, compact landscape height fix, app version display
 - [ ] 06-02-PLAN.md — Incomplete session tracking: save eligible sessions on Stop, render with muted opacity and italic label
 
 ---
@@ -122,7 +124,7 @@ Plans:
 | 3. Critical Bugs & UX Polish | v0.5 | 8/8 | Complete | 2026-06-29 |
 | 4. Layout & Light Theme | v0.6 | 2/2 | Complete | 2026-06-30 |
 | 5. History Data Management | v0.6 | 1/1 | Complete | 2026-06-30 |
-| 6. Bug Fixes & Visual Polish | v1.0 | 0/? | Not started | — |
+| 6. Bug Fixes & Visual Polish | v1.0 | 1/2 | In Progress|  |
 
 ---
 
