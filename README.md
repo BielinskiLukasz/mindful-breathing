@@ -1,7 +1,7 @@
 # Mindful Breathing
 
-![Status](https://img.shields.io/badge/status-active_development-brightgreen)
-![Version](https://img.shields.io/badge/version-0.6.0-blue)
+![Status](https://img.shields.io/badge/status-stable-brightgreen)
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
 ![HTML5](https://img.shields.io/badge/HTML-5-E34F26?logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS-3-1572B6?logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/ECMAScript-2023-F7DF1E?logo=javascript&logoColor=black)
@@ -10,7 +10,7 @@
 A distraction-free breathing timer for relaxation, focus, and mindfulness practice.  
 No backend. No dependencies. No installation. Works offline.
 
-> **Actively developed** — new features and UI improvements are being added regularly.
+> **v1.0** — stable release with session history, data management, light/dark themes, and incomplete session tracking.
 
 **[Live demo →](https://bielinskilukasz.github.io/mindful-breathing/)**
 
@@ -37,12 +37,15 @@ No backend. No dependencies. No installation. Works offline.
 - **Screen Wake Lock** — prevents display sleep during a session
 - **Session history** with last 14 sessions — export as JSON or CSV, import from JSON (merge/dedup), and clear all with a native confirmation dialog
 - **Dedicated info panel** — the `ⓘ` icon now opens a modal with keyboard shortcuts and platform notes (replacing the previous inline collapsible block)
-- **Keyboard shortcuts** — `Space` start/stop · `R` reset · `F` fullscreen
 - **Fullscreen mode** for an immersive, distraction-free experience
 - **Installable PWA** — works offline and can be added to home screen on mobile
 - **Landscape CSS Grid layout** — on screens ≥600px wide in landscape, the history panel sits in a `1fr 1fr` grid alongside the breathing ring; narrower devices get a compact scrollable layout
 - **WCAG AA light theme** — contrast-checked across every UI element (accent 5.2:1, secondary text 5.3:1 on the cream background)
 - **Per-phase atmospheric tints** — in light mode each breathing phase (Inhale/Hold/Exhale/Hold2) shifts the background to a distinct warm tint (sage, lavender, sky, cream)
+- **Smooth phase background transitions** — background color fades over 220ms when the breathing phase changes; no abrupt jump in either light or dark mode
+- **Incomplete session tracking** — sessions paused and reset after completing at least one full cycle are saved to history with muted opacity and an italic "Incomplete" label; partial progress is never silently discarded
+- **App version in info panel** — the `ⓘ` panel footer displays the current version (`v1.0`) sourced from a config constant
+- **Keyboard shortcuts** — `Space` start/pause · `R` reset · `F` fullscreen
 
 ---
 
@@ -60,12 +63,13 @@ The panel is a lightweight modal — click outside it or the `×` button to dism
 
 ## Info Panel
 
-The `ⓘ` icon in the top-left corner column now opens a dedicated modal (matching the settings panel's style) instead of toggling an inline block under the controls. The panel surfaces two groups:
+The `ⓘ` icon in the top-left corner opens a dedicated modal with:
 
-- **Keyboard shortcuts** — `Space` (start / stop), `R` (reset), `F` (fullscreen), shown as `<kbd>`-style chips.
+- **Keyboard shortcuts** — `Space` (start / pause), `R` (reset), `F` (fullscreen), shown as `<kbd>`-style chips.
 - **Notes** — sound-autoplay caveat (browser autoplay policy) and the Android-/Chrome-only nature of vibration.
+- **App version** — displayed right-aligned in the footer (`v1.0`).
 
-Dismiss the same way as the settings panel: the `×` button or a click outside the panel.
+Dismiss via the `×` button or a click outside the panel.
 
 ---
 
@@ -101,10 +105,10 @@ It also became an experiment in how far you can push a single HTML file before i
 
 ## What's Next
 
-- CSV import (deferred from v0.6 — RFC 4180 edge cases require a proper parser)
+- CSV import (deferred to v1.1 — RFC 4180 edge cases require a proper parser)
+- Accessibility — full keyboard navigation and screen reader support
 - Custom breathing preset builder (name, phases, durations)
 - Streak tracking — consecutive days with completed sessions
-- Ambient background sound option (white noise, rain)
 
 ---
 
