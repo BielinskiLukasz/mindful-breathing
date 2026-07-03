@@ -1,5 +1,30 @@
 # Release Notes
 
+## 🟩 **v1.0.0**  
+📅 *Release date: 2026‑07‑04*  
+🔖 Commit: `7174f86`  
+👤 Author: @BielinskiLukasz  
+
+### **What's Changed**
+- Incomplete session tracking, button rename, version display, and landscape/light-mode polish
+
+### **Added**
+- Incomplete sessions saved to history on reset (requires ≥ 2 completed cycles); rendered with muted opacity (0.6) and italic "Incomplete" label — backward compatible with existing entries  
+- `APP_VERSION = '1.0'` constant in CONFIG section; info panel footer now displays `v1.0`
+
+### **Changed**
+- "Stop" button renamed to "Pause" — reflects actual behavior (session is paused, not ended; Resume/Start appears after)
+
+### **Fixed**
+- Incomplete session save moved from Pause click to `reset()` — prevents repeated history entries on pause/resume cycles; guards against double-save when a completed session is restarted from the done overlay  
+- Body CSS transition extended from `background-color` to `background` — phase background tints now animate smoothly in light mode instead of jumping abruptly  
+- Compact landscape body set to `height: auto` + `min-height: 100vh` — ring and Start/Pause controls remain visible in the initial viewport on tall phones in landscape orientation
+
+### **Full Changelog**
+`v0.6.0...v1.0.0`
+
+---
+
 ## 🟩 **v0.6.0**  
 📅 *Release date: 2026‑07‑02*  
 🔖 Commit: `2cdbcb3`  
