@@ -1657,8 +1657,10 @@
           const presetKey = s.preset || "relax";
           const presetName = MODE_LABELS[presetKey] || presetKey;
           const presetColor = (PRESETS[presetKey] && PRESETS[presetKey][0] && PRESETS[presetKey][0].theme && PRESETS[presetKey][0].theme.accent) || "#9aa0a6";
-          return `<div class="historyItem">
-            <span><span style="color: ${presetColor};">&#9679;</span> ${presetName} &bull; ${formatDuration(s.durationMs)} &bull; ${s.cycles} cycle${s.cycles !== 1 ? "s" : ""} &bull; ${dateLabel}</span>
+          const rowStyle = s.incomplete ? ' style="opacity:0.6"' : '';
+          const incompleteLabel = s.incomplete ? ' &bull; <em>Incomplete</em>' : '';
+          return `<div class="historyItem"${rowStyle}>
+            <span><span style="color: ${presetColor};">&#9679;</span> ${presetName} &bull; ${formatDuration(s.durationMs)} &bull; ${s.cycles} cycle${s.cycles !== 1 ? "s" : ""} &bull; ${dateLabel}${incompleteLabel}</span>
           </div>`;
         }).join("");
 
