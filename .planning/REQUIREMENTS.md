@@ -24,7 +24,7 @@
 
 ### Session History Data Enhancement
 
-- [ ] **TRACK-01**: User can view unfinished/incomplete sessions in history (sessions that were started but not completed to full cycle), showing cycle count and elapsed time
+- [x] **TRACK-01**: User can view unfinished/incomplete sessions in history (sessions that were started but not completed to full cycle), showing cycle count and elapsed time
   - **Acceptance**: Session history tracks interrupted sessions with `incomplete: true` flag; displays with distinct styling (e.g. "Incomplete - 3 cycles, 5:30")
   - **Dependencies**: None
   - **Complexity**: Medium (requires schema change to session storage)
