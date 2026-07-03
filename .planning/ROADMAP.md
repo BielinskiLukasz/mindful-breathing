@@ -1,6 +1,6 @@
 # Mindful Breathing — Roadmap
 
-**Current Status:** v0.6 shipped 2026-07-01
+**Current Status:** v1.0 in planning
 
 ---
 
@@ -9,7 +9,8 @@
 - ✅ **v0.4** — Session History, Vibration & Theming (shipped 2026-06-05)
 - ✅ **v0.5** — Critical Bugs & UX Polish (shipped 2026-06-29)
 - ✅ **v0.6** — Layout & History (shipped 2026-07-01)
-- 📋 **v0.7** — (planned)
+- 📋 **v1.0** — Bug Fixes & Visual Polish (in progress)
+- 📋 **v1.1+** — (planned)
 
 ---
 
@@ -74,11 +75,37 @@
 
 ---
 
-## Planned Phases
+## Current Milestone: v1.0
 
-### 📋 v0.7 — (to be defined)
+### 📋 v1.0 — Bug Fixes & Visual Polish (IN PROGRESS)
 
-*Start with `/gsd-new-milestone` to define v0.7 requirements and roadmap.*
+**Status:** Planning  
+**Phases:** 1 (Phase 6)  
+**Requirements:** 4 v1  
+**Target Ship Date:** TBD
+
+#### Phases
+
+- [ ] **Phase 6: Bug Fixes & Visual Polish** — Fix landscape compact layout detection, smooth background transitions, track unfinished sessions, display app version
+
+#### Phase Details
+
+### Phase 6: Bug Fixes & Visual Polish
+
+**Goal:** Fix critical landscape layout bugs, enhance visual transitions, track incomplete sessions, and display app version information
+
+**Depends on:** Phase 5 (v0.6)
+
+**Requirements:** LAYOUT-01, VISUAL-01, TRACK-01, INFO-01
+
+**Success Criteria** (what must be TRUE):
+1. Landscape mode on tall phones (height ≤ 500px) displays correct compact layout without content overflow
+2. Background color transitions smoothly (220ms) when phase changes in dark mode instead of jumping abruptly
+3. Unfinished sessions appear in history list with distinct "Incomplete" styling showing cycle count and elapsed time
+4. App version (v1.0) is visible in the info panel footer
+5. All existing features (light theme, export/import, controls) continue to work without regression
+
+**Plans:** TBD
 
 ---
 
@@ -91,7 +118,8 @@
 | 3. Critical Bugs & UX Polish | v0.5 | 8/8 | Complete | 2026-06-29 |
 | 4. Layout & Light Theme | v0.6 | 2/2 | Complete | 2026-06-30 |
 | 5. History Data Management | v0.6 | 1/1 | Complete | 2026-06-30 |
+| 6. Bug Fixes & Visual Polish | v1.0 | 0/? | Not started | — |
 
 ---
 
-**Last updated:** 2026-07-01 — v0.6 milestone archived
+**Last updated:** 2026-07-03 — v1.0 roadmap created

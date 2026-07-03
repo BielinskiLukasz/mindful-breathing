@@ -4,10 +4,10 @@ milestone: v1.0
 milestone_name: Bug Fixes & Visual Polish
 current_phase: 06
 status: planning
-stopped_at: Defining requirements
+stopped_at: Roadmap created
 last_updated: "2026-07-03T00:00:00.000Z"
 last_activity: 2026-07-03
-last_activity_desc: Milestone v1.0 started — requirements defined
+last_activity_desc: Roadmap Phase 6 created — ready for planning
 progress:
   total_phases: 1
   completed_phases: 0
@@ -38,8 +38,8 @@ See: .planning/PROJECT.md (updated 2026-07-03)
 
 Phase: 06 — PLANNING  
 Plan: —  
-Status: Defining requirements and preparing roadmap  
-Last activity: 2026-07-03 — Milestone v1.0 started
+Status: Roadmap created; ready for detailed phase planning  
+Last activity: 2026-07-03 — Roadmap Phase 6 created with 5 success criteria
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -60,6 +60,14 @@ Progress: [░░░░░░░░░░] 0%
 2. **Background transitions** — Smooth phase tint changes in dark mode (VISUAL-01)
 3. **Unfinished session tracking** — Log incomplete sessions in history with cycle count (TRACK-01)
 4. **Version display** — Show app version in info panel (INFO-01)
+
+### Phase 6 Success Criteria
+
+1. Landscape mode on tall phones (height ≤ 500px) displays correct compact layout without content overflow
+2. Background color transitions smoothly (220ms) when phase changes in dark mode instead of jumping abruptly
+3. Unfinished sessions appear in history list with distinct "Incomplete" styling showing cycle count and elapsed time
+4. App version (v1.0) is visible in the info panel footer
+5. All existing features (light theme, export/import, controls) continue to work without regression
 
 ### Previous Decisions (from v0.4–v0.6)
 
@@ -102,4 +110,5 @@ Resume file: None
 
 *State initialized: 2026-07-03*  
 *Previous milestone: v0.6 shipped 2026-07-01*  
-*Current milestone: v1.0 started 2026-07-03*
+*Current milestone: v1.0 started 2026-07-03*  
+*Roadmap created: 2026-07-03*
