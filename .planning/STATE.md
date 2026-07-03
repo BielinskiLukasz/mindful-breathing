@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: "### 📋 v1.0 — Bug Fixes & Visual Polish"
 current_phase: 06
-current_phase_name: PLANNED
-status: planned
-stopped_at: Phase 6 plans created — ready to execute
-last_updated: "2026-07-03T22:20:14.936Z"
-last_activity: 2026-07-03
-last_activity_desc: Phase 6 plans created (2 plans, 5 tasks)
+current_phase_name: COMPLETE
+status: complete
+stopped_at: Phase 6 verification complete — all 4 requirements implemented and verified
+last_updated: "2026-07-04T00:00:00.000Z"
+last_activity: 2026-07-04
+last_activity_desc: Phase 6 verified — VISUAL-01, LAYOUT-01, TRACK-01, INFO-01 all PASS; human UAT items documented
 progress:
   total_phases: 1
   completed_phases: 1
@@ -20,7 +20,7 @@ progress:
 # Project State: Mindful Breathing v1.0
 
 **Milestone:** v1.0 — Bug Fixes & Visual Polish  
-**Last Updated:** 2026-07-03
+**Last Updated:** 2026-07-04
 
 ---
 
@@ -29,19 +29,19 @@ progress:
 See: .planning/PROJECT.md (updated 2026-07-03)
 
 **Core value:** Reliable, uninterrupted breathing guidance with verifiable history  
-**Current focus:** Phase 6 — bug fixes, visual polish, session tracking enhancements  
+**Current focus:** Phase 6 complete — all v1.0 requirements shipped  
 **Stack:** Vanilla JS, single-file HTML, localStorage persistence, no dependencies
 
 ---
 
 ## Current Position
 
-Phase: 06 — PLANNED  
-Plan: 06-01 (Wave 1), 06-02 (Wave 2)  
-Status: Plans created; ready to execute  
-Last activity: 2026-07-03 — Phase 6 plans created (2 plans, 5 tasks)
+Phase: 06 — COMPLETE  
+Plan: 06-01 (Wave 1) COMPLETE, 06-02 (Wave 2) COMPLETE  
+Status: All plans executed and verified; human UAT items documented in 06-VERIFICATION.md  
+Last activity: 2026-07-04 — Phase 6 verification complete
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [██████████] 100%
 
 ---
 
@@ -54,20 +54,20 @@ Progress: [░░░░░░░░░░] 0%
 - No build step, no package manager, runs offline
 - Deployed via GitHub Pages
 
-### v1.0 Target Features
+### v1.0 Shipped Features
 
-1. **Landscape media query fix** — Height-based detection for tall phone compact layout (LAYOUT-01)
-2. **Background transitions** — Smooth phase tint changes in dark mode (VISUAL-01)
-3. **Unfinished session tracking** — Log incomplete sessions in history with cycle count (TRACK-01)
-4. **Version display** — Show app version in info panel (INFO-01)
+1. **Landscape media query fix** — `height: auto; min-height: 100vh;` in compact landscape body (LAYOUT-01)
+2. **Background transitions** — `transition: background 220ms ease` on body (VISUAL-01)
+3. **Unfinished session tracking** — `incomplete: true` flag on Stop; `opacity:0.6` + italic label in history (TRACK-01)
+4. **Version display** — `APP_VERSION = "1.0"` constant injected into info panel footer as "v1.0" (INFO-01)
 
-### Phase 6 Success Criteria
+### Phase 6 Success Criteria — All Satisfied
 
-1. Landscape mode on tall phones (height ≤ 500px) displays correct compact layout without content overflow
-2. Background color transitions smoothly (220ms) when phase changes in dark mode instead of jumping abruptly
-3. Unfinished sessions appear in history list with distinct "Incomplete" styling showing cycle count and elapsed time
-4. App version (v1.0) is visible in the info panel footer
-5. All existing features (light theme, export/import, controls) continue to work without regression
+1. Landscape mode on tall phones (height ≤ 500px) displays correct compact layout without content overflow — VERIFIED
+2. Background color transitions smoothly (220ms) when phase changes instead of jumping abruptly — VERIFIED
+3. Unfinished sessions appear in history list with distinct "Incomplete" styling showing cycle count and elapsed time — VERIFIED
+4. App version (v1.0) is visible in the info panel footer — VERIFIED
+5. All existing features (light theme, export/import, controls) continue to work without regression — VERIFIED (code level; human UAT pending)
 
 ### Previous Decisions (from v0.4–v0.6)
 
@@ -80,6 +80,13 @@ See PROJECT.md Key Decisions table for full history. Key themes:
 - WCAG AA contrast on light theme (v0.6)
 - Native `<dialog>` for clear confirmation (v0.6)
 
+### v1.0 Decisions
+
+- cycleCount >= 2 is the threshold for at least 1 full cycle completed — TRACK-01 (D-01)
+- `background` shorthand used in transition (not `background-color`) to animate CSS custom property changes reliably — VISUAL-01 (D-10, D-13)
+- `height: auto` + `min-height: 100vh` in compact landscape body overrides base `height: 100vh` — LAYOUT-01 (D-14, D-15)
+- `APP_VERSION` injected via JS at init — HTML element starts empty, constant is single source of truth — INFO-01 (D-16)
+
 ### Known Limitations
 
 - **Vibration API on Android** — Samsung/Android OS blocks API; toggle hidden (`display:none`); code retained for future re-enable
@@ -88,7 +95,12 @@ See PROJECT.md Key Decisions table for full history. Key themes:
 
 ### Pending Todos
 
-None blocking v1.0.
+Human UAT for Phase 6 (documented in .planning/phases/06/06-VERIFICATION.md):
+1. Incomplete session history display in browser (TRACK-01)
+2. Background transition smoothness visual check (VISUAL-01)
+3. Compact landscape layout in Chrome DevTools device emulation (LAYOUT-01)
+4. App version display in info panel (INFO-01)
+5. Regression: all features functional in compact landscape (SC-5)
 
 ### Blockers/Concerns
 
@@ -98,27 +110,31 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-07-03T22:20:01.336Z
-Stopped at: Phase 6 context gathered
-Resume file: .planning/phases/06/06-CONTEXT.md
+Last session: 2026-07-04T00:00:00.000Z  
+Stopped at: Phase 6 verification complete  
+Resume file: .planning/phases/06/06-VERIFICATION.md
 
 **Next Steps:**
 
-1. Run `/gsd-execute-phase 6` to implement all Phase 6 changes
+1. Run human UAT checklist in 06-VERIFICATION.md (5 browser tests)
+2. On UAT pass: run `/gsd-ship` or `/gsd-complete-milestone` to archive v1.0 and prepare v1.1
 
 ---
 
 *State initialized: 2026-07-03*  
 *Previous milestone: v0.6 shipped 2026-07-01*  
-*Current milestone: v1.0 started 2026-07-03*  
-*Roadmap created: 2026-07-03*
+*Current milestone: v1.0 started 2026-07-03, Phase 6 complete 2026-07-04*
 
 ## Performance Metrics
 
 | Phase | Plan | Duration | Notes |
 |-------|------|----------|-------|
-| Phase 06 P02 | 6 minutes | 2 tasks | 1 files |
+| Phase 06 P01 | 8 minutes | 3 tasks | 1 file |
+| Phase 06 P02 | 6 minutes | 2 tasks | 1 file |
 
 ## Decisions
 
-- [Phase ?]: cycleCount >= 2 is the threshold for at least 1 full cycle completed — TRACK-01 (D-01)
+- [Phase 6]: cycleCount >= 2 is the threshold for at least 1 full cycle completed — TRACK-01 (D-01)
+- [Phase 6]: `background` shorthand in body transition (not `background-color`) — VISUAL-01 (D-10, D-13)
+- [Phase 6]: `height: auto` + `min-height: 100vh` overrides base `height: 100vh` in compact landscape — LAYOUT-01 (D-14, D-15)
+- [Phase 6]: APP_VERSION JS-injected at init, not hardcoded in HTML — INFO-01 (D-16)
