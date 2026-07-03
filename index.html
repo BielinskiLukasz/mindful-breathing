@@ -2190,7 +2190,25 @@
 
     toggleBtn.addEventListener("click", async () => {
       if (isCountingDown) { cancelCountdown(); return; }
-      if (isRunning) { stop(); return; }
+      if (isRunning) {
+        stop();
+        // Save incomplete session if at least 1 full cycle completed (D-01) via Stop button only (D-02).
+        // D-04 is satisfied: if isCountingDown was true, the handler already returned at the earlier
+        // `if (isCountingDown) { cancelCountdown(); return; }` guard — so this branch is only reached
+        // when a session is actively running (not during countdown).
+        // stop() updates totalSessionMs before returning — use it for durationMs (D-03).
+        if (cycleCount >= 2) {
+          saveHistory({
+            date: new Date().toISOString(),
+            durationMs: totalSessionMs,
+            cycles: cycleCount - 1,
+            preset: activePresetKey,
+            incomplete: true
+          });
+          renderHistory();
+        }
+        return;
+      }
 
       // Create/resume AudioContext synchronously within user gesture
       if (soundEnabled) {
