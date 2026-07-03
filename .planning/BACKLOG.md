@@ -68,4 +68,5 @@ User-facing feature additions for history management and data portability.
 - **Version Number in Info Panel** — Display current app version (e.g. v0.6) in the info popup _(surfaced from UAT release-0-6)_
 
 ### Visual
+- **Dedicated Vertical Layout for Phones < 500px Width** — Optimize layout for ultra-narrow phones with stacked, single-column portrait view (ring larger relative to viewport, controls below); distinct from current responsive breakpoints
 - Background tint transitions in dark mode
