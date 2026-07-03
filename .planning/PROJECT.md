@@ -1,9 +1,19 @@
-# Mindful Breathing v0.6
+# Mindful Breathing v1.0
 
-## Current State: v0.6 Shipped
+## Current Milestone: v1.0 — Bug Fixes & Visual Polish
+
+**Status:** Planning
+**Goal:** Fix critical landscape media query bug, enhance visual polish, track unfinished sessions, and display app version
+
+**Target features:**
+- Fix landscape layout media query on tall phones (height-based compact layout detection)
+- Display app version in info panel
+- Background tint transitions in dark mode for smooth phase animations
+- Track and display unfinished/incomplete sessions in history
+
+## Previous Milestone: v0.6 Shipped
 
 **Shipped:** 2026-07-01
-**Next:** `/gsd-new-milestone` to define v0.7
 
 **v0.6 delivered:**
 - CSS Grid 2-column landscape layout — history panel visible alongside the breathing ring
@@ -54,7 +64,10 @@ Reliable, uninterrupted breathing guidance with verifiable history — users nee
 
 ### Active
 
-*(Define with `/gsd-new-milestone` for v0.7)*
+- [ ] **LAYOUT-01**: Landscape media query uses height-based detection for tall phone compact layout
+- [ ] **VISUAL-01**: Background color transitions smoothly in dark mode during phase changes
+- [ ] **TRACK-01**: User can view unfinished sessions in history with cycle count and elapsed time
+- [ ] **INFO-01**: App version number displayed in info panel
 
 ### Out of Scope
 
@@ -150,6 +163,14 @@ Codebase: single `index.html` file (2,487 lines) with clear internal sections. N
 - JSON import with merge/dedup (HIST-10) — FileReader, schema validation, exact-date dedup
 - Clear history with native dialog confirmation (HIST-11) — ESC + backdrop dismiss
 
+**v1.0 (In Planning)**
+
+**Phase 6: Bug Fixes & Visual Polish** (Planned)
+- Landscape media query fix (LAYOUT-01) — height-based detection for tall phones
+- Dark mode background transitions (VISUAL-01) — smooth phase tint changes
+- Unfinished session tracking (TRACK-01) — display incomplete sessions in history
+- Version display (INFO-01) — show app version in info panel
+
 ## Evolution
 
 This document evolves at phase transitions and milestone boundaries.
@@ -168,4 +189,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-07-01 after v0.6 milestone*
+*Last updated: 2026-07-03 — v1.0 milestone initiated*
