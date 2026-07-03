@@ -105,7 +105,11 @@
 4. App version (v1.0) is visible in the info panel footer
 5. All existing features (light theme, export/import, controls) continue to work without regression
 
-**Plans:** TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 06-01-PLAN.md — CSS/HTML improvements: smooth background transition, compact landscape height fix, app version display
+- [ ] 06-02-PLAN.md — Incomplete session tracking: save eligible sessions on Stop, render with muted opacity and italic label
 
 ---
 
