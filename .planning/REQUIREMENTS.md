@@ -1,7 +1,7 @@
 # Requirements: Mindful Breathing v1.0
 
 **Milestone:** v1.0 — Bug Fixes & Visual Polish  
-**Status:** Defining  
+**Status:** Roadmap Created  
 **Last Updated:** 2026-07-03
 
 ---
@@ -69,15 +69,16 @@
 
 | Requirement | Phase | Status | Notes |
 |-------------|-------|--------|-------|
-| LAYOUT-01 | 6 | In progress | Media query fix for height-based compact layout |
-| VISUAL-01 | 6 | In progress | Background transition in dark mode |
-| TRACK-01 | 6 | In progress | Unfinished session tracking |
-| INFO-01 | 6 | In progress | Version display in info panel |
+| LAYOUT-01 | 6 | Roadmap created | Media query fix for height-based compact layout |
+| VISUAL-01 | 6 | Roadmap created | Background transition in dark mode |
+| TRACK-01 | 6 | Roadmap created | Unfinished session tracking |
+| INFO-01 | 6 | Roadmap created | Version display in info panel |
 
 **Coverage:**
 - v1 requirements: 4 total
-- Status: Pending roadmap (to be mapped to phases)
+- Mapped to Phase 6: 4/4 (100%)
+- Status: Roadmap created; ready for phase planning
 
 ---
 
-*Last updated: 2026-07-03 — v1.0 requirements defined*
+*Last updated: 2026-07-03 — v1.0 roadmap created; all requirements mapped*
