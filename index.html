@@ -818,6 +818,13 @@
       margin-right: 4px;
     }
 
+    .infoPanelVersion {
+      margin: 12px 0 0;
+      font-size: clamp(10px, 1vw + 7px, 12px);
+      color: var(--panelSubtext);
+      text-align: right;
+    }
+
     .settingsGroup { margin-top: 8px; }
     .settingsGroup + .settingsGroup { margin-top: 14px; }
 
@@ -1127,6 +1134,7 @@
             <li style="display:none">📳 Vibration: Android / Chrome only — not available on iOS or desktop.</li>
           </ul>
         </div>
+        <p id="appVersionEl" class="infoPanelVersion"></p>
       </div>
     </div>
 
@@ -1335,6 +1343,9 @@
 
     // Duration input range bounds (seconds)
     const DURATION_RANGE = Object.freeze({ min: 1, max: 300 });
+
+    // App version
+    const APP_VERSION = "1.0";
 
     /******************************************************************
      *  STATE
@@ -2478,6 +2489,9 @@
     render(0, getPhase().durationSec);
     updateStatusUI();
     breathCircleEl.classList.add("idle");
+
+    const verEl = document.getElementById("appVersionEl");
+    if (verEl) verEl.textContent = "v" + APP_VERSION;
 
     // Show gesture hint on first visit
     if (!localStorage.getItem("gestureHintShown")) {
