@@ -1,14 +1,14 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.0
-milestone_name: "### 📋 v1.0 — Bug Fixes & Visual Polish"
+milestone_name: "### ✅ v1.0 — Bug Fixes & Visual Polish — SHIPPED"
 current_phase: 06
-current_phase_name: COMPLETE
-status: complete
-stopped_at: Phase 6 verification complete — all 4 requirements implemented and verified
+current_phase_name: SHIPPED
+status: milestone_complete
+stopped_at: v1.0 milestone archived — all planning artifacts updated, ready for v1.1
 last_updated: "2026-07-04T00:00:00.000Z"
 last_activity: 2026-07-04
-last_activity_desc: Phase 6 verified — VISUAL-01, LAYOUT-01, TRACK-01, INFO-01 all PASS; human UAT items documented
+last_activity_desc: v1.0 milestone complete — 5/5 UAT passed, all artifacts archived, REQUIREMENTS.md removed
 progress:
   total_phases: 1
   completed_phases: 1
@@ -17,31 +17,40 @@ progress:
   percent: 100
 ---
 
-# Project State: Mindful Breathing v1.0
+# Project State: Mindful Breathing v1.0 — SHIPPED
 
-**Milestone:** v1.0 — Bug Fixes & Visual Polish  
+**Milestone:** v1.0 — Bug Fixes & Visual Polish — ✅ SHIPPED 2026-07-04  
 **Last Updated:** 2026-07-04
 
 ---
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-07-03)
+See: .planning/PROJECT.md (updated 2026-07-04)
 
 **Core value:** Reliable, uninterrupted breathing guidance with verifiable history  
-**Current focus:** Phase 6 complete — all v1.0 requirements shipped  
+**Current focus:** v1.0 shipped — planning v1.1 not yet started  
 **Stack:** Vanilla JS, single-file HTML, localStorage persistence, no dependencies
 
 ---
 
 ## Current Position
 
-Phase: 06 — COMPLETE  
-Plan: 06-01 (Wave 1) COMPLETE, 06-02 (Wave 2) COMPLETE  
-Status: All plans executed and verified; human UAT items documented in 06-VERIFICATION.md  
-Last activity: 2026-07-04 — Phase 6 verification complete
+Phase: 06 — COMPLETE AND SHIPPED  
+Milestone: v1.0 — ARCHIVED  
+Status: All plans executed, verified, UAT-confirmed, and archived
 
 Progress: [██████████] 100%
+
+---
+
+## What Was Shipped (v1.0)
+
+1. **VISUAL-01** — `transition: background 220ms ease` on body — smooth phase tints
+2. **LAYOUT-01** — `height: auto; min-height: 100vh` in compact landscape body
+3. **INFO-01** — `APP_VERSION = "1.0"` injected into info panel footer
+4. **TRACK-01** — Incomplete session save on Pause (≥2 cycles); muted/italic display
+5. Stop → Pause rename in `UI.btnStop`
 
 ---
 
@@ -49,58 +58,28 @@ Progress: [██████████] 100%
 
 ### Project Architecture
 
-- Single `index.html` file (~2,487 lines) with clear internal sections
-- Sections: CONFIG, STATE, DOM, HELPERS, DURATION INPUTS, PERSISTENCE, SESSION HISTORY, WAKE LOCK, SOUND/VIBRATION, RENDER, PHASE ADVANCE, MAIN LOOP, CONTROLS, FULLSCREEN, KEYBOARD SHORTCUTS
+- Single `index.html` file (~2,500 lines) with clear internal sections
 - No build step, no package manager, runs offline
-- Deployed via GitHub Pages
+- Deployed via GitHub Pages: https://bielinskilukasz.github.io/mindful-breathing/
 
-### v1.0 Shipped Features
+### Shipped Milestones
 
-1. **Landscape media query fix** — `height: auto; min-height: 100vh;` in compact landscape body (LAYOUT-01)
-2. **Background transitions** — `transition: background 220ms ease` on body (VISUAL-01)
-3. **Unfinished session tracking** — `incomplete: true` flag on Stop; `opacity:0.6` + italic label in history (TRACK-01)
-4. **Version display** — `APP_VERSION = "1.0"` constant injected into info panel footer as "v1.0" (INFO-01)
-
-### Phase 6 Success Criteria — All Satisfied
-
-1. Landscape mode on tall phones (height ≤ 500px) displays correct compact layout without content overflow — VERIFIED
-2. Background color transitions smoothly (220ms) when phase changes instead of jumping abruptly — VERIFIED
-3. Unfinished sessions appear in history list with distinct "Incomplete" styling showing cycle count and elapsed time — VERIFIED
-4. App version (v1.0) is visible in the info panel footer — VERIFIED
-5. All existing features (light theme, export/import, controls) continue to work without regression — VERIFIED (code level; human UAT pending)
-
-### Previous Decisions (from v0.4–v0.6)
-
-See PROJECT.md Key Decisions table for full history. Key themes:
-
-- Single-file architecture proven lightweight and fast
-- localStorage for persistence — reliable for single-user
-- Vanilla JS only — runs anywhere with modern browser
-- CSS Grid `1fr 1fr` for landscape layout (v0.6)
-- WCAG AA contrast on light theme (v0.6)
-- Native `<dialog>` for clear confirmation (v0.6)
-
-### v1.0 Decisions
-
-- cycleCount >= 2 is the threshold for at least 1 full cycle completed — TRACK-01 (D-01)
-- `background` shorthand used in transition (not `background-color`) to animate CSS custom property changes reliably — VISUAL-01 (D-10, D-13)
-- `height: auto` + `min-height: 100vh` in compact landscape body overrides base `height: 100vh` — LAYOUT-01 (D-14, D-15)
-- `APP_VERSION` injected via JS at init — HTML element starts empty, constant is single source of truth — INFO-01 (D-16)
+| Milestone | Shipped | Archive |
+|-----------|---------|---------|
+| v0.4 | 2026-06-05 | .planning/milestones/v0.4-ROADMAP.md |
+| v0.5 | 2026-06-29 | .planning/milestones/v0.5-ROADMAP.md |
+| v0.6 | 2026-07-01 | .planning/milestones/v0.6-ROADMAP.md |
+| v1.0 | 2026-07-04 | .planning/milestones/v1.0-ROADMAP.md |
 
 ### Known Limitations
 
-- **Vibration API on Android** — Samsung/Android OS blocks API; toggle hidden (`display:none`); code retained for future re-enable
-- **CSV import** — deferred to v1.1 (RFC 4180 edge cases); JSON import covers use case safely
+- **Vibration API on Android** — Samsung/Android OS blocks API; toggle hidden (`display:none`); code retained
+- **CSV import** — deferred to v1.1 (RFC 4180 edge cases); JSON import covers use case
 - **Accessibility (full)** — keyboard + screen reader support deferred to v1.1+
 
 ### Pending Todos
 
-Human UAT for Phase 6 (documented in .planning/phases/06/06-VERIFICATION.md):
-1. Incomplete session history display in browser (TRACK-01)
-2. Background transition smoothness visual check (VISUAL-01)
-3. Compact landscape layout in Chrome DevTools device emulation (LAYOUT-01)
-4. App version display in info panel (INFO-01)
-5. Regression: all features functional in compact landscape (SC-5)
+None — milestone fully closed.
 
 ### Blockers/Concerns
 
@@ -110,31 +89,17 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-07-04T00:00:00.000Z  
-Stopped at: Phase 6 verification complete  
-Resume file: .planning/phases/06/06-VERIFICATION.md
+Last session: 2026-07-04  
+Stopped at: v1.0 milestone archived  
+Resume file: None — milestone complete
 
 **Next Steps:**
 
-1. Run human UAT checklist in 06-VERIFICATION.md (5 browser tests)
-2. On UAT pass: run `/gsd-ship` or `/gsd-complete-milestone` to archive v1.0 and prepare v1.1
+1. Run `/gsd-new-milestone` to plan v1.1
+2. Consider candidates: CSV import, accessibility (A11Y-01–03), individual session delete (HIST-07), history filter by preset (HIST-05)
 
 ---
 
 *State initialized: 2026-07-03*  
 *Previous milestone: v0.6 shipped 2026-07-01*  
-*Current milestone: v1.0 started 2026-07-03, Phase 6 complete 2026-07-04*
-
-## Performance Metrics
-
-| Phase | Plan | Duration | Notes |
-|-------|------|----------|-------|
-| Phase 06 P01 | 8 minutes | 3 tasks | 1 file |
-| Phase 06 P02 | 6 minutes | 2 tasks | 1 file |
-
-## Decisions
-
-- [Phase 6]: cycleCount >= 2 is the threshold for at least 1 full cycle completed — TRACK-01 (D-01)
-- [Phase 6]: `background` shorthand in body transition (not `background-color`) — VISUAL-01 (D-10, D-13)
-- [Phase 6]: `height: auto` + `min-height: 100vh` overrides base `height: 100vh` in compact landscape — LAYOUT-01 (D-14, D-15)
-- [Phase 6]: APP_VERSION JS-injected at init, not hardcoded in HTML — INFO-01 (D-16)
+*Current milestone: v1.0 shipped 2026-07-04*

@@ -1,6 +1,6 @@
 # Mindful Breathing — Roadmap
 
-**Current Status:** v1.0 in planning
+**Current Status:** v1.0 shipped 2026-07-04 — planning v1.1
 
 ---
 
@@ -9,8 +9,8 @@
 - ✅ **v0.4** — Session History, Vibration & Theming (shipped 2026-06-05)
 - ✅ **v0.5** — Critical Bugs & UX Polish (shipped 2026-06-29)
 - ✅ **v0.6** — Layout & History (shipped 2026-07-01)
-- 📋 **v1.0** — Bug Fixes & Visual Polish (in progress)
-- 📋 **v1.1+** — (planned)
+- ✅ **v1.0** — Bug Fixes & Visual Polish (shipped 2026-07-04)
+- 📋 **v1.1+** — (planning not yet started — run `/gsd-new-milestone`)
 
 ---
 
@@ -73,45 +73,34 @@
 
 </details>
 
+<details>
+<summary>✅ v1.0 (Phase 6) — SHIPPED 2026-07-04</summary>
+
+- [x] Phase 6: Bug Fixes & Visual Polish (2 plans) — completed 2026-07-04
+
+**What Shipped:**
+
+- Smooth 220ms background transition on phase change — `background` shorthand in body CSS (VISUAL-01)
+- Compact landscape height fix — `height: auto; min-height: 100vh` on tall phones ≤500px (LAYOUT-01)
+- App version v1.0 in info panel footer — `APP_VERSION` constant JS-injected at init (INFO-01)
+- Incomplete session tracking — Pause saves `{incomplete: true}` when ≥1 full cycle; rendered at 0.6 opacity with italic suffix (TRACK-01)
+- Stop button renamed to Pause — reflects actual app behavior
+
+**Archive:** `.planning/milestones/v1.0-ROADMAP.md`
+
+</details>
+
 ---
 
-## Current Milestone: v1.0
+## Next Milestone: v1.1
 
-### 📋 v1.0 — Bug Fixes & Visual Polish (IN PROGRESS)
+Planning not yet started. Run `/gsd-new-milestone` to define requirements and roadmap.
 
-**Status:** Planning  
-**Phases:** 1 (Phase 6)  
-**Requirements:** 4 v1  
-**Target Ship Date:** TBD
-
-#### Phases
-
-- [x] **Phase 6: Bug Fixes & Visual Polish** — Fix landscape compact layout detection, smooth background transitions, track unfinished sessions, display app version (completed 2026-07-03)
-
-#### Phase Details
-
-### Phase 6: Bug Fixes & Visual Polish
-
-**Goal:** Fix critical landscape layout bugs, enhance visual transitions, track incomplete sessions, and display app version information
-
-**Depends on:** Phase 5 (v0.6)
-
-**Requirements:** LAYOUT-01, VISUAL-01, TRACK-01, INFO-01
-
-**Success Criteria** (what must be TRUE):
-
-1. Landscape mode on tall phones (height ≤ 500px) displays correct compact layout without content overflow
-2. Background color transitions smoothly (220ms) when phase changes in dark mode instead of jumping abruptly
-3. Unfinished sessions appear in history list with distinct "Incomplete" styling showing cycle count and elapsed time
-4. App version (v1.0) is visible in the info panel footer
-5. All existing features (light theme, export/import, controls) continue to work without regression
-
-**Plans:** 2/2 plans complete
-
-Plans:
-
-- [x] 06-01-PLAN.md — CSS/HTML improvements: smooth background transition, compact landscape height fix, app version display
-- [x] 06-02-PLAN.md — Incomplete session tracking: save eligible sessions on Stop, render with muted opacity and italic label
+**Candidates from backlog:**
+- CSV import (HIST-12) — RFC 4180 edge cases; deferred from v1.0
+- Full accessibility: keyboard nav, ARIA labels, focus indicators (A11Y-01–03)
+- Individual session delete (HIST-07)
+- History filter by preset (HIST-05)
 
 ---
 
@@ -124,8 +113,8 @@ Plans:
 | 3. Critical Bugs & UX Polish | v0.5 | 8/8 | Complete | 2026-06-29 |
 | 4. Layout & Light Theme | v0.6 | 2/2 | Complete | 2026-06-30 |
 | 5. History Data Management | v0.6 | 1/1 | Complete | 2026-06-30 |
-| 6. Bug Fixes & Visual Polish | v1.0 | 2/2 | Complete   | 2026-07-03 |
+| 6. Bug Fixes & Visual Polish | v1.0 | 2/2 | Complete | 2026-07-04 |
 
 ---
 
-**Last updated:** 2026-07-03 — v1.0 roadmap created
+**Last updated:** 2026-07-04 — v1.0 shipped

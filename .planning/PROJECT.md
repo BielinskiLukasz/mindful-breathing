@@ -1,28 +1,13 @@
-# Mindful Breathing v1.0
+# Mindful Breathing v1.0 — Shipped
 
-## Current Milestone: v1.0 — Bug Fixes & Visual Polish
+## Current State
 
-**Status:** Planning
-**Goal:** Fix critical landscape media query bug, enhance visual polish, track unfinished sessions, and display app version
-
-**Target features:**
-- Fix landscape layout media query on tall phones (height-based compact layout detection)
-- Display app version in info panel
-- Background tint transitions in dark mode for smooth phase animations
-- Track and display unfinished/incomplete sessions in history
-
-## Previous Milestone: v0.6 Shipped
-
-**Shipped:** 2026-07-01
-
-**v0.6 delivered:**
-- CSS Grid 2-column landscape layout — history panel visible alongside the breathing ring
-- WCAG AA light theme contrast fixes and per-phase atmospheric bgLight/accentLight colors
-- Full session history data management: JSON/CSV export, JSON import with merge/dedup, clear with native dialog
+**Shipped:** v1.0 — Bug Fixes & Visual Polish (2026-07-04)  
+**Next milestone:** v1.1 (TBD — planning not yet started)
 
 ## What This Is
 
-A minimalist guided breathing app that helps users practice controlled breathing exercises with visual feedback, audio cues, and session history tracking. The app features a personalized light/dark theme, responsive design optimized for mobile-to-4K displays, and polished micro-interactions (ring flash, button feedback, gesture hint, error flash). The app runs offline with no dependencies, delivering distraction-free breathing sessions on any modern browser.
+A minimalist guided breathing app that helps users practice controlled breathing exercises with visual feedback, audio cues, and session history tracking. The app features a personalized light/dark theme, responsive design optimized for mobile-to-4K displays, polished micro-interactions (ring flash, button feedback, gesture hint, error flash), and session history with export/import and incomplete-session tracking. The app runs offline with no dependencies, delivering distraction-free breathing sessions on any modern browser.
 
 ## Core Value
 
@@ -61,13 +46,14 @@ Reliable, uninterrupted breathing guidance with verifiable history — users nee
 - ✓ Session history export as JSON and CSV file downloads — v0.6
 - ✓ Session history import from JSON with merge/dedup — v0.6
 - ✓ Clear session history with native confirmation dialog — v0.6
+- ✓ **LAYOUT-01**: Compact landscape layout uses height-based detection for tall phones — v1.0
+- ✓ **VISUAL-01**: Background color transitions smoothly (220ms) when phase changes — v1.0
+- ✓ **TRACK-01**: User can view incomplete sessions in history with cycle count and elapsed time — v1.0
+- ✓ **INFO-01**: App version number (v1.0) displayed in info panel footer — v1.0
 
 ### Active
 
-- [ ] **LAYOUT-01**: Landscape media query uses height-based detection for tall phone compact layout
-- [ ] **VISUAL-01**: Background color transitions smoothly in dark mode during phase changes
-- [ ] **TRACK-01**: User can view unfinished sessions in history with cycle count and elapsed time
-- [ ] **INFO-01**: App version number displayed in info panel
+*(Empty — planning for v1.1 not yet started. Run `/gsd-new-milestone` to define v1.1 requirements.)*
 
 ### Out of Scope
 
@@ -75,24 +61,27 @@ Reliable, uninterrupted breathing guidance with verifiable history — users nee
 - Mobile native app — web-first
 - Advanced analytics — simple session count and duration
 - Multiple user accounts — single-user per browser
-- Vibration API on Android — hidden as known limitation; Samsung/Android OS restriction; no code path to fix without device access
+- Vibration API on Android — hidden as known limitation; Samsung/Android OS restriction; code retained for future re-enable
+- CSV import — RFC 4180 edge cases; JSON import covers use case safely (deferred to v1.1+)
+- Full accessibility (keyboard nav, ARIA, focus indicators) — deferred to v1.1+
 
 ## Context
 
-**v0.6 shipped 2026-07-01.**
+**v1.0 shipped 2026-07-04.**
 
-Codebase: single `index.html` file (2,487 lines) with clear internal sections. No build step, no dependencies, no transpilation. Deployed via GitHub Pages.
+Codebase: single `index.html` file (~2,500 lines) with clear internal sections. No build step, no dependencies, no transpilation. Deployed via GitHub Pages.
 
-**Recent Updates (v0.6):**
-- CSS Grid `1fr 1fr` landscape layout — ring left, history/controls right on 600px+ landscape screens
-- WCAG AA light theme: accent #a0662e (5.2:1), textSoft #6b6058 (5.3:1) on cream #f5f1ed
-- Per-phase bgLight/accentLight in all PRESETS (11 phase entries) — atmospheric tints in light mode sessions
-- `applyThemeForCurrentPhase()` with isDarkMode branching; `toggleTheme()` updates mid-session immediately
-- `#historyActions` row: Export JSON, Export CSV, Import buttons in history panel
-- `exportJson()`, `exportCsv()` via Blob + URL.createObjectURL (M:SS duration in CSV)
-- `importJson()` via FileReader: schema validation, dedup by date, merge, sort, cap, feedback flash
-- Native `<dialog>` for clear-history: "Delete all sessions" + Cancel + backdrop dismiss
-- Post-release debug fix: startup crash, icon regression, history init issue (3 bugs in one session)
+**v1.0 Changes:**
+- `transition: background 220ms ease` on body — CSS custom property `--bg` changes now animate (VISUAL-01)
+- `height: auto; min-height: 100vh` in compact landscape body — controls visible on tall phones without horizontal scroll (LAYOUT-01)
+- `APP_VERSION = "1.0"` constant injected into info panel footer as `v1.0` (INFO-01)
+- Incomplete session tracking: Pause saves `{incomplete: true}` when ≥1 full cycle completed; rendered at opacity 0.6 with italic "Incomplete" suffix (TRACK-01)
+- Stop button renamed to Pause — reflects actual behavior
+
+**Known Limitations:**
+- Vibration API on Android: Samsung/Android OS blocks the API; toggle hidden (`display:none`); code retained
+- CSV import: deferred to v1.1 (RFC 4180 edge cases)
+- Accessibility: keyboard + screen reader support deferred to v1.1+
 
 ## Constraints
 
@@ -129,47 +118,25 @@ Codebase: single `index.html` file (2,487 lines) with clear internal sections. N
 | CSV duration M:SS inline (not formatDuration()) (v0.6) | formatDuration() returns "N min N sec" which breaks spreadsheet parsing | ✓ Good — D-08 compliant |
 | Import dedup by exact date string (v0.6) | Safer than replace; no accidental data loss on re-import | ✓ Good — conservative merge |
 | Native `<dialog>` for clear confirmation (v0.6) | ESC, backdrop dismiss, focus trap all free from browser | ✓ Good — zero JS for dismissal |
-| CSV import deferred to v0.7 (v0.6) | RFC 4180 edge cases too complex without a parser library | ✓ Good — JSON covers the use case safely |
+| CSV import deferred to v1.1 (v0.6) | RFC 4180 edge cases too complex without a parser library | ✓ Good — JSON covers the use case safely |
+| `background` shorthand in body transition (v1.0) | CSS custom property `--bg` doesn't animate via `background-color` sub-property | ✓ Good — reliable across browsers |
+| `height: auto` + `min-height: 100vh` in compact landscape (v1.0) | Overrides base `height: 100vh` so content scrolls past viewport on tall phones | ✓ Good — UAT verified on iPhone 14 Pro Max preset |
+| APP_VERSION JS-injected at init (v1.0) | HTML element stays empty; CONFIG constant is single source of truth | ✓ Good — no hardcoded value in markup |
+| `cycleCount >= 2` for incomplete save threshold (v1.0) | cycleCount starts at 1; increments after each full cycle; ≥2 = at least 1 done | ✓ Good — correct semantics for "incomplete" |
+| Incomplete save in toggleBtn handler only (v1.0) | stop() and reset() stay unmodified; no duplicate entries on pause/resume cycles | ✓ Good — clean isolation |
+| Stop renamed to Pause (v1.0) | Reflects actual behavior — session is paused, Resume/Start follows | ✓ Good — accurate UX language |
 
 ## Phases
 
-**v0.4 (Shipped 2026-06-05)**
+**v0.4 (Shipped 2026-06-05)** — see `.planning/milestones/v0.4-ROADMAP.md`
 
-**Phase 1: Session History & Vibration** ✓ Complete
-- Fix vibration reliability (BUG-01) — verified correct per W3C spec
-- History pagination & configuration (HIST-01–HIST-04) — 5 items per page, configurable cap 1–10,000
+**v0.5 (Shipped 2026-06-29)** — see `.planning/milestones/v0.5-ROADMAP.md`
 
-**Phase 2: Theming & UX Polish** ✓ Complete
-- Light/dark theme toggle (THEME-01–THEME-02) — warm cream/gold light palette
-- Responsive design & visual polish (UX-01–UX-03) — clamp() typography, landscape 50/50 layout
+**v0.6 (Shipped 2026-07-01)** — see `.planning/milestones/v0.6-ROADMAP.md`
 
-**v0.5 (Shipped 2026-06-29)**
+**v1.0 (Shipped 2026-07-04)** — see `.planning/milestones/v1.0-ROADMAP.md`
 
-**Phase 3: Critical Bugs & UX Polish** ✓ Complete
-- Bug fixes (BUG-01–BUG-03) — countdown timer cleanup, duration input validation, localStorage quota handling
-- Micro-interactions (MICRO-01–MICRO-04) — button press feedback, ring flash, gesture hint, error flash
-- Gap closure (TEST-02, TEST-03) — countdown audio beeps, Skip button, ESC key handler
-- Gap closure (TEST-01) — vibration deferred as known_limitation; UI hidden
-
-**v0.6 (Shipped 2026-07-01)**
-
-**Phase 4: Layout & Light Theme** ✓ Complete
-- CSS Grid 2-column landscape layout (UX-04) — ring left, history right on 600px+ landscape
-- WCAG AA light theme contrast fixes (THEME-03) — #a0662e / #6b6058 on cream
-- Per-phase atmospheric bgLight/accentLight for all PRESETS entries
-
-**Phase 5: History Data Management** ✓ Complete
-- JSON/CSV export (HIST-08, HIST-09) — Blob downloads, no server
-- JSON import with merge/dedup (HIST-10) — FileReader, schema validation, exact-date dedup
-- Clear history with native dialog confirmation (HIST-11) — ESC + backdrop dismiss
-
-**v1.0 (In Planning)**
-
-**Phase 6: Bug Fixes & Visual Polish** (Planned)
-- Landscape media query fix (LAYOUT-01) — height-based detection for tall phones
-- Dark mode background transitions (VISUAL-01) — smooth phase tint changes
-- Unfinished session tracking (TRACK-01) — display incomplete sessions in history
-- Version display (INFO-01) — show app version in info panel
+**Phase 6: Bug Fixes & Visual Polish** ✓ Complete — `.planning/phases/06/`
 
 ## Evolution
 
@@ -189,4 +156,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-07-03 — v1.0 milestone initiated*
+*Last updated: 2026-07-04 after v1.0 milestone*

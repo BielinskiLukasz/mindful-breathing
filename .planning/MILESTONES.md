@@ -83,3 +83,26 @@ Historical record of shipped versions.
 ---
 
 *Historical record updated 2026-07-01 after v0.6 milestone*
+
+---
+
+## v1.0 — Bug Fixes & Visual Polish
+
+**Shipped:** 2026-07-04  
+**Phases:** 6 | **Plans:** 2 | **Tasks:** 5  
+**Closeout type:** verified_closeout (all 4 requirements shipped + 5/5 UAT browser tests passed)
+
+**Key Accomplishments:**
+
+1. Smooth 220ms background phase transition — `background` shorthand in body CSS transition animates `--bg` CSS custom property reliably; `background-color` sub-property fails to track it
+2. Compact landscape layout fixed for tall phones — `height: auto; min-height: 100vh` overrides `height: 100vh`, letting content scroll past the viewport while preserving full-height layout when short (UAT: iPhone 14 Pro Max 932×430px in Chrome DevTools)
+3. App version v1.0 in info panel footer — `APP_VERSION` constant in CONFIG, JS-injected into `#appVersionEl` at init; HTML element starts empty (single source of truth)
+4. Incomplete session tracking — Pause/Stop saves `{incomplete: true}` when `cycleCount >= 2` (at least 1 full cycle); rendered at opacity 0.6 with italic "Incomplete" suffix; backward compatible via falsy `undefined` for older entries
+5. Stop button renamed to Pause — reflects actual behavior; Resume/Start follows
+
+**Archive:** `.planning/milestones/v1.0-ROADMAP.md`  
+**Requirements:** `.planning/milestones/v1.0-REQUIREMENTS.md`
+
+---
+
+*Historical record updated 2026-07-04 after v1.0 milestone*
