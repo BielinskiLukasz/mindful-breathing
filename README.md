@@ -16,7 +16,7 @@ No backend. No dependencies. No installation. Works offline.
 
 ---
 
-<img width="639" height="805" alt="Mindful Breathing app screenshot" src="https://github.com/user-attachments/assets/e492c052-1ad8-44f7-a865-865139bd0c2d" />
+<img width="630" height="635" alt="Mindful Breathing app screenshot" src="https://github.com/user-attachments/assets/4ba25a5b-f2a2-459b-9db8-e9924f370a4b" />
 
 ---
 
