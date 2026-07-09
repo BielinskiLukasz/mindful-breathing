@@ -1,20 +1,16 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: "### ✅ v1.0 — Bug Fixes & Visual Polish — SHIPPED"
-current_phase: 06
-current_phase_name: SHIPPED
-status: milestone_complete
-stopped_at: v1.0 milestone archived — all planning artifacts updated, ready for v1.1
-last_updated: "2026-07-04T00:00:00.000Z"
-last_activity: 2026-07-04
-last_activity_desc: v1.0 milestone complete — 5/5 UAT passed, all artifacts archived, REQUIREMENTS.md removed
+milestone: v1.1
+milestone_name: Landscape Polish, Custom Presets & Streaks
+status: planning
+last_updated: "2026-07-09T22:47:17.817Z"
+last_activity: 2026-07-09
 progress:
-  total_phases: 1
-  completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State: Mindful Breathing v1.0 — SHIPPED
@@ -36,13 +32,10 @@ See: .planning/PROJECT.md (updated 2026-07-04)
 
 ## Current Position
 
-Phase: 06 — COMPLETE AND SHIPPED  
-Milestone: v1.0 — ARCHIVED  
-Status: All plans executed, verified, UAT-confirmed, and archived
-
-Progress: [██████████] 100%
-
----
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-07-09 — Milestone v1.1 started
 
 ## What Was Shipped (v1.0)
 

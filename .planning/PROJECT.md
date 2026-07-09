@@ -3,7 +3,19 @@
 ## Current State
 
 **Shipped:** v1.0 — Bug Fixes & Visual Polish (2026-07-04)  
-**Next milestone:** v1.1 (TBD — planning not yet started)
+**Current milestone:** v1.1 — Landscape Polish, Custom Presets & Streaks (planning in progress)
+
+## Current Milestone: v1.1 — Landscape Polish, Custom Presets & Streaks
+
+**Goal:** Finish the landscape layout, add a custom preset builder, and introduce streak tracking for daily habit formation.
+
+**Target features:**
+- Landscape layout: fullscreen button repositioned, controls vertically centered, session info below ring, grid overlaps eliminated, height-based breakpoint logic
+- Micro-interactions: button hover states, countdown timing animations
+- Accessibility: keyboard focus states, logical tab navigation, ARIA labels
+- History data: CSV import from exported files
+- Custom preset builder: user can create, name, edit, and delete custom presets with arbitrary phases and durations
+- Streak tracking: current daily streak and longest-ever streak computed from session history
 
 ## What This Is
 
@@ -53,7 +65,7 @@ Reliable, uninterrupted breathing guidance with verifiable history — users nee
 
 ### Active
 
-*(Empty — planning for v1.1 not yet started. Run `/gsd-new-milestone` to define v1.1 requirements.)*
+*(Requirements being defined — see v1.1 milestone planning in progress.)*
 
 ### Out of Scope
 
