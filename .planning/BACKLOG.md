@@ -4,18 +4,6 @@ Last updated: 2026-07-09
 
 ---
 
-B-01 · Standardize icon sizes to 32×32
-
-Status: captured · not scheduled
- Priority: High
- Prerequisites: None
-
-What: Standardize info and fullscreen icons to 32×32 across all views and orientations.
-
-Why: Eliminates visual inconsistencies and improves UI polish.
-
----
-
 B-02 · Fix Vibration API on Android/Chrome
 
 Status: captured · not scheduled
@@ -25,18 +13,6 @@ Status: captured · not scheduled
 What: Debug navigator.vibrate() behavior on Android Chrome and verify vibration pattern arrays.
 
 Why: Core breathing feedback is currently unreliable on some devices.
-
----
-
-B-03 · Smooth theme transitions
-
-Status: captured · not scheduled
- Priority: Medium
- Prerequisites: None
-
-What: Add smooth transitions when switching between light and dark themes.
-
-Why: Improves overall visual quality and perceived responsiveness.
 
 ---
 
@@ -61,18 +37,6 @@ Status: captured · not scheduled
 What: Improve countdown timing transitions and associated micro-interactions.
 
 Why: Makes session flow feel smoother and more polished.
-
----
-
-B-06 · Add scrollable history panel in landscape mode
-
-Status: captured · not scheduled
- Priority: High
- Prerequisites: B-01
-
-What: Restore history visibility in landscape mode and add dedicated scrolling support.
-
-Why: History is currently inaccessible in landscape layout.
 
 ---
 
@@ -116,47 +80,11 @@ B-10 · Refine landscape grid layout
 
 Status: captured · not scheduled
  Priority: High
- Prerequisites: B-06, B-07, B-08, B-09
+ Prerequisites: B-07, B-08, B-09
 
 What: Finalize overall 2-column landscape layout and eliminate overlapping components.
 
 Why: Current landscape experience has significant usability issues.
-
----
-
-B-11 · Improve light theme contrast
-
-Status: captured · not scheduled
- Priority: High
- Prerequisites: None
-
-What: Update colors to achieve WCAG contrast targets defined in LIGHT-THEME-READABILITY-REPORT.md.
-
-Why: Current light theme has readability and accessibility issues.
-
----
-
-B-12 · Export history to JSON
-
-Status: captured · not scheduled
- Priority: Medium
- Prerequisites: None
-
-What: Allow users to export session history in JSON format.
-
-Why: Enables backup and data portability.
-
----
-
-B-13 · Export history to CSV
-
-Status: captured · not scheduled
- Priority: Medium
- Prerequisites: None
-
-What: Allow users to export session history in CSV format.
-
-Why: Makes data usable in spreadsheets and analytics tools.
 
 ---
 
@@ -169,18 +97,6 @@ Status: captured · not scheduled
 What: Import previously exported session history.
 
 Why: Enables migration, restore, and device transfer scenarios.
-
----
-
-B-15 · Clear history with confirmation dialog
-
-Status: captured · not scheduled
- Priority: Medium
- Prerequisites: None
-
-What: Add a confirmation modal before deleting all history.
-
-Why: Prevents accidental data loss.
 
 ---
 
@@ -244,18 +160,6 @@ Why: Provides layout flexibility for different preferences.
 
 ---
 
-B-21 · Track unfinished sessions
-
-Status: captured · not scheduled
- Priority: Low
- Prerequisites: None
-
-What: Record interrupted sessions including elapsed time and completed cycles.
-
-Why: Enables better session analytics.
-
----
-
 B-22 · Store extended history metadata
 
 Status: captured · not scheduled
@@ -268,18 +172,6 @@ Why: Improves analytics possibilities.
 
 ---
 
-B-23 · Display application version in info dialog
-
-Status: captured · not scheduled
- Priority: Low
- Prerequisites: None
-
-What: Show current application version (e.g., v0.6) inside the info panel.
-
-Why: Helps testing, support, and troubleshooting.
-
----
-
 B-24 · Dedicated layout for ultra-narrow phones (<500px)
 
 Status: captured · not scheduled
@@ -289,17 +181,5 @@ Status: captured · not scheduled
 What: Implement a separate portrait layout optimized for very narrow devices.
 
 Why: Current responsive layout is not optimal on small screens.
-
----
-
-B-25 · Add dark-mode background tint transitions
-
-Status: captured · not scheduled
- Priority: Low
- Prerequisites: B-03
-
-What: Animate background tint changes in dark mode.
-
-Why: Further improves visual polish.
 
 ---
