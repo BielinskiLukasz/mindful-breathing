@@ -113,31 +113,32 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| LAYOUT-02 | — | Pending |
-| LAYOUT-03 | — | Pending |
-| LAYOUT-04 | — | Pending |
-| LAYOUT-05 | — | Pending |
-| LAYOUT-06 | — | Pending |
-| UX-01 | — | Pending |
-| UX-02 | — | Pending |
-| A11Y-01 | — | Pending |
-| A11Y-02 | — | Pending |
-| A11Y-03 | — | Pending |
-| HIST-12 | — | Pending |
-| PRESET-01 | — | Pending |
-| PRESET-02 | — | Pending |
-| PRESET-03 | — | Pending |
-| PRESET-04 | — | Pending |
-| PRESET-05 | — | Pending |
-| STREAK-01 | — | Pending |
-| STREAK-02 | — | Pending |
-| STREAK-03 | — | Pending |
-| STREAK-04 | — | Pending |
-| STREAK-05 | — | Pending |
-| STREAK-06 | — | Pending |
+| LAYOUT-02 | Phase 7 | Pending |
+| LAYOUT-03 | Phase 7 | Pending |
+| LAYOUT-04 | Phase 7 | Pending |
+| LAYOUT-05 | Phase 7 | Pending |
+| LAYOUT-06 | Phase 7 | Pending |
+| UX-01 | Phase 7 | Pending |
+| UX-02 | Phase 7 | Pending |
+| A11Y-01 | Phase 8 | Pending |
+| A11Y-02 | Phase 8 | Pending |
+| A11Y-03 | Phase 8 | Pending |
+| HIST-12 | Phase 8 | Pending |
+| PRESET-01 | Phase 9 | Pending |
+| PRESET-02 | Phase 9 | Pending |
+| PRESET-03 | Phase 9 | Pending |
+| PRESET-04 | Phase 9 | Pending |
+| PRESET-05 | Phase 9 | Pending |
+| STREAK-01 | Phase 10 | Pending |
+| STREAK-02 | Phase 10 | Pending |
+| STREAK-03 | Phase 10 | Pending |
+| STREAK-04 | Phase 10 | Pending |
+| STREAK-05 | Phase 10 | Pending |
+| STREAK-06 | Phase 10 | Pending |
 
-**Coverage:** 0/22 v1 requirements complete (0%) — planning phase
+**Coverage:** 0/22 v1 requirements complete (0%) — 22/22 requirements mapped to phases
 
 ---
 
-*Created: 2026-07-10 — v1.1 milestone planning*
+*Created: 2026-07-10 — v1.1 milestone planning*  
+*Traceability updated: 2026-07-10 — roadmap finalized*
