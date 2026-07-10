@@ -47,7 +47,6 @@ No backend. No dependencies. No installation. Works fully offline.
 **Customization**
 - Settings panel (`⚙`) with breathing mode selection, per-phase duration sliders (1–30 s), and cycle count (1–20)
 - Sound cues via Web Audio API — per-phase sine tones with a toggle
-- Haptic feedback via Vibration API (Android/Chrome) — with a toggle
 - Light and dark themes, each with WCAG AA contrast across all UI elements
 
 **Session management**
@@ -166,7 +165,6 @@ Sessions interrupted after at least one complete cycle are saved to history with
 | API | Fallback when unavailable |
 |---|---|
 | Web Audio API | Silent — no beep cues |
-| Vibration API | Ignored — no haptic feedback |
 | Screen Wake Lock API | Screen may sleep during sessions |
 | Fullscreen API | Button does nothing |
 | Service Worker | App loads from network on each visit |
@@ -264,9 +262,6 @@ For substantial changes — new breathing modes, new UI flows, significant refac
 
 **No sound during sessions**  
 Sound requires a user interaction before the browser permits audio playback (autoplay policy). Tap or click the Start button and sound should activate. If the speaker icon is toggled off, tap it to re-enable.
-
-**Vibration not working**  
-Haptic feedback is only supported on Android devices running Chrome. It is not available on iOS, desktop browsers, or Firefox for Android. This is a browser API limitation.
 
 **Screen keeps turning off**  
 Screen Wake Lock requires a secure context (HTTPS or localhost). If you are opening `index.html` directly via `file://`, Wake Lock is unavailable. Serve the file locally with `python -m http.server 8080` and open `http://localhost:8080` instead.
