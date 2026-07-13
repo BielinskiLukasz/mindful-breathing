@@ -3,13 +3,13 @@
 Ideas and scope items captured outside the active roadmap. Anything here is *not* in v1 — it has either been deferred by explicit decision, surfaced during UAT, or earmarked for a later milestone. Items graduate to a `ROADMAP.md` phase when picked up (`/gsd-review-backlog` to promote, `/gsd-phase add` to materialize).
 
 Last updated: 2026-07-13 (all items reformatted to standard backlog template)
-Last assigned ID: **B-24** — next new item must be **B-25**
+Last assigned ID: **B-024** — next new item must be **B-025**
 
 ---
 
 ## How to use this file
 
-- **Adding an item:** increment the "Last assigned ID" counter at the top, then drop a new `### B-NN` block with Status / Earliest sensible slot / What / Why / Open questions / Implementation notes. IDs are monotonic and never reused — even if the previous entry was promoted or removed.
+- **Adding an item:** increment the "Last assigned ID" counter at the top, then drop a new `### B-NNN` block with Status / Earliest sensible slot / What / Why / Open questions / Implementation notes. IDs are monotonic and never reused — even if the previous entry was promoted or removed.
 - **Promoting an item:** `/gsd-review-backlog` (interactive) — moves a chosen item into the active milestone roadmap. Or manually run `/gsd-phase add` and reference the backlog ID in the phase description.
 - **Removing an item:** delete the block or move it under a `## Rejected` heading with a one-line rationale (decisions cost; keep the rationale).
 - **Memory ↔ backlog:** memory captures "this idea exists and here's the context"; this file is the project-level decision queue. Memory is the source for cross-session continuity; this file is the source for milestone planning. Update both when an item lands.
@@ -29,7 +29,7 @@ Promoted during 2026-07-10 backlog review. Include in v1.1 milestone planning.
 
 ---
 
-### B-04 · Improve button hover states
+### B-004 · Improve button hover states
 
 **Status:** promoted → v1.1
 **Earliest sensible slot:** v1.1 — no prerequisites
@@ -45,7 +45,7 @@ Promoted during 2026-07-10 backlog review. Include in v1.1 milestone planning.
 
 ---
 
-### B-05 · Refine countdown timing animations
+### B-005 · Refine countdown timing animations
 
 **Status:** promoted → v1.1
 **Earliest sensible slot:** v1.1 — no prerequisites
@@ -61,10 +61,10 @@ Promoted during 2026-07-10 backlog review. Include in v1.1 milestone planning.
 
 ---
 
-### B-07 · Move fullscreen button below breathing ring
+### B-007 · Move fullscreen button below breathing ring
 
 **Status:** promoted → v1.1
-**Earliest sensible slot:** v1.1 (B-01 basic landscape 2-col layout shipped in v0.6)
+**Earliest sensible slot:** v1.1 (B-001 basic landscape 2-col layout shipped in v0.6)
 
 **What:** Relocate the fullscreen toggle button from the top-right corner to the left column, below the breathing ring, in landscape mode. Portrait layout is unaffected.
 
@@ -77,10 +77,10 @@ Promoted during 2026-07-10 backlog review. Include in v1.1 milestone planning.
 
 ---
 
-### B-08 · Vertically center Start/Reset controls in landscape
+### B-008 · Vertically center Start/Reset controls in landscape
 
 **Status:** promoted → v1.1
-**Earliest sensible slot:** v1.1 (B-01 done)
+**Earliest sensible slot:** v1.1 (B-001 done)
 
 **What:** Vertically center the Start and Reset buttons within the right column in landscape mode. Currently they cluster at the top while the ring fills the left column, making the layout look top-heavy.
 
@@ -92,10 +92,10 @@ Promoted during 2026-07-10 backlog review. Include in v1.1 milestone planning.
 
 ---
 
-### B-09 · Reposition session information row in landscape
+### B-009 · Reposition session information row in landscape
 
 **Status:** promoted → v1.1
-**Earliest sensible slot:** v1.1 (B-01 done)
+**Earliest sensible slot:** v1.1 (B-001 done)
 
 **What:** Move the session-info row (cycle count, elapsed time) from its current position to below the breathing ring in landscape layout, so it sits inside the left column with the ring.
 
@@ -108,12 +108,12 @@ Promoted during 2026-07-10 backlog review. Include in v1.1 milestone planning.
 
 ---
 
-### B-10 · Refine landscape grid layout
+### B-010 · Refine landscape grid layout
 
 **Status:** promoted → v1.1
-**Earliest sensible slot:** v1.1, after B-07, B-08, and B-09 land
+**Earliest sensible slot:** v1.1, after B-007, B-008, and B-009 land
 
-**What:** Finalize the 2-column landscape layout holistically: eliminate any remaining component overlaps, lock in column proportions, and audit spacing on real device sizes after the individual repositioning items (B-07/B-08/B-09) are applied.
+**What:** Finalize the 2-column landscape layout holistically: eliminate any remaining component overlaps, lock in column proportions, and audit spacing on real device sizes after the individual repositioning items (B-007/B-008/B-009) are applied.
 
 **Why:** Repositioning individual elements in isolation risks introducing new overlaps or proportion imbalances. A final holistic pass over the grid confirms nothing collides and proportions feel right across target devices.
 
@@ -130,10 +130,10 @@ Promoted during 2026-07-10 backlog review. Include in v1.1 milestone planning.
 
 ---
 
-### B-14 · Import history from exported files
+### B-014 · Import history from exported files
 
 **Status:** promoted → v1.1
-**Earliest sensible slot:** v1.1 (export history shipped in v0.6, B-12 done)
+**Earliest sensible slot:** v1.1 (export history shipped in v0.6, B-012 done)
 
 **What:** Allow users to import a previously exported JSON session history file back into the app. The import replaces or merges local history and enforces the 14-entry cap defined in `SESSION` config.
 
@@ -152,10 +152,10 @@ Promoted during 2026-07-10 backlog review. Include in v1.1 milestone planning.
 
 ---
 
-### B-16 · Fix landscape media-query breakpoint logic
+### B-016 · Fix landscape media-query breakpoint logic
 
 **Status:** promoted → v1.1
-**Earliest sensible slot:** v1.1, after B-10 is stable
+**Earliest sensible slot:** v1.1, after B-010 is stable
 
 **What:** Switch the landscape-layout activation condition from a viewport-width check to a viewport-height check (≤500px after device rotation), so tall phones like iPhone 14 Pro Max correctly receive the compact landscape layout.
 
@@ -169,7 +169,7 @@ Promoted during 2026-07-10 backlog review. Include in v1.1 milestone planning.
 
 ---
 
-### B-17 · Add keyboard focus states
+### B-017 · Add keyboard focus states
 
 **Status:** promoted → v1.1
 **Earliest sensible slot:** v1.1 — no prerequisites
@@ -186,10 +186,10 @@ Promoted during 2026-07-10 backlog review. Include in v1.1 milestone planning.
 
 ---
 
-### B-18 · Implement logical tab navigation
+### B-018 · Implement logical tab navigation
 
 **Status:** promoted → v1.1
-**Earliest sensible slot:** v1.1, after B-17 (focus visibility must be in place to audit tab order)
+**Earliest sensible slot:** v1.1, after B-017 (focus visibility must be in place to audit tab order)
 
 **What:** Audit and fix the keyboard tab order so focus moves in a logical reading sequence across all controls: preset selector → duration sliders → start/stop → reset → sound/vibe toggles → fullscreen → theme toggle.
 
@@ -206,7 +206,7 @@ Promoted during 2026-07-10 backlog review. Include in v1.1 milestone planning.
 
 ---
 
-### B-19 · Add ARIA labels and accessibility attributes
+### B-019 · Add ARIA labels and accessibility attributes
 
 **Status:** promoted → v1.1
 **Earliest sensible slot:** v1.1 — no prerequisites
@@ -228,10 +228,10 @@ Promoted during 2026-07-10 backlog review. Include in v1.1 milestone planning.
 
 ---
 
-### B-20 · Add landscape layout position toggle
+### B-020 · Add landscape layout position toggle
 
 **Status:** captured · not scheduled
-**Earliest sensible slot:** post-v1.1 — landscape layout must be stable (B-10, B-16) before adding a toggle on top of it
+**Earliest sensible slot:** post-v1.1 — landscape layout must be stable (B-010, B-016) before adding a toggle on top of it
 
 **What:** Add a setting that lets users choose whether the breathing ring appears on the left or right side in landscape mode. Default: ring left.
 
@@ -250,7 +250,7 @@ Promoted during 2026-07-10 backlog review. Include in v1.1 milestone planning.
 
 ---
 
-### B-22 · Store extended history metadata
+### B-022 · Store extended history metadata
 
 **Status:** captured · not scheduled
 **Earliest sensible slot:** post-v1.1 — no migration path exists for existing records; define one before adding new fields
@@ -273,14 +273,14 @@ Promoted during 2026-07-10 backlog review. Include in v1.1 milestone planning.
 
 ---
 
-### B-24 · Dedicated layout for ultra-narrow phones (<360px)
+### B-024 · Dedicated layout for ultra-narrow phones (<360px)
 
 **Status:** captured · not scheduled
 **Earliest sensible slot:** post-v1.1; low priority until user reports surface on specific devices
 
 **What:** Add a targeted CSS layout for portrait viewports narrower than 360px (e.g., older budget Android phones at 320px width) where the current layout clips the ring or overflows the duration sliders.
 
-**Why:** The 360px breakpoint is already the narrowest, but some phones at 320px still exhibit a clipped ring SVG or horizontally scrolling sliders. A dedicated sub-360px rule eliminates these layout breaks without touching the broader responsive system.
+**Why:** The 360px breakpoint is already the narrowest, but some phones at 320px still exhibit a clipped ring SVG or horizontally scrolling sliders. A dedicated suB-0360px rule eliminates these layout breaks without touching the broader responsive system.
 
 **Open questions when this gets planned:**
 
@@ -297,4 +297,4 @@ Promoted during 2026-07-10 backlog review. Include in v1.1 milestone planning.
 
 ## Removed
 
-B-02 · Fix Vibration API on Android/Chrome — removed 2026-07-10. Android OS suppresses `navigator.vibrate()` at the system level on Samsung/Android devices; vibration toggle already hidden via `display:none`; not actionable at the app level.
+B-002 · Fix Vibration API on Android/Chrome — removed 2026-07-10. Android OS suppresses `navigator.vibrate()` at the system level on Samsung/Android devices; vibration toggle already hidden via `display:none`; not actionable at the app level.
