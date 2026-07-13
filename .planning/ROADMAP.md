@@ -119,7 +119,10 @@
   3. No layout element clips, overflows, or overlaps another in landscape at 600px, 768px, 1024px, and 1440px wide viewports
   4. Compact landscape activates when viewport height is ≤500px regardless of width
   5. Interactive controls show a visible hover style on pointer devices; the 3-second countdown digits animate smoothly between number changes
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 07-01-PLAN.md — HTML/CSS layout: fullscreenBtn into cornerControls, landscape info row below ring, controls at 50% column height
+- [ ] 07-02-PLAN.md — JS landscape element sync, uniform hover states, countdown animation verification
 **UI hint**: yes
 
 ### Phase 8: Accessibility & CSV Import
