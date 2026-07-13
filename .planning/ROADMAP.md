@@ -174,7 +174,7 @@ Plans:
 | 4. Layout & Light Theme | v0.6 | 2/2 | Complete | 2026-06-30 |
 | 5. History Data Management | v0.6 | 1/1 | Complete | 2026-06-30 |
 | 6. Bug Fixes & Visual Polish | v1.0 | 2/2 | Complete | 2026-07-04 |
-| 7. Landscape Layout & UX Polish | v1.1 | 0/TBD | Not started | - |
+| 7. Landscape Layout & UX Polish | v1.1 | 0/2 | Planning complete | - |
 | 8. Accessibility & CSV Import | v1.1 | 0/TBD | Not started | - |
 | 9. Custom Preset Builder | v1.1 | 0/TBD | Not started | - |
 | 10. Streak Tracking | v1.1 | 0/TBD | Not started | - |
