@@ -295,6 +295,8 @@
       letter-spacing: 0.03em;
     }
 
+    #landscapeInfo { display: none; }
+
     .runningDot {
       display: inline-block;
       width: 10px;
@@ -628,9 +630,6 @@
 
     /* ====== FULLSCREEN ====== */
     .fullscreenBtn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
       width: 34px;
       height: 34px;
       min-width: 0;
@@ -987,6 +986,17 @@
         padding: 20px;
       }
 
+      /* Info row below ring — landscape only (D-03, D-04, D-05) */
+      #cycle { display: none; }
+      #elapsed { display: none; }
+      #landscapeInfo {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+      }
+
       .ringWrap {
         width: clamp(200px, 25vw, 400px);
         height: clamp(200px, 25vw, 400px);
@@ -1007,6 +1017,7 @@
         padding: 20px;
         overflow-y: auto;
         border-left: 1px solid var(--accentSoft);
+        position: relative;
       }
 
       /* History scrolls above; controls/status/bar fixed at bottom */
@@ -1023,10 +1034,15 @@
         flex-shrink: 0;
         justify-content: flex-start;
         flex-wrap: wrap;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        transform: translateY(-50%);
+        padding: 0 20px;
+        border-top: none;
+        padding-top: 0;
         margin-top: 0;
-        padding-top: 10px;
-        border-top: 1px solid var(--accentSoft);
-        order: 2;
       }
 
       .statusRow {
@@ -1085,17 +1101,17 @@
         </svg>
       </button>
       <button class="iconToggle" id="themeToggleBtn" title="Toggle light/dark theme" style="font-size: clamp(12px, 1.5vw + 8px, 16px); line-height: 1;">&#9728;</button>
+      <button class="fullscreenBtn" id="fullscreenBtn" title="Toggle fullscreen" aria-label="Toggle fullscreen">
+        <svg id="fsEnterIcon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="1,6 1,1 6,1"/><polyline points="10,1 15,1 15,6"/>
+          <polyline points="15,10 15,15 10,15"/><polyline points="6,15 1,15 1,10"/>
+        </svg>
+        <svg id="fsExitIcon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+          <polyline points="6,1 6,6 1,6"/><polyline points="10,1 10,6 15,6"/>
+          <polyline points="15,10 10,10 10,15"/><polyline points="1,10 6,10 6,15"/>
+        </svg>
+      </button>
     </div>
-    <button class="fullscreenBtn" id="fullscreenBtn" title="Toggle fullscreen" aria-label="Toggle fullscreen">
-      <svg id="fsEnterIcon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="1,6 1,1 6,1"/><polyline points="10,1 15,1 15,6"/>
-        <polyline points="15,10 15,15 10,15"/><polyline points="6,15 1,15 1,10"/>
-      </svg>
-      <svg id="fsExitIcon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-        <polyline points="6,1 6,6 1,6"/><polyline points="10,1 10,6 15,6"/>
-        <polyline points="15,10 10,10 10,15"/><polyline points="1,10 6,10 6,15"/>
-      </svg>
-    </button>
 
     <div class="doneOverlay" id="doneOverlay">
       <div class="doneContent">
@@ -1198,6 +1214,10 @@
 
       <div class="phaseHint" id="phaseHint"></div>
       <div class="nextPhase" id="nextPhase"></div>
+      <div class="landscapeInfo" id="landscapeInfo">
+        <span class="cycle" id="cycleLandscape"></span>
+        <span class="elapsed" id="elapsedLandscape">0:00</span>
+      </div>
     </div>
 
     <div class="controlsSection">
