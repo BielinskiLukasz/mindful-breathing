@@ -2,8 +2,8 @@
 
 Ideas and scope items captured outside the active roadmap. Anything here is *not* in v1 — it has either been deferred by explicit decision, surfaced during UAT, or earmarked for a later milestone. Items graduate to a `ROADMAP.md` phase when picked up (`/gsd-review-backlog` to promote, `/gsd-phase add` to materialize).
 
-Last updated: 2026-07-13 (all items reformatted to standard backlog template)
-Last assigned ID: **B-024** — next new item must be **B-025**
+Last updated: 2026-07-15 (added B-025 through B-032 from requirements triage)
+Last assigned ID: **B-032** — next new item must be **B-033**
 
 ---
 
@@ -292,6 +292,187 @@ Promoted during 2026-07-10 backlog review. Include in v1.1 milestone planning.
 - Add `@media (max-width: 359px) and (orientation: portrait)` block to `index.html` `<style>`.
 - Key targets: ring SVG sizing (ensure `width: 100%; height: auto` is set so `viewBox` scales it), slider track `min-width` removal, phase-label `font-size` reduction.
 - Avoid changing `RING` config constants — use CSS scaling so the JS geometry calculations remain consistent.
+
+---
+
+### B-025 · Filter session history by preset
+
+**Status:** captured · not scheduled
+**Earliest sensible slot:** post-v1.1; requires B-022 (extended history metadata with `preset` field) to land first
+
+**What:** Add a filter control to the history panel letting users view only sessions recorded with a specific preset (Relax, Box, 4-7-8) or all sessions combined.
+
+**Why:** Once history grows beyond a few entries, users practising multiple presets cannot easily compare sessions of the same type. Filter-by-preset surfaces patterns within a single technique without polluting the view with other presets.
+
+**Open questions when this gets planned:**
+
+- Filter UI: segmented button row (All / Relax / Box / 4-7-8) or a `<select>` dropdown? Segmented is cleaner but takes horizontal space on narrow screens.
+- Does filtering affect the history cap (14 entries) or is the cap applied before filtering?
+
+**Implementation notes:**
+
+- B-022 must ship first so records include the `preset` field; legacy records without it fall into the "Unknown" bucket.
+- Filter state is ephemeral (not persisted) — reset to "All" on page load.
+- `renderHistory()` already iterates the stored array; add a filter predicate before the loop.
+
+---
+
+### B-026 · Delete individual sessions from history
+
+**Status:** captured · not scheduled
+**Earliest sensible slot:** post-v1.1 — no hard prerequisites, but history UI should be stable first
+
+**What:** Let users delete a single entry from their session history via a trash icon or swipe gesture on each history row.
+
+**Why:** Users who accidentally start and stop a session, or who want to remove an outlier, currently have no way to clean up individual records. The only option is clearing all localStorage, which removes settings too.
+
+**Open questions when this gets planned:**
+
+- Confirm dialog: skip it (deletion is small-stakes) or show an inline undo for a few seconds?
+- Should deletion be reflected in aggregate stats (B-029) immediately, or is a page reload acceptable?
+
+**Implementation notes:**
+
+- Add a delete button per row in `renderHistory()`. On click, splice the record from the stored array and re-call `saveHistory()` + `renderHistory()`.
+- The 14-entry cap in `SESSION.maxHistory` does not need adjustment — deletion can only shrink the array.
+
+---
+
+### B-027 · Custom phase labels for presets
+
+**Status:** captured · not scheduled
+**Earliest sensible slot:** post-v1.1; significant complexity — defer until after core v1.1 features stabilise
+
+**What:** Allow users to define their own breathing phase sequences with arbitrary custom labels and durations, beyond the three built-in presets (Relax, Box, 4-7-8).
+
+**Why:** Power users and breathing coaches want to practice less common techniques (Wim Hof, coherent breathing, nasal-only patterns) that don't map to the built-in presets. Custom phases would unlock any pattern expressible as a sequence of named timed phases.
+
+**Open questions when this gets planned:**
+
+- Data model: custom presets stored in a new `STORAGE_KEY` field as an array of `{ label, durationSec, freqHz, breathR, cue }` objects?
+- UI: a dedicated "Custom" preset slot with a phase editor, or a general preset builder for unlimited custom presets?
+- Naming: does each custom preset need a user-supplied name, or is one unnamed "Custom" slot sufficient for v1?
+- Should custom presets share the same `PRESETS` shape so `getPhase()` and the main loop need no changes?
+
+**Implementation notes:**
+
+- Existing phase logic in `getPhase()`, `advanceToNextPhase()`, and the `activePhases` array was designed around the frozen `PRESETS` object. Custom phases must produce compatible phase objects, not require changes to the core loop.
+- Keep this out of scope until after the v1.1 landscape, accessibility, and history work is complete — the complexity is high and the user base for this feature is a subset of power users.
+
+---
+
+### B-028 · Calendar heatmap for daily session activity
+
+**Status:** captured · not scheduled
+**Earliest sensible slot:** post-v1.1; depends on stable history storage and aggregate stats (B-029)
+
+**What:** Add a GitHub-style calendar heatmap to the history or stats panel showing which days had sessions and, optionally, session intensity (duration or cycle count encoded as colour depth).
+
+**Why:** A visual streak calendar motivates consistent daily practice better than a flat list. Users can see gaps, streaks, and trends at a glance, which reinforces the habit-forming goal of the app.
+
+**Open questions when this gets planned:**
+
+- How many weeks to show? 12 weeks (3 months) fits on mobile without scrolling; 52 weeks (1 year) requires horizontal scroll or a toggle.
+- Colour encoding: single-step (did/didn't) vs. gradient by total minutes? Single-step is simpler and avoids misleading comparisons across different presets.
+- Does the heatmap render as SVG (consistent with the ring style) or as a CSS grid of `<div>` cells?
+
+**Implementation notes:**
+
+- Requires `date` fields on history records to be parseable as calendar dates — currently stored as ISO strings via `new Date().toISOString()`, which is sufficient.
+- Heatmap is read-only and purely presentational; no changes needed to `saveHistory()` or `loadSettings()`.
+- Keep this out of the main history panel to avoid cluttering the compact mobile layout — render it in a dedicated stats section or modal.
+
+---
+
+### B-029 · Aggregate session statistics view
+
+**Status:** captured · not scheduled
+**Earliest sensible slot:** post-v1.1 — no hard prerequisites; aligns with B-028 (heatmap) and B-030 (breakdown)
+
+**What:** Add a statistics summary showing total sessions completed, total minutes practised, and current streak (consecutive days with at least one session).
+
+**Why:** A running total and streak give users a sense of progress and reinforce daily practice. These are the metrics most commonly cited by habit-tracking apps as effective motivators.
+
+**Open questions when this gets planned:**
+
+- Where does this live? A collapsible "Stats" section below the history list, or a separate tab/panel?
+- Streak definition: must a session occur every calendar day, or is a "2-day grace period" (no session yesterday but one the day before) acceptable?
+- Should total minutes include sessions that were stopped early, or only sessions that completed at least one full cycle?
+
+**Implementation notes:**
+
+- All data is already in the stored history array (`durationMs`, `date`, `cycles`). Aggregation is pure JS with no new storage.
+- Streak logic: sort records by date, walk backward from today, count consecutive days with at least one record.
+- Display values with `Intl.NumberFormat` for locale-aware number formatting.
+
+---
+
+### B-030 · Weekly and monthly session breakdown
+
+**Status:** captured · not scheduled
+**Earliest sensible slot:** post-v1.1; depends on B-029 (aggregate stats foundation)
+
+**What:** Show a per-week or per-month breakdown of sessions — total count and total minutes for each period — so users can spot trends in their practice over time.
+
+**Why:** Aggregate totals (B-029) tell users how much they've done overall, but trends reveal whether practice is increasing, plateauing, or lapsing. Weekly/monthly views provide actionable feedback without requiring the full heatmap (B-028).
+
+**Open questions when this gets planned:**
+
+- Toggle or tabs: let users switch between weekly and monthly views, or pick one default?
+- History cap: 14 entries may span only a few weeks. Is this view useful with so few records, or should it be gated behind a higher cap?
+- Display format: bar chart (requires a charting solution or hand-rolled SVG) or a simple table?
+
+**Implementation notes:**
+
+- Group records by ISO week number (`date.getFullYear()` + `date.getWeek()`) or by `YYYY-MM` for monthly.
+- Keep it as a table first; a bar chart adds visual complexity and SVG authoring overhead for uncertain payoff.
+- The 14-entry cap in `SESSION.maxHistory` is a significant constraint — evaluate whether a higher cap is acceptable before investing in breakdown UI.
+
+---
+
+### B-031 · WCAG 2.1 AA compliance audit
+
+**Status:** captured · not scheduled
+**Earliest sensible slot:** post-v1.1; after B-017 (focus states), B-018 (tab order), and B-019 (ARIA labels) are merged — those are prerequisites for a meaningful audit pass
+
+**What:** Conduct a structured WCAG 2.1 AA compliance audit covering all success criteria, identify gaps beyond what B-017/B-018/B-019 address, and remediate them.
+
+**Why:** B-017, B-018, and B-019 tackle the most visible accessibility gaps, but WCAG 2.1 AA has 50 success criteria. A full audit catches contrast ratios, motion preferences, error identification, and other criteria that targeted fixes can miss.
+
+**Open questions when this gets planned:**
+
+- Tool: automated scan (axe-core, Lighthouse) for low-hanging fruit, followed by manual review for dynamic content (ring animation, phase transitions)?
+- Scope: audit only the main app screen, or also history panel, settings, and countdown overlay?
+- Who reviews: solo audit by a developer, or does this need a dedicated accessibility tester?
+
+**Implementation notes:**
+
+- Run `axe-core` via browser DevTools extension against `index.html` served on localhost (HTTPS or localhost satisfies the secure-context requirement).
+- Pay special attention to: colour contrast ratios for all text/background pairs in both light and dark themes; `prefers-reduced-motion` support for the ring animation; touch target sizes (minimum 44×44px per WCAG 2.5.5).
+- Log all failures in a checklist; link each to its WCAG criterion and the fix applied.
+
+---
+
+### B-032 · Screen reader compatibility for all controls
+
+**Status:** captured · not scheduled
+**Earliest sensible slot:** post-v1.1; after B-019 (ARIA labels) ships — partial ARIA coverage must exist before a full compatibility test is meaningful
+
+**What:** Test and verify that every interactive control and dynamic content region works correctly with at least two screen readers (VoiceOver on iOS/macOS and NVDA on Windows), and fix any announcement gaps or navigation failures.
+
+**Why:** B-019 adds ARIA attributes to specific elements, but true screen reader compatibility requires end-to-end testing: live regions must announce at the right time, focus management during session start/stop must be correct, and the ring's animated progress must be conveyed without overwhelming announcements.
+
+**Open questions when this gets planned:**
+
+- Announcement frequency for the ring: announcing every percent change would be noise; announcing only phase transitions (B-019 `aria-live="polite"`) may be sufficient — verify in testing.
+- Should the duration sliders be announced with current value on change, or only on focus?
+- Does the countdown overlay (3-2-1) need `aria-live="assertive"` or does `aria-live="polite"` give enough time before the session starts?
+
+**Implementation notes:**
+
+- Test matrix: VoiceOver + Safari on iPhone SE (smallest supported screen), VoiceOver + Safari on macOS, NVDA + Chrome on Windows.
+- Focus management: after the start countdown, confirm focus is not trapped or lost; after session ends, confirm focus returns to the Start button.
+- Cross-reference B-019 implementation notes — fixes here may be additive patches on top of that work rather than rewrites.
 
 ---
 
