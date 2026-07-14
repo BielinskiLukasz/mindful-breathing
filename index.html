@@ -892,20 +892,96 @@
     /* ====== LANDSCAPE MOBILE ====== */
     @media (max-height: 500px) and (orientation: landscape) {
       body {
-        align-items: flex-start;
-        overflow-y: auto;
-        padding: 8px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        min-height: 0;
+        overflow: hidden;
+        padding: 0;
         position: relative;
         isolation: isolate;
-        height: auto;
-        min-height: 100vh;
       }
 
       .container {
-        width: min(560px, 96vw);
-        padding: 52px 14px 12px;
-        text-align: center;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+        height: 100vh;
+        padding: 0;
+        border-radius: 0;
+        box-shadow: none;
+        text-align: left;
+        overflow: hidden;
       }
+
+      /* Ring side (left) */
+      .ringSection {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 8px 8px 52px;
+      }
+
+      #cycle { display: none; }
+      #elapsed { display: none; }
+      #landscapeInfo {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        justify-content: center;
+        margin-top: 6px;
+      }
+
+      #landscapeInfo .cycle,
+      #landscapeInfo .elapsed {
+        margin: 0;
+        text-align: left;
+      }
+
+      .ringWrap {
+        width: 120px;
+        height: 120px;
+        margin: 4px auto;
+      }
+
+      .ringSvg { width: 120px; height: 120px; }
+
+      .modeIndicator { margin-bottom: 2px; text-align: center; }
+      .phase { margin: 0 0 2px; text-align: center; }
+      .phaseHint { display: none; }
+      .nextPhase { display: none; }
+
+      /* Controls side (right) */
+      .controlsSection {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 14px;
+        overflow: hidden;
+        border-left: 1px solid var(--accentSoft);
+        position: relative;
+      }
+
+      #gestureHint { display: none; }
+
+      .controls {
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 0;
+        border-top: none;
+        padding-top: 0;
+      }
+
+      .statusRow { justify-content: center; margin-top: 8px; }
+
+      .history { display: none; }
+      .sessionBar { display: none; }
 
       .cornerControls {
         flex-direction: row;
@@ -914,41 +990,14 @@
       }
 
       .cornerControls .infoBtn,
-      .cornerControls .iconToggle {
-        width: 32px;
-        height: 32px;
-      }
-
+      .cornerControls .iconToggle,
       .fullscreenBtn {
         width: 32px;
         height: 32px;
       }
 
-      .ringWrap {
-        width: 150px;
-        height: 150px;
-        margin: 4px auto 10px;
-      }
-
-      .ringSvg { width: 150px; height: 150px; }
-      /* font-size removed: clamp() handles scaling */
-
-      .modeIndicator { margin-bottom: 4px; text-align: center; }
-      .cycle { margin: 0 0 2px; text-align: center; }
-      .phase { margin: 0 0 4px; text-align: center; }
-      .phaseHint { text-align: center; }
-      .nextPhase { text-align: center; }
-
-      .controls { justify-content: center; margin-top: 8px; }
-      .statusRow { justify-content: center; margin-top: 8px; }
-      .goalRow { justify-content: center; }
-      .sessionBar { margin-top: 8px; }
-
       button { padding: 8px 12px; min-width: 100px; }
       .resetBtn { min-width: 76px; }
-
-      .history { margin-top: 4px; padding-top: 2px; max-height: 180px; overflow-y: auto; }
-      .historyItem { padding: 3px 4px; margin-top: 2px; }
     }
 
     /* ====== LANDSCAPE LAYOUT (50/50 SPLIT) ====== */
