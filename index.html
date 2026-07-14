@@ -1074,19 +1074,17 @@
 <body>
   <div class="container" id="app">
     <div class="cornerControls">
-      <button class="infoBtn" id="infoBtn" title="Keyboard shortcuts & notes" aria-label="Toggle info panel">
-        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="8" cy="8" r="6.5"/>
-          <line x1="8" y1="7.5" x2="8" y2="11.5"/>
-          <circle cx="8" cy="5" r="0.8" fill="currentColor" stroke="none"/>
+      <button class="fullscreenBtn" id="fullscreenBtn" title="Toggle fullscreen" aria-label="Toggle fullscreen">
+        <svg id="fsEnterIcon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="1,6 1,1 6,1"/><polyline points="10,1 15,1 15,6"/>
+          <polyline points="15,10 15,15 10,15"/><polyline points="6,15 1,15 1,10"/>
+        </svg>
+        <svg id="fsExitIcon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+          <polyline points="6,1 6,6 1,6"/><polyline points="10,1 10,6 15,6"/>
+          <polyline points="15,10 10,10 10,15"/><polyline points="1,10 6,10 6,15"/>
         </svg>
       </button>
-      <button class="iconToggle" id="settingsBtn" title="Settings" aria-label="Open settings">
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37 1 .608 2.296.07 2.572-1.065z"/>
-          <circle cx="12" cy="12" r="3"/>
-        </svg>
-      </button>
+      <button class="iconToggle" id="themeToggleBtn" title="Toggle light/dark theme" style="font-size: clamp(12px, 1.5vw + 8px, 16px); line-height: 1;">&#9728;</button>
       <button class="iconToggle" id="soundToggle" title="Toggle sound">
         <svg id="soundOnIcon" viewBox="0 0 18 18" width="16" height="16" fill="currentColor" aria-hidden="true">
           <path d="M2 6.5h3.5l4-3.5v12l-4-3.5H2z"/>
@@ -1111,15 +1109,17 @@
           <line x1="17" y1="5.5" x2="13" y2="9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
       </button>
-      <button class="iconToggle" id="themeToggleBtn" title="Toggle light/dark theme" style="font-size: clamp(12px, 1.5vw + 8px, 16px); line-height: 1;">&#9728;</button>
-      <button class="fullscreenBtn" id="fullscreenBtn" title="Toggle fullscreen" aria-label="Toggle fullscreen">
-        <svg id="fsEnterIcon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="1,6 1,1 6,1"/><polyline points="10,1 15,1 15,6"/>
-          <polyline points="15,10 15,15 10,15"/><polyline points="6,15 1,15 1,10"/>
+      <button class="iconToggle" id="settingsBtn" title="Settings" aria-label="Open settings">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37 1 .608 2.296.07 2.572-1.065z"/>
+          <circle cx="12" cy="12" r="3"/>
         </svg>
-        <svg id="fsExitIcon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-          <polyline points="6,1 6,6 1,6"/><polyline points="10,1 10,6 15,6"/>
-          <polyline points="15,10 10,10 10,15"/><polyline points="1,10 6,10 6,15"/>
+      </button>
+      <button class="infoBtn" id="infoBtn" title="Keyboard shortcuts & notes" aria-label="Toggle info panel">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="8" cy="8" r="6.5"/>
+          <line x1="8" y1="7.5" x2="8" y2="11.5"/>
+          <circle cx="8" cy="5" r="0.8" fill="currentColor" stroke="none"/>
         </svg>
       </button>
     </div>
