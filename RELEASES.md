@@ -21,7 +21,7 @@
 - Compact landscape body set to `height: auto` + `min-height: 100vh` — ring and Start/Pause controls remain visible in the initial viewport on tall phones in landscape orientation
 
 ### **Full Changelog**
-`v0.6.0...v1.0.0`
+**Full Changelog**: https://github.com/BielinskiLukasz/mindful-breathing/compare/v0.6.0...v1.0.0
 
 ---
 
@@ -52,7 +52,7 @@
 - Light theme CSS gaps: info/settings panels and ring had hardcoded dark-only rgba values  
 
 ### **Full Changelog**
-`v0.5.0...v0.6.0`
+**Full Changelog**: https://github.com/BielinskiLukasz/mindful-breathing/compare/v0.5.0...v0.6.0
 
 ---
 
@@ -83,7 +83,7 @@
 - localStorage quota exceeded silently — `QuotaExceededError` now caught and shown to user  
 
 ### **Full Changelog**
-`v0.4.1...v0.5.0`
+**Full Changelog**: https://github.com/BielinskiLukasz/mindful-breathing/compare/v0.4.1...v0.5.0
 
 ---
 
@@ -121,7 +121,7 @@
 - Session history panel positioning in various layouts
 
 ### **Full Changelog**
-`v0.4.0...v0.4.1`
+**Full Changelog**: https://github.com/BielinskiLukasz/mindful-breathing/compare/v0.4.0...v0.4.1
 
 ---
 
@@ -150,7 +150,7 @@
 - —
 
 ### **Full Changelog**
-`v0.3.3...v0.4.0`
+**Full Changelog**: https://github.com/BielinskiLukasz/mindful-breathing/compare/v0.3.3...v0.4.0
 
 ---
 
@@ -204,7 +204,7 @@
 - Main UI properly centered in landscape mode
 
 ### **Full Changelog**
-`v0.3.1...v0.3.2`
+**Full Changelog**: https://github.com/BielinskiLukasz/mindful-breathing/compare/v0.3.1...v0.3.2
 
 ---
 
@@ -229,7 +229,7 @@
 - —
 
 ### **Full Changelog**
-`v0.3.0...v0.3.1`
+**Full Changelog**: https://github.com/BielinskiLukasz/mindful-breathing/compare/v0.3.0...v0.3.1
 
 ---
 
@@ -262,7 +262,7 @@
 - Priming no longer fires when vibration is disabled
 
 ### **Full Changelog**
-`v0.2.1...v0.3.0`
+**Full Changelog**: https://github.com/BielinskiLukasz/mindful-breathing/compare/v0.2.1...v0.3.0
 
 ---
 
@@ -285,7 +285,7 @@
 - —
 
 ### **Full Changelog**
-`v0.2.0...v0.2.1`
+**Full Changelog**: https://github.com/BielinskiLukasz/mindful-breathing/compare/v0.2.0...v0.2.1
 
 ---
 
@@ -321,7 +321,7 @@
 - Sound and vibration not working on mobile browsers
 
 ### **Full Changelog**
-`v0.1.0...v0.2.0`
+**Full Changelog**: https://github.com/BielinskiLukasz/mindful-breathing/compare/v0.1.0...v0.2.0
 
 ---
 
