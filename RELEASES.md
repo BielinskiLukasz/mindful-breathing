@@ -87,44 +87,6 @@
 
 ---
 
-## 🟦 **v0.4.1**  
-📅 *Release date: 2026-06-05*  
-🔖 Commit: `8015112`  
-👤 Author: @BielinskiLukasz  
-
-### **What's Changed**
-- Responsive typography with viewport-aware scaling (clamp-based)
-- Full landscape layout redesign with 2-column adaptive grid
-- Theming enhancements for dark and light modes
-- Expanded session history visibility and responsiveness
-
-### **Added**
-- Responsive font sizing that adapts to viewport width (clamp-based scaling)
-- Full landscape layout redesign with 2-column adaptive grid
-- Icon row horizontal reflow in landscape mode
-- Session history visibility in landscape view
-- Improved dark mode default colors for better contrast
-- Light theme color refinements
-- Enhanced touch targets for mobile users
-- Smooth 220ms transitions on theme changes
-
-### **Changed**
-- Ring and controls centered on both portrait and landscape layouts
-- Status and goal rows repositioned for responsiveness across orientations
-- Cycle counter and phase labels responsive to layout changes
-- Icon sizing and button positioning optimized across orientations
-- Consistent 8px spacing rhythm across all orientations
-
-### **Fixed**
-- Icon sizing inconsistencies across orientations
-- Button positioning in landscape mode
-- Session history panel positioning in various layouts
-
-### **Full Changelog**
-**Full Changelog**: https://github.com/BielinskiLukasz/mindful-breathing/compare/v0.4.0...v0.4.1
-
----
-
 ## 🟦 **v0.4.0**  
 📅 *Release date: 2026‑06‑04*  
 🔖 Commit: `140948f`  
@@ -134,20 +96,26 @@
 - History pagination, storage cap, session preset tracking (#10)
 
 ### **Added**
-- Session history now displays with pagination navigation (Previous/Next buttons)  
-- Configurable storage cap for session history (default: 14 entries)  
-- Preset badge shown in session history cards (displays which pattern was used)  
-- Session history cards fully responsive for landscape and mobile layouts  
-- Settings initialization on app load ensures all custom durations and toggles persist  
-- Improved responsive CSS for session history rendering across all breakpoints
+- Session history pagination (Previous/Next navigation)
+- Preset badge on history cards showing which pattern was used
+- Configurable storage cap (default: 14 entries)
+- Responsive font sizing with clamp-based viewport scaling
+- Full landscape layout redesign with 2-column adaptive grid
+- Icon row horizontal reflow and session history visibility in landscape mode
+- Enhanced touch targets for mobile users
+- 220ms smooth transitions on theme changes
 
 ### **Changed**
-- Session history rendering completely rewritten to support pagination  
-- History card styling improved for consistency with app theme  
-- Landscape mode CSS extended to accommodate larger history panel
+- History rendering rewritten to support pagination
+- Ring, controls, status, and goal rows repositioned for portrait/landscape consistency
+- Cycle counter, phase labels, icon sizing, and button positioning optimized across orientations
+- Consistent 8px spacing rhythm across all orientations
+- Dark mode default colors improved for contrast; light theme color refinements
+- Settings initialization on load ensures durations and toggles persist
 
 ### **Fixed**
-- —
+- Icon sizing inconsistencies across orientations
+- Button and history panel positioning in landscape mode
 
 ### **Full Changelog**
 **Full Changelog**: https://github.com/BielinskiLukasz/mindful-breathing/compare/v0.3.3...v0.4.0
