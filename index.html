@@ -1309,11 +1309,12 @@
       </div>
 
       <details class="history" id="historyDetails">
-        <summary>Past sessions <button class="clearHistBtn" id="clearHistBtn">Clear</button></summary>
+        <summary>Past sessions</summary>
         <div id="historyActions" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:8px 0;">
           <button id="exportJsonBtn" class="presetBtn">Export JSON</button>
           <button id="exportCsvBtn" class="presetBtn">Export CSV</button>
           <button id="importBtn" class="presetBtn">Import</button>
+          <button class="clearHistBtn" id="clearHistBtn">Clear</button>
           <input type="file" id="importFileInput" accept=".json" style="display:none">
         </div>
         <div id="historyList"></div>
@@ -1598,6 +1599,8 @@
         input.max = DURATION_RANGE.max;
         input.value = phase.durationSec;
         input.dataset.index = i;
+        input.id = `dur-input-${i}`;
+        input.name = `dur-input-${i}`;
         input.disabled = isRunning;
 
         const unit = document.createElement("span");
