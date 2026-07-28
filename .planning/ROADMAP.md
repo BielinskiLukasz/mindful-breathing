@@ -134,7 +134,10 @@ Plans:
   2. Screen readers announce meaningful labels for all controls, the current phase name, and running/stopped state changes via aria-live or equivalent
   3. Every interactive element shows a visible focus ring when keyboard-focused, meeting at least 3:1 contrast against the adjacent background
   4. User can import a CSV file previously exported from the app; valid rows merge into history, duplicates are skipped, and invalid rows produce visible feedback
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 08-01-PLAN.md — CSS :focus-visible rule, aria-live on #phaseEl, openPanelElement state variable, accept attribute update
+- [ ] 08-02-PLAN.md — Panel focus management and focus trap, keyboard shortcut guard, CSV parser and import routing
 **UI hint**: yes
 
 ### Phase 9: Custom Preset Builder
@@ -175,10 +178,10 @@ Plans:
 | 5. History Data Management | v0.6 | 1/1 | Complete | 2026-06-30 |
 | 6. Bug Fixes & Visual Polish | v1.0 | 2/2 | Complete | 2026-07-04 |
 | 7. Landscape Layout & UX Polish | v1.1 | 2/2 | Complete | 2026-07-14 |
-| 8. Accessibility & CSV Import | v1.1 | 0/TBD | Not started | - |
+| 8. Accessibility & CSV Import | v1.1 | 0/2 | Not started | - |
 | 9. Custom Preset Builder | v1.1 | 0/TBD | Not started | - |
 | 10. Streak Tracking | v1.1 | 0/TBD | Not started | - |
 
 ---
 
-**Last updated:** 2026-07-14 — Phase 7 complete
+**Last updated:** 2026-07-28 — Phase 8 planned (2 plans)
