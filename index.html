@@ -1123,6 +1123,12 @@
         transform: scale(1.02);
       }
     }
+
+    /* ====== FOCUS INDICATORS (keyboard-only, D-01, D-02) ====== */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
   </style>
 </head>
 
@@ -1261,7 +1267,7 @@
     <div class="ringSection">
       <div class="modeIndicator" id="modeIndicator">Relax</div>
       <div class="cycle" id="cycle">Cycle: 1</div>
-      <div class="phase" id="phase">Pause</div>
+      <div class="phase" id="phase" aria-live="polite">Pause</div>
 
       <div class="ringWrap">
         <svg class="ringSvg" viewBox="0 0 220 220" aria-hidden="true">
@@ -1315,7 +1321,7 @@
           <button id="exportCsvBtn" class="presetBtn">Export CSV</button>
           <button id="importBtn" class="presetBtn">Import</button>
           <button class="clearHistBtn" id="clearHistBtn">Clear</button>
-          <input type="file" id="importFileInput" accept=".json" style="display:none">
+          <input type="file" id="importFileInput" accept=".json,.csv" style="display:none">
         </div>
         <div id="historyList"></div>
         <div id="historyNav" style="margin-top: 12px; display: flex; gap: 6px; justify-content: center; align-items: center;">
@@ -1466,6 +1472,9 @@
     let isCountingDown = false;
     let countdownTimers = [];
     let countdownCallback = null;
+
+    // Panel state
+    let openPanelElement = null; // Track which panel is currently open (null if none)
 
     // Sound/vibration toggle states (replace checkbox .checked)
     let soundEnabled = SOUND.enabledByDefault;
