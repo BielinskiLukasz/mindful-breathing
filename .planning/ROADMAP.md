@@ -110,58 +110,74 @@
 ## Phase Details
 
 ### Phase 7: Landscape Layout & UX Polish
+
 **Goal**: Users experience a clean, overlap-free landscape layout with controls in their expected columns and visual polish on hover and countdown
 **Depends on**: Phase 6
 **Requirements**: LAYOUT-02, LAYOUT-03, LAYOUT-04, LAYOUT-05, LAYOUT-06, UX-01, UX-02
 **Success Criteria** (what must be TRUE):
+
   1. Fullscreen button appears below the breathing ring in the left column in landscape — not in the top-right corner overlay
   2. Start/Reset buttons sit at the vertical midpoint of the right column in landscape; session info (cycle count and elapsed time) appears below the ring in the left column
   3. No layout element clips, overflows, or overlaps another in landscape at 600px, 768px, 1024px, and 1440px wide viewports
   4. Compact landscape activates when viewport height is ≤500px regardless of width
   5. Interactive controls show a visible hover style on pointer devices; the 3-second countdown digits animate smoothly between number changes
+
 **Plans**: 2 plans
 Plans:
+
 - [ ] 07-01-PLAN.md — HTML/CSS layout: fullscreenBtn into cornerControls, landscape info row below ring, controls at 50% column height
 - [ ] 07-02-PLAN.md — JS landscape element sync, uniform hover states, countdown animation verification
+
 **UI hint**: yes
 
 ### Phase 8: Accessibility & CSV Import
+
 **Goal**: Users can navigate the entire app with keyboard alone, screen readers can follow the session state, and session history can be restored from a previously exported CSV file
 **Depends on**: Phase 7
 **Requirements**: A11Y-01, A11Y-02, A11Y-03, HIST-12
 **Success Criteria** (what must be TRUE):
+
   1. Every button, toggle, preset selector, and slider is reachable and activatable via Tab / Shift+Tab / Enter / Space in a logical order with no keyboard traps
   2. Screen readers announce meaningful labels for all controls, the current phase name, and running/stopped state changes via aria-live or equivalent
   3. Every interactive element shows a visible focus ring when keyboard-focused, meeting at least 3:1 contrast against the adjacent background
   4. User can import a CSV file previously exported from the app; valid rows merge into history, duplicates are skipped, and invalid rows produce visible feedback
-**Plans**: 2 plans
+
+**Plans**: 2/2 plans executed
 Plans:
-- [ ] 08-01-PLAN.md — CSS :focus-visible rule, aria-live on #phaseEl, openPanelElement state variable, accept attribute update
-- [ ] 08-02-PLAN.md — Panel focus management and focus trap, keyboard shortcut guard, CSV parser and import routing
+
+- [x] 08-01-PLAN.md — CSS :focus-visible rule, aria-live on #phaseEl, openPanelElement state variable, accept attribute update
+- [x] 08-02-PLAN.md — Panel focus management and focus trap, keyboard shortcut guard, CSV parser and import routing
+
 **UI hint**: yes
 
 ### Phase 9: Custom Preset Builder
+
 **Goal**: Users can create, name, edit, and delete their own breathing presets, which persist across sessions and appear alongside built-in presets
 **Depends on**: Phase 8
 **Requirements**: PRESET-01, PRESET-02, PRESET-03, PRESET-04, PRESET-05
 **Success Criteria** (what must be TRUE):
+
   1. User can create a custom preset with a name and at least 2 of the 4 standard phases (Inhale, Hold, Exhale, Hold2), each with its own duration
   2. Custom presets appear in the preset selector alongside Relax, Box, and 4-7-8 and can be selected to start a session
   3. User can edit a custom preset's name, active phases, and durations; changes persist and do not interrupt a running session
   4. User can delete a custom preset with a confirmation step; if the deleted preset was active, the app falls back to the first built-in preset
   5. Custom presets survive page reload and browser restart (stored under a dedicated localStorage key)
+
 **Plans**: TBD
 **UI hint**: yes
 
 ### Phase 10: Streak Tracking
+
 **Goal**: Users can see their daily practice consistency — current streak, longest ever, today's status, and total completed sessions — at a glance from the main screen
 **Depends on**: Phase 9
 **Requirements**: STREAK-01, STREAK-02, STREAK-03, STREAK-04, STREAK-05, STREAK-06
 **Success Criteria** (what must be TRUE):
+
   1. Streak button visible on the main screen shows the current streak count (e.g., flame icon + "5") at page load and updates immediately after each completed session; shows "0" or is visually muted when streak is 0
   2. Opening the streak panel reveals current streak, longest-ever streak, today's completion status ("Done today" with count, or "Not yet" prompt), and total completed session count excluding incomplete sessions
   3. Streak increments for each consecutive calendar day (local timezone) with at least one non-incomplete session and resets to 0 after any missed day
   4. Streak panel opens and dismisses via the same button-to-overlay interaction pattern as the existing info panel
+
 **Plans**: TBD
 **UI hint**: yes
 
@@ -178,7 +194,7 @@ Plans:
 | 5. History Data Management | v0.6 | 1/1 | Complete | 2026-06-30 |
 | 6. Bug Fixes & Visual Polish | v1.0 | 2/2 | Complete | 2026-07-04 |
 | 7. Landscape Layout & UX Polish | v1.1 | 2/2 | Complete | 2026-07-14 |
-| 8. Accessibility & CSV Import | v1.1 | 0/2 | Not started | - |
+| 8. Accessibility & CSV Import | v1.1 | 2/2 | In Progress|  |
 | 9. Custom Preset Builder | v1.1 | 0/TBD | Not started | - |
 | 10. Streak Tracking | v1.1 | 0/TBD | Not started | - |
 
