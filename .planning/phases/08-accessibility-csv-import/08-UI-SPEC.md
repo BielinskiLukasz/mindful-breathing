@@ -35,11 +35,11 @@ Declared values for Phase 8 focus (keyboard navigation, focus indicators, panel 
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| xs | 2px | Dialog borders, outline offset baseline |
+| xs | 4px | Dialog borders, outline offset baseline |
 | sm | 4px | Label gaps, fine padding |
-| md | 6px | Icon button gaps, small control spacing |
+| md | 8px | Icon button gaps, small control spacing |
 | lg | 8px | Preset button gaps, history item padding |
-| xl | 12px | Control row gaps, status row gaps |
+| xl | 16px | Control row gaps, status row gaps |
 | 2xl | 16px | History section spacing, panel content gaps |
 | 3xl | 24px | Container padding, panel padding |
 
@@ -54,7 +54,9 @@ Declared values for Phase 8 focus (keyboard navigation, focus indicators, panel 
 | Body | `clamp(13px, 1.75vw + 9px, 17px)` | 400 | 1.4–1.8 (via clamp) |
 | Label | `clamp(10px, 1vw + 7px, 12px)` | 400 | inherited |
 | Heading | `clamp(18px, 3vw + 12px, 28px)` | 500 | 1 (phase label) |
-| Display | `clamp(40px, 8vw + 20px, 64px)` | 800 | 1 (countdown timer) |
+| Display | `clamp(40px, 8vw + 20px, 64px)` | 500 | 1 (countdown timer) |
+
+**Font Weights Declared:** 2 weights only — 400 (regular) and 500 (medium/heading).
 
 **ARIA Announcement Typography:** Phase label text (Inhale, Hold, Exhale, Hold 2) and running/stopped state are announced by screen readers via `aria-live="polite"` attribute. Font size/weight remain unchanged; announcement relies on DOM text content and aria-live region.
 
@@ -78,6 +80,8 @@ Declared values for Phase 8 focus (keyboard navigation, focus indicators, panel 
 - Focus outline (`:focus-visible` — all interactive elements)
 - Completed session indicator
 - Error flash background (low opacity)
+
+**Primary Visual Focal Point:** Countdown timer (.time / .countdownNum) — the largest, most prominent element on the main screen, located in the center, and the primary target of user attention during an active session.
 
 **Focus Outline Specifics:**
 - All `:focus-visible` elements: `outline: 2px solid var(--accent); outline-offset: 3px`
@@ -204,10 +208,10 @@ Applicable state considerations resolved: **6 covered, 0 backstop, 0 unresolved*
 ## Checker Sign-Off
 
 - [ ] Dimension 1 Copywriting: Feedback messages, ARIA announcements, keyboard hints defined
-- [ ] Dimension 2 Visuals: Focus outline (2px solid accent, 3px offset), panel focus management, CSV import UI (button + banner feedback)
+- [ ] Dimension 2 Visuals: Focus outline (2px solid accent, 3px offset), primary focal point (countdown timer) declared, panel focus management, CSV import UI (button + banner feedback)
 - [ ] Dimension 3 Color: Accent color reserved for focus outline + interactive elements; destructive actions use #e57373; light/dark theme contrast verified 3:1 minimum
-- [ ] Dimension 4 Typography: Font sizes via clamp(); weights 400/500/800; line heights 1–1.8; phase/running state announced via aria-live
-- [ ] Dimension 5 Spacing: Focus outline offset 3px; tab order follows DOM; panel content gaps 16–24px; focus trap active on all open panels
+- [ ] Dimension 4 Typography: Font sizes via clamp(); 2 weights only (400 regular, 500 medium); line heights 1–1.8; phase/running state announced via aria-live
+- [ ] Dimension 5 Spacing: All tokens multiples of 4 (4px, 8px, 16px, 24px); focus outline offset 3px; tab order follows DOM; panel content gaps 16–24px; focus trap active on all open panels
 - [ ] Dimension 6 Registry Safety: Not applicable — vanilla CSS, no third-party component registry
 
 **Approval:** pending
