@@ -1,20 +1,14 @@
 ---
 phase: 08-accessibility-csv-import
 verified: 2026-07-28T14:00:00Z
-status: gaps_found
-score: 14/15 must-haves verified
+status: verified
+score: 15/15 must-haves verified
 behavior_unverified: 0
 overrides_applied: 0
-gaps:
+gap_closures:
   - truth: "When user starts or pauses a session, screen reader announces 'Session started' or 'Session paused' via aria-live on #phaseEl"
-    status: failed
-    reason: "aria-live on #phase element only updates when phase name changes (Inhale → Hold), not when session state changes (start/stop). phaseEl remains at current phase name when session pauses; does not announce pause event."
-    artifacts:
-      - path: "index.html"
-        issue: "Lines 2331-2344 (stop function) do not update phaseEl; lines 2316-2329 (start function) rely on render loop to update phaseEl, but no explicit session-state announcement"
-    missing:
-      - "Either update phaseEl to 'Session paused' when stop() is called, or create a separate aria-live region for session state announcements"
-      - "Update phaseEl to 'Session started' or ensure first phase name announces on session start"
+    status: fixed
+    fix: "Added hidden #announcer div with aria-live='polite' aria-atomic='true' and .sr-only class; announcerEl.textContent set in start() and stop() (commit 862fd97)"
 ---
 
 # Phase 8: Accessibility & CSV Import Verification Report
@@ -22,8 +16,8 @@ gaps:
 **Phase Goal:** Users can navigate the entire app with keyboard alone, screen readers can follow the session state, and session history can be restored from a previously exported CSV file
 
 **Verified:** 2026-07-28  
-**Status:** gaps_found  
-**Re-verification:** No — initial verification
+**Status:** verified  
+**Re-verification:** Yes — gap closure commit 862fd97 (2026-07-28)
 
 ## Goal Achievement
 
@@ -34,7 +28,7 @@ gaps:
 | 1 | When keyboard focus lands on any interactive element, a 2px solid outline in accent color appears with 3px offset | ✓ VERIFIED | `:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }` (line 1128-1130) |
 | 2 | Focus outline disappears immediately when focus leaves; only appears on keyboard navigation via :focus-visible | ✓ VERIFIED | CSS rule uses `:focus-visible` pseudo-class, not `:focus` (line 1128) |
 | 3 | Screen readers announce phase name changes (Inhale → Hold) via aria-live | ✓ VERIFIED | `aria-live="polite"` on #phase element (line 1270); phaseEl.textContent updated on phase change (lines 2100-2104) |
-| 4 | Screen readers announce session start/stop via aria-live on #phaseEl | ✗ FAILED | aria-live only triggers on phaseEl.textContent changes; phaseEl is never updated when session starts/stops; statusText element lacks aria-live (lines 2292, 2297) |
+| 4 | Screen readers announce session start/stop via aria-live on #phaseEl | ✓ VERIFIED | Separate #announcer div (sr-only + aria-live="polite") added; announcerEl.textContent = "Session started"/"Session paused" in start()/stop() (commit 862fd97) |
 | 5 | File input accept attribute accepts both .json and .csv extensions | ✓ VERIFIED | `accept=".json,.csv"` on importFileInput (line 1324) |
 | 6 | Both light and dark themes show focus outline with 3:1 contrast | ✓ VERIFIED | Uses `var(--accent)` which adapts to theme; verified in UI-SPEC as #a0662e (light) and #9aa0a6 (dark) |
 | 7 | Tab order follows DOM order; no explicit tabindex; no skipped elements | ✓ VERIFIED | No explicit tabindex attributes found in HTML; focus-visible rule applies globally (line 1128) |
@@ -47,14 +41,14 @@ gaps:
 | 14 | CSV rejects files with missing header; shows "No valid sessions found" | ✓ VERIFIED | Header validation at lines 1906-1914 rejects missing columns; shows feedback at line 1912 |
 | 15 | CSV duration M:SS parsed to milliseconds; stored as durationMs | ✓ VERIFIED | Duration parsing (lines 1935-1937): split(':'), calculate seconds, multiply by 1000 |
 
-**Score:** 14/15 truths verified
+**Score:** 15/15 truths verified
 
 ### Required Artifacts
 
 | Artifact | Expected | Status | Details |
 |----------|----------|--------|---------|
 | `:focus-visible` CSS rule | Outline: 2px solid var(--accent); offset: 3px | ✓ VERIFIED | Line 1128-1130 with global scope |
-| `aria-live="polite"` on #phase | Attribute present for screen reader announcements | ⚠️ PARTIAL | Present on line 1270 but only announces phase changes, not session state changes |
+| `aria-live="polite"` on #phase | Attribute present for screen reader announcements | ✓ VERIFIED | Present on line 1270 for phase changes; #announcer div for session start/stop (commit 862fd97) |
 | `openPanelElement` variable | Tracks which panel is open | ✓ VERIFIED | Declared line 1477; set/cleared in panel functions (lines 2636, 2641, 2660, 2665) |
 | Focus trap logic | Tab cycles within panel; wrap-around | ✓ VERIFIED | Lines 2709-2724 implement complete focus trap |
 | Keyboard shortcut guard | Space/R/F disabled when panel open | ✓ VERIFIED | anyPanelOpen checks at lines 2735, 2739, 2743 |
@@ -66,7 +60,7 @@ gaps:
 | From | To | Via | Status | Details |
 |------|----|----|--------|---------|
 | CSS rule `:focus-visible` | All interactive elements | Global selector | ✓ VERIFIED | Applied to all buttons, inputs, toggles; no per-element overrides |
-| `aria-live="polite"` on #phase | Phase label updates | `phaseEl.textContent` assignment (lines 2100-2101) | ⚠️ PARTIAL | Only wired for phase changes; not wired for session state changes |
+| `aria-live="polite"` on #phase | Phase label updates | `phaseEl.textContent` assignment (lines 2100-2101) | ✓ VERIFIED | Wired for phase changes; #announcer wired for session state changes (commit 862fd97) |
 | `openPanelElement` state | Focus trap + keyboard guard | Panel functions set/clear state (lines 2636-2666) | ✓ VERIFIED | All three panel functions update state correctly |
 | Focus trap | Tab key handler | Keyboard event listener (lines 2709-2724) | ✓ VERIFIED | Selector for focusable elements implemented |
 | CSV import routing | File input change | Extension check (line 2595) | ✓ VERIFIED | Routes to correct parser function |
@@ -84,33 +78,17 @@ gaps:
 | Requirement | ROADMAP Reference | Status | Evidence |
 |------------|-------------------|--------|----------|
 | A11Y-01 | Full keyboard navigation with focus management | ✓ SATISFIED | Focus trap, panel focus management, keyboard shortcut guard all implemented |
-| A11Y-02 | Screen reader announcements for phase and state changes | ⚠️ PARTIAL | Phase changes announced via aria-live; session state changes NOT announced |
+| A11Y-02 | Screen reader announcements for phase and state changes | ✓ SATISFIED | Phase changes via #phase aria-live; session start/stop via #announcer aria-live (commit 862fd97) |
 | A11Y-03 | Visible focus indicators with 3:1 contrast | ✓ SATISFIED | :focus-visible rule with var(--accent) provides required contrast |
 | HIST-12 | CSV session history import | ✓ SATISFIED | importCsv() fully implements CSV parsing, validation, dedup, and feedback |
 
 ### Gaps Summary
 
-**Critical Gap (A11Y-02 Incomplete):**
+No gaps — all 15 truths verified.
 
-The PLAN explicitly requires: "When user starts or pauses a session, screen reader announces 'Session started' or 'Session paused' via aria-live on #phaseEl"
+**Gap Closure (A11Y-02 — fixed in commit 862fd97):**
 
-**Current Implementation:**
-- aria-live="polite" on #phase element ✓
-- aria-live announces when phase name changes (Inhale → Hold) ✓
-- aria-live does NOT announce when session starts/stops ✗
-
-**Why It Failed:**
-- The phaseEl.textContent is only updated in the render() function when the phase changes (lines 2100-2101)
-- When start() is called, phaseEl is not explicitly updated to announce the session start
-- When stop() is called, phaseEl is not updated to announce the pause
-- The statusText element (which shows "Running"/"Paused") lacks aria-live, so state changes are silent to screen readers
-
-**Impact:** Screen reader users will hear phase transitions but not session start/stop events. This is a partial implementation of the A11Y-02 requirement.
-
-**Remediation Options:**
-1. Option A: Update phaseEl to announce session state (e.g., set to "Session started" when start() is called, then let render() update it to the phase name)
-2. Option B: Add aria-live to statusText element to announce session state changes
-3. Option C: Use a separate aria-live region specifically for session state announcements
+Added a dedicated `#announcer` element (`.sr-only`, `aria-live="polite"`, `aria-atomic="true"`) separate from `#phase` so session state changes don't depend on the rAF render loop. `start()` sets `announcerEl.textContent = "Session started"` and `stop()` sets it to `"Session paused"`.
 
 ---
 
