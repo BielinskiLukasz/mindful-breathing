@@ -1,12 +1,12 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.1
-milestone_name: — Landscape Polish, Custom Presets & Streaks
+milestone_name: Landscape Polish, Custom Presets & Streaks
 current_phase: 7
 current_phase_name: Accessibility & CSV Import
 status: ready
-stopped_at: Phase 8 context gathered
-last_updated: "2026-07-20T20:11:55.705Z"
+stopped_at: Phase 8 UI-SPEC approved
+last_updated: "2026-07-28T13:37:00.943Z"
 last_activity: 2026-07-14
 last_activity_desc: Phase 7 complete (07-02 summary written, roadmap updated)
 progress:
@@ -71,9 +71,9 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-07-20T20:11:55.693Z
-Stopped at: Phase 8 context gathered
-Resume file: .planning/phases/08-accessibility-csv-import/08-CONTEXT.md
+Last session: 2026-07-28T13:37:00.924Z
+Stopped at: Phase 8 UI-SPEC approved
+Resume file: .planning/phases/08-accessibility-csv-import/08-UI-SPEC.md
 
 **Next Steps:**
 
