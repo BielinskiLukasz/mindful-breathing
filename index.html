@@ -1891,6 +1891,104 @@
       reader.readAsText(file);
     }
 
+    function importCsv(file) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function() {
+        try {
+          const lines = reader.result.split('\n').map(l => l.trim()).filter(l => l);
+          if (!lines.length) {
+            showImportFeedback("No valid sessions found in file");
+            return;
+          }
+
+          // Strict format validation — expect header row with Date, Duration, Cycles
+          const headerLine = lines[0].toLowerCase();
+          const hasExpectedHeader =
+            headerLine.includes("date") &&
+            headerLine.includes("duration") &&
+            headerLine.includes("cycles");
+          if (!hasExpectedHeader) {
+            showImportFeedback("No valid sessions found in file");
+            return;
+          }
+
+          let importedCount = 0, skipCount = 0;
+          let existing = [];
+          try {
+            const raw = localStorage.getItem(HISTORY_KEY);
+            existing = raw ? JSON.parse(raw) : [];
+          } catch (_) { existing = []; }
+          const existingDates = new Set(existing.map(s => s.date));
+
+          // Parse data rows (skip header)
+          for (let i = 1; i < lines.length; i++) {
+            try {
+              const cols = lines[i].split(',').map(c => c.trim());
+              if (cols.length < 3) { skipCount++; continue; }
+
+              const date = cols[0];
+              const durationStr = cols[1]; // M:SS format, e.g., "5:30"
+              const cyclesStr = cols[2];
+
+              // Parse M:SS duration back to milliseconds
+              const [mins, secs] = durationStr.split(':');
+              const totalSec = parseInt(mins, 10) * 60 + parseInt(secs, 10);
+              const durationMs = totalSec * 1000;
+
+              const cycles = parseInt(cyclesStr, 10);
+
+              // Validate parsed values
+              if (typeof date !== "string" || !Number.isFinite(durationMs) || !Number.isFinite(cycles)) {
+                skipCount++;
+                continue;
+              }
+
+              // Dedup — same strategy as JSON import (exact date string match)
+              if (existingDates.has(date)) {
+                skipCount++;
+                continue;
+              }
+
+              // Import incomplete sessions if they parse correctly
+              const incomplete = cols.length > 3 && cols[3].toLowerCase().includes("incomplete");
+
+              existing.push({
+                date: date,
+                durationMs: durationMs,
+                cycles: cycles,
+                preset: "relax",  // CSV doesn't store preset; default to relax
+                incomplete: incomplete
+              });
+              existingDates.add(date);
+              importedCount++;
+            } catch (_) {
+              skipCount++;
+              continue;
+            }
+          }
+
+          // Import feedback pattern (matches JSON feedback)
+          if (importedCount === 0) {
+            showImportFeedback("No valid sessions found in file");
+            return;
+          }
+
+          existing.sort((a, b) => b.date.localeCompare(a.date));
+          if (existing.length > maxHistoryEntries) existing.length = maxHistoryEntries;
+          localStorage.setItem(HISTORY_KEY, JSON.stringify(existing));
+          renderHistory();
+          sessionStorage.setItem("historyPage", "1");
+
+          const message = "Imported " + importedCount + " sessions" + (skipCount > 0 ? ", " + skipCount + " skipped" : "");
+          showImportFeedback(message);
+        } catch (_) {
+          showImportFeedback("Could not read file");
+        }
+      };
+      reader.readAsText(file);
+    }
+
     /******************************************************************
      *  WAKE LOCK
      ******************************************************************/
@@ -2489,7 +2587,18 @@
     document.getElementById("exportJsonBtn").addEventListener("click", exportJson);
     document.getElementById("exportCsvBtn").addEventListener("click", exportCsv);
     document.getElementById("importBtn").addEventListener("click", () => document.getElementById("importFileInput").click());
-    document.getElementById("importFileInput").addEventListener("change", function() { importJson(this.files[0]); this.value = ""; });
+    document.getElementById("importFileInput").addEventListener("change", function() {
+      const file = this.files[0];
+      if (!file) { this.value = ""; return; }
+
+      // Route to correct parser based on file extension
+      if (file.name.endsWith('.csv')) {
+        importCsv(file);
+      } else {
+        importJson(file);  // default to JSON for .json or unknown extensions
+      }
+      this.value = "";  // reset input for next file
+    });
 
     /******************************************************************
      *  CLEAR HISTORY
@@ -2522,8 +2631,16 @@
     const infoOverlay = document.getElementById("infoOverlay");
     const infoCloseBtn = document.getElementById("infoCloseBtn");
 
-    function openInfo() { infoOverlay.classList.add("visible"); }
-    function closeInfo() { infoOverlay.classList.remove("visible"); }
+    function openInfo() {
+      infoOverlay.classList.add("visible");
+      openPanelElement = infoOverlay;
+      infoCloseBtn.focus();
+    }
+    function closeInfo() {
+      infoOverlay.classList.remove("visible");
+      openPanelElement = null;
+      document.getElementById("infoBtn").focus();
+    }
 
     document.getElementById("infoBtn").addEventListener("click", openInfo);
     infoCloseBtn.addEventListener("click", closeInfo);
@@ -2538,8 +2655,16 @@
     const settingsBtn = document.getElementById("settingsBtn");
     const settingsCloseBtn = document.getElementById("settingsCloseBtn");
 
-    function openSettings() { settingsOverlay.classList.add("visible"); }
-    function closeSettings() { settingsOverlay.classList.remove("visible"); }
+    function openSettings() {
+      settingsOverlay.classList.add("visible");
+      openPanelElement = settingsOverlay;
+      settingsCloseBtn.focus();
+    }
+    function closeSettings() {
+      settingsOverlay.classList.remove("visible");
+      openPanelElement = null;
+      settingsBtn.focus();
+    }
 
     settingsBtn.addEventListener("click", openSettings);
     settingsCloseBtn.addEventListener("click", closeSettings);
@@ -2579,13 +2704,45 @@
     document.addEventListener("keydown", e => {
       if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
       if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+      // Focus trap: cycle Tab within open panel only
+      if (openPanelElement && e.code === "Tab") {
+        const focusableElements = Array.from(
+          openPanelElement.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
+        );
+        if (focusableElements.length > 0) {
+          const firstElement = focusableElements[0];
+          const lastElement = focusableElements[focusableElements.length - 1];
+          if (e.shiftKey && document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          } else if (!e.shiftKey && document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
+
+      const anyPanelOpen = openPanelElement !== null;
+
       switch (e.code) {
         case "Escape":
           if (isCountingDown) { e.preventDefault(); cancelCountdown(); }
+          else if (openPanelElement === infoOverlay) { e.preventDefault(); closeInfo(); }
+          else if (openPanelElement === settingsOverlay) { e.preventDefault(); closeSettings(); }
           break;
-        case "Space": e.preventDefault(); toggleBtn.click(); break;
-        case "KeyR":  resetBtn.click();    break;
-        case "KeyF":  fullscreenBtn.click(); break;
+        case "Space":
+          if (anyPanelOpen) return;
+          e.preventDefault(); toggleBtn.click();
+          break;
+        case "KeyR":
+          if (anyPanelOpen) return;
+          resetBtn.click();
+          break;
+        case "KeyF":
+          if (anyPanelOpen) return;
+          fullscreenBtn.click();
+          break;
       }
     });
 
