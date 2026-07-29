@@ -125,8 +125,8 @@
 **Plans**: 2 plans
 Plans:
 
-- [ ] 07-01-PLAN.md — HTML/CSS layout: fullscreenBtn into cornerControls, landscape info row below ring, controls at 50% column height
-- [ ] 07-02-PLAN.md — JS landscape element sync, uniform hover states, countdown animation verification
+- [x] 07-01-PLAN.md — HTML/CSS layout: fullscreenBtn into cornerControls, landscape info row below ring, controls at 50% column height
+- [x] 07-02-PLAN.md — JS landscape element sync, uniform hover states, countdown animation verification
 
 **UI hint**: yes
 
