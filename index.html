@@ -2719,7 +2719,6 @@
      *  KEYBOARD SHORTCUTS
      ******************************************************************/
     document.addEventListener("keydown", e => {
-      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
       if (e.metaKey || e.ctrlKey || e.altKey) return;
 
       // Focus trap: cycle Tab within open panel only
@@ -2739,6 +2738,8 @@
           }
         }
       }
+
+      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
 
       const anyPanelOpen = openPanelElement !== null;
 
