@@ -1,9 +1,9 @@
 ---
-status: complete
+status: resolved
 phase: 08-accessibility-csv-import
-source: [08-01-SUMMARY.md, 08-02-SUMMARY.md]
+source: [08-01-SUMMARY.md, 08-02-SUMMARY.md, 08-03-SUMMARY.md]
 started: 2026-07-29T00:00:00Z
-updated: 2026-07-29T00:03:00Z
+updated: 2026-07-29T00:00:00Z
 ---
 
 ## Current Test
@@ -23,9 +23,8 @@ result: pass
 
 ### 3. Focus trapped inside open panel — returns to opener on close
 expected: With the Info (or Settings) panel open, press Tab repeatedly. Focus should cycle only through elements inside the panel and never reach buttons behind it (Start, Fullscreen, etc.). Press ESC (or click ×) — panel closes and focus returns to the button that opened it.
-result: issue
-reported: "no, it moves to browser icons and then it moves to background icons like Start and Reset"
-severity: major
+result: pass
+fix_applied: G-08-3 — keydown handler reordered so focus trap executes before INPUT/TEXTAREA early return (08-03-PLAN.md)
 
 ### 4. Global shortcuts disabled while panel open; ESC always closes
 expected: Open a panel (Info or Settings). Press Space — session should NOT start/pause. Press R — timer should NOT reset. Press F — fullscreen should NOT toggle. Press ESC — panel should close. After the panel closes, Space/R/F should work normally again.
@@ -94,8 +93,8 @@ coverage_id: D-16
 ## Summary
 
 total: 14
-passed: 13
-issues: 1
+passed: 14
+issues: 0
 pending: 0
 skipped: 0
 blocked: 0
@@ -104,9 +103,8 @@ blocked: 0
 
 - gap_id: G-08-3
   truth: "Tab key cycles only within open panel; never reaches browser chrome or background buttons (Start, Reset, Fullscreen)"
-  status: failed
-  reason: "User reported: no, it moves to browser icons and then it moves to background icons like Start and Reset"
-  severity: major
+  status: resolved
+  resolution: "Reordered keydown handler if-blocks: focus trap now executes before INPUT/TEXTAREA early return (08-03-PLAN.md)"
+  fixed_by: "08-03-PLAN.md"
   test: 3
-  artifacts: []
-  missing: []
+  debug_session: ".planning/debug/resolved/focus-trap-bug.md"

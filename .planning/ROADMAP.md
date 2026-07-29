@@ -142,11 +142,12 @@ Plans:
   3. Every interactive element shows a visible focus ring when keyboard-focused, meeting at least 3:1 contrast against the adjacent background
   4. User can import a CSV file previously exported from the app; valid rows merge into history, duplicates are skipped, and invalid rows produce visible feedback
 
-**Plans**: 2/2 plans executed
+**Plans**: 3/3 plans executed
 Plans:
 
 - [x] 08-01-PLAN.md — CSS :focus-visible rule, aria-live on #phaseEl, openPanelElement state variable, accept attribute update
 - [x] 08-02-PLAN.md — Panel focus management and focus trap, keyboard shortcut guard, CSV parser and import routing
+- [x] 08-03-PLAN.md — Reorder keydown handler: move focus trap before INPUT/TEXTAREA early return (G-08-3)
 
 **UI hint**: yes
 
@@ -194,10 +195,10 @@ Plans:
 | 5. History Data Management | v0.6 | 1/1 | Complete | 2026-06-30 |
 | 6. Bug Fixes & Visual Polish | v1.0 | 2/2 | Complete | 2026-07-04 |
 | 7. Landscape Layout & UX Polish | v1.1 | 2/2 | Complete | 2026-07-14 |
-| 8. Accessibility & CSV Import | v1.1 | 2/2 | Complete | 2026-07-28 |
+| 8. Accessibility & CSV Import | v1.1 | 3/3 | Complete | 2026-07-29 |
 | 9. Custom Preset Builder | v1.1 | 0/TBD | Not started | - |
 | 10. Streak Tracking | v1.1 | 0/TBD | Not started | - |
 
 ---
 
-**Last updated:** 2026-07-28 — Phase 8 complete (2/2 plans, 15/15 truths verified)
+**Last updated:** 2026-07-29 — Phase 8 gap G-08-3 closed (3/3 plans, focus trap fix applied)
