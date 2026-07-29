@@ -9,6 +9,10 @@ gap_closures:
   - truth: "When user starts or pauses a session, screen reader announces 'Session started' or 'Session paused' via aria-live on #phaseEl"
     status: fixed
     fix: "Added hidden #announcer div with aria-live='polite' aria-atomic='true' and .sr-only class; announcerEl.textContent set in start() and stop() (commit 862fd97)"
+  - truth: "Tab key pressed from any open panel element (including input fields) cycles focus only within that panel"
+    gap_id: G-08-3
+    status: fixed
+    fix: "Reordered keydown handler if-blocks: focus trap now executes before INPUT/TEXTAREA early return, making it reachable from all focusable panel elements (commit c292627)"
 ---
 
 # Phase 8: Accessibility & CSV Import Verification Report
