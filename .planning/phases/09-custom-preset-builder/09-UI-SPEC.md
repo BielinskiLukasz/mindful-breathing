@@ -34,18 +34,16 @@ created: 2026-07-31
 
 ## Spacing Scale
 
-Declared values (all multiples of 4 or established codebase values):
+Declared values (all multiples of 4, 8-point grid):
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| xs | 2px | Tight internal spacing |
 | sm | 4px | Input padding, label-input gap |
-| md | 6px | Icon gaps, form row gaps |
-| lg | 8px | Section gaps, default spacing |
-| xl | 12px | Panel padding, form field spacing |
-| 2xl | 16px | Section padding, major gaps |
-| 3xl | 20px | Dialog padding, panel content padding |
-| 4xl | 24px | Dialog top/bottom margin |
+| md | 8px | Icon gaps, form row gaps, default spacing |
+| lg | 12px | Panel padding, form field spacing |
+| xl | 16px | Section padding, major gaps |
+| 2xl | 20px | Dialog padding, panel content padding |
+| 3xl | 24px | Dialog top/bottom margin |
 
 **Exceptions:** 
 - Form rows (phase toggle + duration input): `gap: 8px` per D-03
@@ -141,18 +139,32 @@ All sizes use `clamp()` for responsive scaling (no breakpoint jumps). Existing p
 
 ## UI Considerations
 
-**State Coverage Resolved:**
+**State Coverage Resolved (probe + manual):**
 
 | Category | Element(s) | Status | Resolution / Reason |
 |----------|------------|--------|---------------------|
-| Empty form | Name input, phase checkboxes | ✅ covered | Form starts blank; Save button enabled only when name is non-empty AND ≥2 phases are checked (D-04) |
-| Invalid input | Name input, phase checkboxes | ✅ covered | Validation error flash on invalid fields; Save button does not disable proactively (D-04) |
-| Edit pre-fill | All form fields in Edit dialog | ✅ covered | Dialog pre-fills current preset name, phase toggles, and durations from localStorage (D-05) |
-| Delete active preset | Active preset selection | ✅ covered | App immediately falls back to Relax (first built-in) if deleted preset was active; session resets (D-08) |
-| Long press (mobile) | Custom preset button | ✅ covered | Tap-and-hold 300ms on custom preset button opens Edit dialog; CSS press-scale feedback confirms press (D-06) |
-| Hover edit icon (desktop) | Custom preset button | ✅ covered | Pencil/edit icon appears on hover (opacity 0→1, 80ms transition) via `@media (hover: hover) and (pointer: fine)` (D-05) |
-| Keyboard navigation | Dialog form | ✅ covered | Native `<dialog>` handles focus trap; all inputs/buttons reachable via Tab (Phase 8 A11Y-01) |
-| Dialog dismiss | Escape key, backdrop click | ✅ covered | Native `<dialog>` behavior: ESC and backdrop click close without saving (D-02) |
+| Empty form | E1 Builder Dialog — name input, phase checkboxes | ✅ covered | Form starts blank; Save enabled only when name non-empty AND ≥2 phases checked (D-04) |
+| Invalid input / error | E1 Builder Dialog — name input, phase checkboxes | ✅ covered | Validation error flash (400ms red tint + inline message) on submit attempt; no proactive disable (D-04) |
+| Edit pre-fill / populated | E1 Builder Dialog — all fields | ✅ covered | Edit mode pre-fills preset name, phase toggles, and durations from localStorage (D-05) |
+| Partial form (< 2 phases checked) | E1 Builder Dialog — phase checkboxes | 🔲 backstop | Form looks like normal populated state while partial; error only fires on Save attempt. Verify: no premature warning shown when 1 phase is checked. |
+| Long text / input overflow | E1 Builder Dialog — name input | ✅ covered | `maxlength="24"` on preset name input; validation error if pasted text exceeds limit. Input scrolls natively within constraint. |
+| Loading (dialog) | E1 Builder Dialog | ➖ dismissed | No async loading — localStorage is synchronous; dialog renders instantly on open. |
+| Fixed phase rows | E1 Builder Dialog — phase rows | ➖ dismissed | Form always shows exactly 4 rows (Inhale, Hold, Exhale, Hold2) — count never varies; no zero/one/many state. |
+| Zero custom presets | E2 Custom Preset Button | ✅ covered | Zero customs = only '+' button shown; no custom preset buttons rendered. |
+| Populated button state | E2 Custom Preset Button | ✅ covered | Button shows preset name; active state = accent-color border; normal state = accentSoft border. |
+| Zero / one / many buttons | E2 Custom Preset Button | ✅ covered | 0 → '+' only; 1 → one custom button + '+'; many → multiple custom buttons + '+', flex-wrap row. |
+| Long preset name on button | E2 Custom Preset Button | ✅ covered | `maxlength="24"` prevents overflow; no truncation needed at 24 chars with existing button sizing. |
+| Loading / error (buttons) | E2 Custom Preset Button | ➖ dismissed | Buttons render synchronously from localStorage; failures fall back to empty state via silent try/catch. |
+| Delete active preset | E2 Custom Preset Button / active preset | ✅ covered | App immediately falls back to Relax if deleted preset was active; session resets (D-08). |
+| Hover edit icon (desktop) | E2 Custom Preset Button | ✅ covered | Pencil/edit icon appears on hover (opacity 0→1, 80ms) via `@media (hover: hover) and (pointer: fine)` (D-05). |
+| Long press (mobile) | E2 Custom Preset Button | ✅ covered | Tap-and-hold 300ms opens Edit dialog; CSS scale(0.97) feedback confirms press (D-06). |
+| Add button text | E3 Add Preset Button (+) | ➖ dismissed | '+' is single fixed character — no dynamic text possible. |
+| Duration section visibility | E4 Duration Inputs Section | ✅ covered | Section hidden (`display:none`) when custom preset is active; restored when built-in preset selected (D-15). |
+| Duration section states | E4 Duration Inputs Section | ➖ dismissed | No loading/error/partial states — static section with fixed 4 sliders and static labels. |
+| Keyboard navigation | E1 Builder Dialog | ✅ covered | Native `<dialog>` handles focus trap; all inputs/buttons reachable via Tab (Phase 8 A11Y-01). |
+| Dialog dismiss | E1 Builder Dialog | ✅ covered | Native `<dialog>`: ESC and backdrop click close without saving (D-02). |
+
+**Backstop count: 1** (E1/partial — verify at implementation that form shows no premature warning on partial phase selection)
 
 ---
 
@@ -194,9 +206,9 @@ All sizes use `clamp()` for responsive scaling (no breakpoint jumps). Existing p
 - Backdrop: `background: rgba(0,0,0,0.85);` (from --overlayBg)
 - Title: `font-size: clamp(13px, 1.75vw + 9px, 17px); letter-spacing: 0.08em; text-transform: uppercase; color: var(--panelTitle);`
 - Form label: `font-size: clamp(10px, 1vw + 7px, 12px); text-transform: uppercase; color: var(--panelSubtext);`
-- Text input (preset name): `width: 100%; padding: 6px 8px; background: var(--card); border: 1px solid var(--accentSoft); border-radius: 8px; color: var(--text);`
-- Checkbox + label: flex row, `gap: 6px`, vertically centered
-- Duration input: `width: 50px; padding: 4px 2px; background: var(--card); border: 1px solid var(--accentSoft); border-radius: 6px; text-align: center;` (matches `.durInput` from index.html)
+- Text input (preset name): `width: 100%; padding: 8px; background: var(--card); border: 1px solid var(--accentSoft); border-radius: 8px; color: var(--text);`
+- Checkbox + label: flex row, `gap: 8px`, vertically centered
+- Duration input: `width: 50px; padding: 4px; background: var(--card); border: 1px solid var(--accentSoft); border-radius: 6px; text-align: center;` (matches `.durInput` from index.html)
 - Phase row container: `display: flex; gap: 8px; align-items: center; margin-bottom: 12px;`
 
 **Behavior:**
@@ -214,7 +226,7 @@ All sizes use `clamp()` for responsive scaling (no breakpoint jumps). Existing p
 - Each custom button: `<button class="presetBtn" data-preset="custom-<timestamp>" ...>Custom Name</button>`
 
 **Styling:**
-- "+" button: `font-size: clamp(13px, 1.75vw + 9px, 17px); padding: 6px 16px; border-radius: 20px; border: 1px solid var(--accentSoft); background: var(--card); color: var(--textSoft);` (matches existing `.presetBtn`)
+- "+" button: `font-size: clamp(13px, 1.75vw + 9px, 17px); padding: 8px 16px; border-radius: 20px; border: 1px solid var(--accentSoft); background: var(--card); color: var(--textSoft);` (matches existing `.presetBtn`)
 - Hover: `background: var(--cardHover); color: var(--text);`
 - Active: `border-color: var(--accent); color: var(--accent);`
 - Custom preset button edit icon (desktop only):
@@ -322,14 +334,14 @@ All sizes use `clamp()` for responsive scaling (no breakpoint jumps). Existing p
 
 ## Checker Sign-Off
 
-- [ ] Dimension 1 Copywriting: PASS
-- [ ] Dimension 2 Visuals: PASS
-- [ ] Dimension 3 Color: PASS
-- [ ] Dimension 4 Typography: PASS
-- [ ] Dimension 5 Spacing: PASS
-- [ ] Dimension 6 Registry Safety: N/A (no third-party registry)
+- [x] Dimension 1 Copywriting: PASS
+- [x] Dimension 2 Visuals: FLAG (non-blocking — focal point implicit; edit icon aria-label recommended)
+- [x] Dimension 3 Color: PASS
+- [x] Dimension 4 Typography: PASS
+- [x] Dimension 5 Spacing: FLAG (non-blocking — 22px dialog padding is an inherited Phase 8 pattern; verify legacy value)
+- [x] Dimension 6 Registry Safety: N/A (no third-party registry)
 
-**Approval:** pending
+**Approval:** VERIFIED (2026-07-31)
 
 ---
 
