@@ -102,7 +102,7 @@
 
 - [x] **Phase 7: Landscape Layout & UX Polish** - Fix landscape overlaps, reposition elements per column, and add hover/countdown animations
 - [x] **Phase 8: Accessibility & CSV Import** - Full keyboard navigation, ARIA labels, visible focus indicators, and CSV session history import
-- [ ] **Phase 9: Custom Preset Builder** - Create, edit, and delete custom breathing presets that persist across sessions
+- [x] **Phase 9: Custom Preset Builder** - Create, edit, and delete custom breathing presets that persist across sessions (completed 2026-07-31)
 - [ ] **Phase 10: Streak Tracking** - Daily streak counter with current streak, longest streak, today status, and total session count
 
 ---
@@ -202,7 +202,7 @@ Plans:
 | 6. Bug Fixes & Visual Polish | v1.0 | 2/2 | Complete | 2026-07-04 |
 | 7. Landscape Layout & UX Polish | v1.1 | 2/2 | Complete | 2026-07-14 |
 | 8. Accessibility & CSV Import | v1.1 | 3/3 | Complete | 2026-07-29 |
-| 9. Custom Preset Builder | v1.1 | 3/3 | In Progress|  |
+| 9. Custom Preset Builder | v1.1 | 3/3 | Complete    | 2026-07-31 |
 | 10. Streak Tracking | v1.1 | 0/TBD | Not started | - |
 
 ---

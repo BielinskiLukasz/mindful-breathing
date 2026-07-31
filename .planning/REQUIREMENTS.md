@@ -51,19 +51,19 @@
 
 ### Custom Preset Builder
 
-- [ ] **PRESET-01**: User can create a custom breathing preset with a name and up to 4 standard phases (Inhale, Hold, Exhale, Hold2) with individual durations
+- [x] **PRESET-01**: User can create a custom breathing preset with a name and up to 4 standard phases (Inhale, Hold, Exhale, Hold2) with individual durations
   - **Acceptance**: UI allows naming the preset and enabling/disabling each of the 4 phase types with a duration input per active phase; at least 2 phases required
 
-- [ ] **PRESET-02**: User can select a custom preset for a breathing session (custom presets appear alongside built-in presets in the selector)
+- [x] **PRESET-02**: User can select a custom preset for a breathing session (custom presets appear alongside built-in presets in the selector)
   - **Acceptance**: Custom preset buttons appear in the preset row; selecting one loads the custom phases and durations into the session
 
-- [ ] **PRESET-03**: User can edit an existing custom preset's name, active phases, and durations
+- [x] **PRESET-03**: User can edit an existing custom preset's name, active phases, and durations
   - **Acceptance**: Edit UI pre-fills current name, phase toggles, and durations; saving persists changes; session is not affected if running
 
-- [ ] **PRESET-04**: User can delete a custom preset they created
+- [x] **PRESET-04**: User can delete a custom preset they created
   - **Acceptance**: Delete action requires confirmation; on confirm, preset is removed from localStorage and selector; if active, app falls back to the first built-in preset
 
-- [ ] **PRESET-05**: Custom presets persist in localStorage across browser sessions
+- [x] **PRESET-05**: Custom presets persist in localStorage across browser sessions
   - **Acceptance**: Custom presets survive page reload and browser restart; stored under a dedicated key separate from `savedDurations`
 
 ### Streak Tracking
@@ -124,11 +124,11 @@
 | A11Y-02 | Phase 8 | Pending |
 | A11Y-03 | Phase 8 | Pending |
 | HIST-12 | Phase 8 | Pending |
-| PRESET-01 | Phase 9 | Pending |
-| PRESET-02 | Phase 9 | Pending |
-| PRESET-03 | Phase 9 | Pending |
-| PRESET-04 | Phase 9 | Pending |
-| PRESET-05 | Phase 9 | Pending |
+| PRESET-01 | Phase 9 | Complete |
+| PRESET-02 | Phase 9 | Complete |
+| PRESET-03 | Phase 9 | Complete |
+| PRESET-04 | Phase 9 | Complete |
+| PRESET-05 | Phase 9 | Complete |
 | STREAK-01 | Phase 10 | Pending |
 | STREAK-02 | Phase 10 | Pending |
 | STREAK-03 | Phase 10 | Pending |
