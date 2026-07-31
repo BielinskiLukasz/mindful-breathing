@@ -164,7 +164,13 @@ Plans:
   4. User can delete a custom preset with a confirmation step; if the deleted preset was active, the app falls back to the first built-in preset
   5. Custom presets survive page reload and browser restart (stored under a dedicated localStorage key)
 
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+
+- [ ] 09-01-PLAN.md — CONFIG + Storage Foundation: CUSTOM_PRESETS_KEY constant, loadCustomPresets(), saveCustomPresets()
+- [ ] 09-02-PLAN.md — Tracer: Builder dialog form, create/save/select custom preset end-to-end, duration inputs visibility
+- [ ] 09-03-PLAN.md — Edit/Delete + UI Polish: Edit dialog, two-step delete confirmation, hover edit icon, long-press
+
 **UI hint**: yes
 
 ### Phase 10: Streak Tracking
