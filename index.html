@@ -1433,6 +1433,7 @@
     // localStorage keys
     const STORAGE_KEY  = "mb_v1";
     const HISTORY_KEY  = "mb_history";
+    const CUSTOM_PRESETS_KEY = "mb_custom_presets";
 
     // Pre-session quotes
     const QUOTES = [
@@ -1481,6 +1482,7 @@
     // Persistence
     let activePresetKey = "relax";
     let savedDurations = {};
+    let customPresets = [];
 
     // Countdown
     let isCountingDown = false;
@@ -1712,6 +1714,25 @@
             b.classList.toggle("active", b.dataset.preset === activePresetKey)
           );
         }
+      } catch (_) {}
+    }
+
+    function loadCustomPresets() {
+      try {
+        const raw = localStorage.getItem(CUSTOM_PRESETS_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        if (Array.isArray(data)) {
+          customPresets = data;
+        } else {
+          customPresets = [];
+        }
+      } catch (_) {}
+    }
+
+    function saveCustomPresets() {
+      try {
+        localStorage.setItem(CUSTOM_PRESETS_KEY, JSON.stringify(customPresets));
       } catch (_) {}
     }
 
@@ -2773,6 +2794,7 @@
 
     // ====== Init (no cue on load) ======
     loadSettings();
+    loadCustomPresets();
     document.getElementById("maxHistoryInput").value = maxHistoryEntries;
     sessionStorage.removeItem("historyPage");
     updateModeIndicator();
