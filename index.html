@@ -1978,6 +1978,8 @@
       deleteBtn.style.background = ""; // Reset color to default
       deleteBtn._deleteConfirmed = false; // Track two-step confirmation state
       deleteBtn._currentPresetId = preset.id; // Store current preset ID for deletion
+      presetBuilderDialog._isEditMode = true;
+      presetBuilderDialog._editingPresetId = preset.id;
 
       openPanelElement = presetBuilderDialog;
       presetBuilderDialog.showModal();
@@ -2039,6 +2041,8 @@
       deleteBtn.style.background = "";
       deleteBtn.style.color = "";
       deleteBtn.style.display = "none";
+      presetBuilderDialog._isEditMode = false;
+      presetBuilderDialog._editingPresetId = null;
       openPanelElement = presetBuilderDialog;
       presetBuilderDialog.showModal();
       presetNameInput.focus();
@@ -2078,13 +2082,12 @@
         return;
       }
 
-      // Detect edit vs. create mode
-      const presetDeleteBtn = document.getElementById("presetDeleteBtn");
-      const isEditMode = presetDeleteBtn.style.display !== "none";
+      // Detect edit vs. create mode from explicit state flag
+      const isEditMode = presetBuilderDialog._isEditMode;
 
       if (isEditMode) {
         // Edit mode: update existing preset
-        const presetId = presetDeleteBtn._currentPresetId;
+        const presetId = presetBuilderDialog._editingPresetId;
         const presetIdx = customPresets.findIndex(p => p.id === presetId);
         if (presetIdx >= 0) {
           const phases = rows.map((row, idx) => ({
