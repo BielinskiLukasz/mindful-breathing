@@ -45,12 +45,13 @@ No backend. No dependencies. No installation. Works fully offline.
 - Visible mode indicator above the cycle counter (e.g. `RELAX`, `BOX`, `4-7-8`) — updates live when mode changes
 
 **Customization**
-- Settings panel (`⚙`) with breathing mode selection, per-phase duration sliders (1–30 s), and cycle count (1–20)
+- Settings panel (`⚙`) with breathing mode selection, per-phase duration sliders (1–300 s), cycle count (1–20), and session history cap
+- Custom preset builder — create, name, edit, and delete your own patterns with 2–4 phases and arbitrary durations
 - Sound cues via Web Audio API — per-phase sine tones with a toggle
 - Light and dark themes, each with WCAG AA contrast across all UI elements
 
 **Session management**
-- Session history — last 14 sessions, displayed with date, duration, and cycle count
+- Session history — configurable cap (default 1 000 sessions), displayed with date, duration, cycle count, and preset
 - Incomplete session tracking — sessions paused after at least one full cycle are saved with an "Incomplete" label
 - Export as JSON or CSV, import from JSON (merge with dedup), and clear with a confirmation dialog
 
@@ -59,7 +60,8 @@ No backend. No dependencies. No installation. Works fully offline.
 - Screen Wake Lock prevents display sleep during sessions
 - Fullscreen mode for an immersive experience
 - Landscape CSS Grid layout — history panel and breathing ring side-by-side on wider screens
-- Keyboard shortcuts: `Space` start/pause · `R` reset · `F` fullscreen
+- Keyboard shortcuts: `Space` start/pause · `R` reset · `F` fullscreen (disabled while panels are open)
+- Keyboard focus indicators and `aria-live` announcements for screen readers; focus trapped inside dialogs
 - Info panel (`ⓘ`) with keyboard shortcuts, platform notes, and app version
 
 ---
@@ -93,9 +95,11 @@ Click the gear icon in the top-left corner to open the settings modal. Configure
 
 | Setting | Description |
 |---|---|
-| Breathing mode | Relax, Box, or 4-7-8 — applies immediately and resets to phase 1 |
-| Phase durations | Per-phase inputs (Inhale, Hold, Exhale, Hold2) clamped to 1–30 s; persisted per preset |
+| Breathing mode | Relax, Box, 4-7-8, or a custom preset — applies immediately and resets to phase 1 |
+| Custom presets | `+` opens a builder to define a name and 2–4 phases with durations; saved presets appear inline with edit (`✎`) and delete (`✕`) controls |
+| Phase durations | Per-phase inputs (Inhale, Hold, Exhale, Hold2) clamped to 1–300 s; persisted per preset |
 | Cycles per session | 1–20 cycles; updates the cycle counter and estimated duration in real time |
+| Session history cap | Keep last N sessions (default 1 000); older entries are discarded automatically |
 
 Dismiss by clicking outside the panel or pressing `×`.
 
@@ -193,7 +197,7 @@ The `<script>` block is divided into labeled sections:
 
 | Section | Responsibility |
 |---|---|
-| `CONFIG` | Frozen constants: `PRESETS`, `SOUND`, `VIBRATION`, `RING`, `COUNTDOWN`, `SESSION`, `UI` |
+| `CONFIG` | Frozen constants: `PRESETS`, `SOUND`, `VIBRATION`, `RING`, `COUNTDOWN`, `SESSION`, `UI`, `QUOTES`, `DURATION_RANGE` |
 | `STATE` | Mutable globals: phase index, cycle count, elapsed time, `audioCtx`, wake lock handle |
 | `DOM` | Element references collected once at startup |
 | `HELPERS` | `hexToRgba()`, `getPhase()`, `getGoal()`, theme application |
@@ -234,12 +238,9 @@ This project is a deliberate exercise in constraint-driven design:
 
 ## Roadmap
 
-Planned for v1.1:
+Planned:
 
-- CSV import (deferred from v1.0 — RFC 4180 edge cases require a proper parser)
-- Full keyboard navigation and screen reader support (WCAG compliance)
-- Custom breathing preset builder — define your own name, phases, and durations
-- Streak tracking — consecutive days with completed sessions
+- Streak tracking — current daily streak and longest-ever streak computed from session history
 
 ---
 
