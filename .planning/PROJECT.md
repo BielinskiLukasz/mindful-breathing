@@ -3,7 +3,7 @@
 ## Current State
 
 **Shipped:** v1.0 — Bug Fixes & Visual Polish (2026-07-04)  
-**Current milestone:** v1.1 — Landscape Polish, Custom Presets & Streaks (planning in progress)
+**Current milestone:** v1.1 — Landscape Polish, Custom Presets & Streaks (Phase 9 complete — streak tracking next)
 
 ## Current Milestone: v1.1 — Landscape Polish, Custom Presets & Streaks
 
@@ -65,7 +65,11 @@ Reliable, uninterrupted breathing guidance with verifiable history — users nee
 
 ### Active
 
-*(Requirements being defined — see v1.1 milestone planning in progress.)*
+- ✓ **PRESET-01**: User can create a custom preset with a name and 2–4 named phases — Validated in Phase 9: custom-preset-builder
+- ✓ **PRESET-02**: User can select a custom preset and start a breathing session — Validated in Phase 9: custom-preset-builder
+- ✓ **PRESET-03**: Custom presets persist across browser sessions (localStorage) — Validated in Phase 9: custom-preset-builder
+- ✓ **PRESET-04**: User can edit existing custom presets — Validated in Phase 9: custom-preset-builder
+- ✓ **PRESET-05**: User can delete a custom preset with confirmation, with fallback to Relax — Validated in Phase 9: custom-preset-builder
 
 ### Out of Scope
 
