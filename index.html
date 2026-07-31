@@ -1883,9 +1883,8 @@
 
         // Add long-press handler for mobile
         let longPressTimer = null;
-        btn.addEventListener("touchstart", e => {
+        btn.addEventListener("touchstart", () => {
           longPressTimer = setTimeout(() => {
-            e.preventDefault();
             btn.style.transform = "scale(0.97)";
             openEditDialog(preset);
           }, 300);
