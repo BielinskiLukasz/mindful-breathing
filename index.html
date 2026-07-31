@@ -2213,20 +2213,27 @@
         isDarkMode = typeof data.isDarkMode === "boolean" ? data.isDarkMode : true;
         applyThemeColors(isDarkMode ? DARK_THEME : LIGHT_THEME);
         updateThemeToggleUI();
-        if (data.preset && data.preset in PRESETS) {
-          activePresetKey = data.preset;
-          activePhases = PRESETS[activePresetKey].map(p => ({...p}));
-          const saved = savedDurations[activePresetKey];
-          if (Array.isArray(saved)) {
-            saved.forEach((sec, i) => {
-              if (i < activePhases.length && Number.isFinite(sec) && sec >= DURATION_RANGE.min && sec <= DURATION_RANGE.max) {
-                activePhases[i] = { ...activePhases[i], durationSec: sec };
-              }
-            });
+        if (data.preset) {
+          if (data.preset in PRESETS) {
+            // Built-in preset
+            activePresetKey = data.preset;
+            activePhases = PRESETS[activePresetKey].map(p => ({...p}));
+            const saved = savedDurations[activePresetKey];
+            if (Array.isArray(saved)) {
+              saved.forEach((sec, i) => {
+                if (i < activePhases.length && Number.isFinite(sec) && sec >= DURATION_RANGE.min && sec <= DURATION_RANGE.max) {
+                  activePhases[i] = { ...activePhases[i], durationSec: sec };
+                }
+              });
+            }
+            presetsEl.querySelectorAll(".presetBtn").forEach(b =>
+              b.classList.toggle("active", b.dataset.preset === activePresetKey)
+            );
+          } else if (customPresets.some(p => p.id === data.preset)) {
+            // Custom preset exists - set key, buildActivePhases() will handle it
+            activePresetKey = data.preset;
           }
-          presetsEl.querySelectorAll(".presetBtn").forEach(b =>
-            b.classList.toggle("active", b.dataset.preset === activePresetKey)
-          );
+          // If preset doesn't exist, activePresetKey stays "relax" (safe fallback)
         }
       } catch (_) {}
     }
@@ -3333,8 +3340,8 @@
     }
 
     // ====== Init (no cue on load) ======
-    loadSettings();
     loadCustomPresets();
+    loadSettings();
     renderCustomPresets();
     document.getElementById("maxHistoryInput").value = maxHistoryEntries;
     sessionStorage.removeItem("historyPage");
