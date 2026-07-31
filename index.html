@@ -195,6 +195,30 @@
     .presetBtn:hover { background: var(--cardHover); color: var(--text); }
     .presetBtn.active { border-color: var(--accent); color: var(--accent); }
 
+    .editIcon {
+      opacity: 0;
+      transition: opacity 80ms ease;
+      font-size: 0.9em;
+      display: inline-block;
+      position: relative;
+      top: 1px;
+      cursor: pointer;
+    }
+
+    /* Desktop only: show on hover */
+    @media (hover: hover) and (pointer: fine) {
+      .presetBtn:hover .editIcon {
+        opacity: 1;
+      }
+    }
+
+    /* Mobile feedback: slight scale on active */
+    @media (hover: none) and (pointer: coarse) {
+      .presetBtn:active {
+        transform: scale(0.97);
+      }
+    }
+
     #clearConfirmDialog {
       border: 1px solid var(--accentSoft);
       border-radius: 12px;
@@ -1841,11 +1865,120 @@
         btn.dataset.preset = preset.id;
         btn.textContent = preset.name;
         if (activePresetKey === preset.id) btn.classList.add("active");
+
+        // Add edit icon (hidden on touch devices via CSS @media guard)
+        const editIcon = document.createElement("span");
+        editIcon.className = "editIcon";
+        editIcon.textContent = "✎";
+        editIcon.style.marginLeft = "4px";
+        editIcon.style.opacity = "0";
+        editIcon.style.transition = "opacity 80ms ease";
+        editIcon.style.pointerEvents = "none"; // Don't interfere with button click
+        btn.appendChild(editIcon);
+
+        // Add long-press handler for mobile
+        let longPressTimer = null;
+        btn.addEventListener("touchstart", e => {
+          longPressTimer = setTimeout(() => {
+            e.preventDefault();
+            btn.style.transform = "scale(0.97)";
+            openEditDialog(preset);
+          }, 300);
+        }, { passive: true });
+
+        btn.addEventListener("touchmove", () => {
+          if (longPressTimer) {
+            clearTimeout(longPressTimer);
+            longPressTimer = null;
+            btn.style.transform = "";
+          }
+        }, { passive: true });
+
+        btn.addEventListener("touchend", () => {
+          if (longPressTimer) {
+            clearTimeout(longPressTimer);
+            longPressTimer = null;
+          }
+          btn.style.transform = "";
+        }, { passive: true });
+
+        // Add edit icon hover reveal (desktop only, via CSS @media guard)
+        btn.addEventListener("mouseenter", () => {
+          const icon = btn.querySelector(".editIcon");
+          if (icon) icon.style.opacity = "1";
+        });
+
+        btn.addEventListener("mouseleave", () => {
+          const icon = btn.querySelector(".editIcon");
+          if (icon) icon.style.opacity = "0";
+        });
+
+        // Edit icon click handler (prevents button from being selected)
+        editIcon.addEventListener("click", e => {
+          e.preventDefault();
+          e.stopPropagation();
+          openEditDialog(preset);
+        });
+
         container.appendChild(btn);
       });
     }
 
     /* ====== PRESET BUILDER ====== */
+    function openEditDialog(preset) {
+      // Pre-fill form with current preset data
+      presetNameInput.value = preset.name;
+      presetNameError.style.display = "none";
+      phaseCountError.style.display = "none";
+
+      // Pre-fill phase rows
+      phaseRowsContainer.innerHTML = "";
+      PRESET_PHASE_TYPES.forEach((type, idx) => {
+        const row = document.createElement("div");
+        row.className = "phaseRow";
+        row.dataset.phaseType = type;
+
+        const phaseData = preset.phases.find(p => p.type === type);
+        const isActive = phaseData?.active ?? true;
+        const duration = phaseData?.durationSec ?? 4;
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.id = `phase-${type}-active`;
+        checkbox.checked = isActive;
+
+        const label = document.createElement("label");
+        label.htmlFor = checkbox.id;
+        label.textContent = type;
+
+        const durationInput = document.createElement("input");
+        durationInput.type = "number";
+        durationInput.min = 1;
+        durationInput.max = 300;
+        durationInput.value = duration;
+
+        const unit = document.createElement("span");
+        unit.className = "durUnit";
+        unit.textContent = "s";
+
+        row.append(checkbox, label, durationInput, unit);
+        phaseRowsContainer.appendChild(row);
+      });
+
+      // Show Delete button and change form title
+      document.getElementById("presetBuilderTitle").textContent = `Edit ${preset.name}`;
+      const deleteBtn = document.getElementById("presetDeleteBtn");
+      deleteBtn.style.display = "block";
+      deleteBtn.textContent = "Delete";
+      deleteBtn.style.background = ""; // Reset color to default
+      deleteBtn._deleteConfirmed = false; // Track two-step confirmation state
+      deleteBtn._currentPresetId = preset.id; // Store current preset ID for deletion
+
+      openPanelElement = presetBuilderDialog;
+      presetBuilderDialog.showModal();
+      presetNameInput.focus();
+    }
+
     const newPresetBtn = document.getElementById("newPresetBtn");
     const presetBuilderDialog = document.getElementById("presetBuilderDialog");
     const presetBuilderForm = document.getElementById("presetBuilderForm");
@@ -1895,13 +2028,23 @@
       phaseCountError.style.display = "none";
       initBuilderForm();
       document.getElementById("presetBuilderTitle").textContent = "New Preset";
-      document.getElementById("presetDeleteBtn").style.display = "none";
+      const deleteBtn = document.getElementById("presetDeleteBtn");
+      deleteBtn._deleteConfirmed = false;
+      deleteBtn.textContent = "Delete";
+      deleteBtn.style.background = "";
+      deleteBtn.style.color = "";
+      deleteBtn.style.display = "none";
       openPanelElement = presetBuilderDialog;
       presetBuilderDialog.showModal();
       presetNameInput.focus();
     });
 
     presetCancelBtn.addEventListener("click", () => {
+      const deleteBtn = document.getElementById("presetDeleteBtn");
+      deleteBtn._deleteConfirmed = false;
+      deleteBtn.textContent = "Delete";
+      deleteBtn.style.background = "";
+      deleteBtn.style.color = "";
       presetBuilderDialog.close();
       openPanelElement = null;
     });
@@ -1930,29 +2073,105 @@
         return;
       }
 
-      // Build custom preset object
-      const presetId = `custom-${Date.now()}`;
-      const phases = rows.map((row, idx) => ({
-        type: PRESET_PHASE_TYPES[idx],
-        durationSec: parseInt(row.querySelector("input[type='number']").value) || 4,
-        active: row.querySelector("input[type='checkbox']").checked
-      }));
+      // Detect edit vs. create mode
+      const presetDeleteBtn = document.getElementById("presetDeleteBtn");
+      const isEditMode = presetDeleteBtn.style.display !== "none";
 
-      const newPreset = { id: presetId, name, phases };
-      customPresets.push(newPreset);
+      if (isEditMode) {
+        // Edit mode: update existing preset
+        const presetId = presetDeleteBtn._currentPresetId;
+        const presetIdx = customPresets.findIndex(p => p.id === presetId);
+        if (presetIdx >= 0) {
+          const phases = rows.map((row, idx) => ({
+            type: PRESET_PHASE_TYPES[idx],
+            durationSec: parseInt(row.querySelector("input[type='number']").value) || 4,
+            active: row.querySelector("input[type='checkbox']").checked
+          }));
+
+          customPresets[presetIdx] = { id: presetId, name, phases };
+
+          // Rebuild activePhases if this is the active preset
+          if (activePresetKey === presetId) {
+            buildActivePhases();
+            buildDurationInputs();
+            updateModeIndicator();
+          }
+        }
+      } else {
+        // Create mode: add new preset
+        const presetId = `custom-${Date.now()}`;
+        const phases = rows.map((row, idx) => ({
+          type: PRESET_PHASE_TYPES[idx],
+          durationSec: parseInt(row.querySelector("input[type='number']").value) || 4,
+          active: row.querySelector("input[type='checkbox']").checked
+        }));
+
+        const newPreset = { id: presetId, name, phases };
+        customPresets.push(newPreset);
+
+        // Auto-select the new preset
+        activePresetKey = presetId;
+        buildActivePhases();
+        updateModeIndicator();
+      }
+
       saveCustomPresets();
       renderCustomPresets();
+      buildDurationInputs();
 
       presetBuilderDialog.close();
       openPanelElement = null;
-
-      // Auto-select the new custom preset
-      activePresetKey = presetId;
-      buildActivePhases();
-      updateModeIndicator();
-      renderCustomPresets();
-      buildDurationInputs();
       saveSettings();
+    });
+
+    const presetDeleteBtn = document.getElementById("presetDeleteBtn");
+
+    presetDeleteBtn.addEventListener("click", e => {
+      e.preventDefault();
+
+      const presetId = presetDeleteBtn._currentPresetId;
+      const isConfirmed = presetDeleteBtn._deleteConfirmed;
+
+      if (!isConfirmed) {
+        // First click: change label to "Confirm Delete" and set color
+        presetDeleteBtn.textContent = "Confirm Delete";
+        presetDeleteBtn.style.background = "#e57373";
+        presetDeleteBtn.style.color = "#fff";
+        presetDeleteBtn._deleteConfirmed = true;
+
+        // Reset after 2 seconds if not clicked again
+        setTimeout(() => {
+          if (presetDeleteBtn._deleteConfirmed) {
+            presetDeleteBtn.textContent = "Delete";
+            presetDeleteBtn.style.background = "";
+            presetDeleteBtn.style.color = "";
+            presetDeleteBtn._deleteConfirmed = false;
+          }
+        }, 2000);
+      } else {
+        // Second click: actually delete
+        const presetIdx = customPresets.findIndex(p => p.id === presetId);
+        if (presetIdx >= 0) {
+          const wasActive = activePresetKey === presetId;
+          customPresets.splice(presetIdx, 1);
+
+          // If deleted preset was active, fall back to Relax
+          if (wasActive) {
+            activePresetKey = "relax";
+            buildActivePhases();
+            updateModeIndicator();
+            reset(); // Reset the session
+          }
+
+          saveCustomPresets();
+          renderCustomPresets();
+          buildDurationInputs();
+          saveSettings();
+        }
+
+        presetBuilderDialog.close();
+        openPanelElement = null;
+      }
     });
 
     /******************************************************************
