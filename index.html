@@ -1746,14 +1746,19 @@
             .filter(p => p.active) // Only active phases
             .map(p => {
               // Lookup phase type in PRESETS to get theme, breathR, cue
-              const basePhase = PRESETS.relax.find(bp => bp.name === p.type);
+              // "Hold2" should map to the second "Hold" phase (last one in array)
+              const searchName = p.type === "Hold2" ? "Hold" : p.type;
+              const basePhase = PRESETS.relax.find(bp => bp.name === searchName);
+
+              // Gracefully fallback to first phase if type not found (handles schema mismatches)
+              const fallbackPhase = basePhase || PRESETS.relax[0];
               return {
                 name: p.type,
                 durationSec: p.durationSec,
-                breathR: basePhase.breathR,
-                theme: basePhase.theme,
-                cue: basePhase.cue,
-                hint: basePhase.hint
+                breathR: fallbackPhase.breathR,
+                theme: fallbackPhase.theme,
+                cue: fallbackPhase.cue,
+                hint: fallbackPhase.hint
               };
             });
         } else {
