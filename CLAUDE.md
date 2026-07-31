@@ -13,13 +13,15 @@ python -m http.server 8080
 
 There is no package manager, no dependencies, no compilation. Opening via `file://` disables Web Audio, Wake Lock, and Vibration APIs but the basic timer still works.
 
+When adding new cached assets (images, scripts), bump the `CACHE` key in `sw.js` from `mb-v1` to `mb-v2` etc. to force cache invalidation on next load.
+
 ## Architecture
 
-The entire application is a single file: `index.html` (~1,350 lines). All HTML, CSS, and JS lives there — no modules, no imports, all state is global. The `<script>` block is divided into clearly labeled sections:
+The entire application is a single file: `index.html` (~3,400 lines). All HTML, CSS, and JS lives there — no modules, no imports, all state is global. The `<script>` block is divided into clearly labeled sections:
 
 | Section | What it does |
 |---|---|
-| **CONFIG** | Frozen constants: `PRESETS`, `SOUND`, `VIBRATION`, `RING`, `COUNTDOWN`, `SESSION`, `UI` |
+| **CONFIG** | Frozen constants: `PRESETS`, `SOUND`, `VIBRATION`, `RING`, `COUNTDOWN`, `SESSION`, `UI`, `QUOTES`, `DURATION_RANGE` |
 | **STATE** | Mutable globals: phase index, cycle count, elapsed time, `audioCtx`, wake lock handle |
 | **DOM** | Element references collected once at startup (e.g. `appEl`, `phaseEl`, `ringProgressEl`) |
 | **HELPERS** | `hexToRgba()`, `getPhase()`, `getGoal()`, theme application |
@@ -43,11 +45,14 @@ Phases (`activePhases` array, built from the active preset) advance in sequence.
 
 Four CSS custom properties drive all colors: `--bg`, `--accent`, `--accentSoft`, `--text`. Theme switching mutates these on `:root` and saves to localStorage. JS-driven properties (ring track, overlay, panel colors) are also set inline via `style.setProperty`.
 
+Each phase also carries its own `theme: { bg, bgLight, accent, accentLight }` for dynamic per-phase color transitions.
+
 ### Persistence
 
-Two localStorage keys (defined in CONFIG):
-- `STORAGE_KEY` — settings: `soundEnabled`, `vibeEnabled`, `isDarkMode`, `savedDurations`
-- `HISTORY_KEY` — array of `{ date, durationMs, cycles }` objects (last 14 sessions)
+Three localStorage keys (defined in CONFIG):
+- `STORAGE_KEY` (`mb_v1`) — settings: `soundEnabled`, `vibeEnabled`, `isDarkMode`, `savedDurations`
+- `HISTORY_KEY` (`mb_history`) — array of `{ date, durationMs, cycles }` objects (last 14 sessions)
+- `CUSTOM_PRESETS_KEY` (`mb_custom_presets`) — user-created custom presets
 
 ## Key Constraints
 
@@ -136,13 +141,13 @@ User action / keypress
 
 ### Phase Config (`PRESETS`)
 
-Three built-in breathing patterns; each phase entry has `{ label, durationSec, freqHz, breathR, cue }`:
+Three built-in breathing patterns; each phase entry has `{ name, durationSec, breathR, theme: { bg, bgLight, accent, accentLight }, cue: { freqHz }, hint }`:
 
 | Preset | Pattern |
 |---|---|
-| Relax | 4s inhale / 6s exhale |
-| Box | 4s inhale / 4s hold / 4s exhale / 4s hold |
-| 4-7-8 | 4s inhale / 7s hold / 8s exhale |
+| Relax (`relax`) | 4s inhale / 2s hold / 8s exhale / 2s hold |
+| Box (`box`) | 4s inhale / 4s hold / 4s exhale / 4s hold |
+| 4-7-8 (`478`) | 4s inhale / 7s hold / 8s exhale |
 
 `savedDurations` in localStorage can override per-preset durations from the UI sliders.
 
