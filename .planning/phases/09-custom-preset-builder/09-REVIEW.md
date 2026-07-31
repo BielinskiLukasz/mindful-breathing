@@ -7,287 +7,369 @@ files_reviewed_list:
   - index.html
 findings:
   critical: 2
-  warning: 2
-  info: 1
-  total: 5
+  warning: 4
+  info: 2
+  total: 8
 status: issues_found
 ---
 
 # Phase 09: Code Review Report
 
 **Reviewed:** 2026-07-31
-**Depth:** Standard
+**Depth:** standard
 **Files Reviewed:** 1
-**Status:** Issues Found
+**Status:** issues_found
 
 ## Summary
 
-The custom preset builder implementation includes several critical bugs that will cause runtime failures and data loss. The most severe issues are:
+The custom preset builder adds significant functionality but contains critical bugs that cause crashes, data loss, and fragile code patterns. The implementation lacks proper null checking, has initialization order issues, and relies on fragile DOM state detection for control flow.
 
-1. **CSV import parsing breaks due to unquoted fields** — all history imports will silently fail
-2. **Custom preset phase lookup crashes when "Hold2" phase is used** — any custom preset with the final hold phase will cause an immediate error
-3. **XSS vulnerability in history display** — user-supplied preset names are not escaped before HTML insertion
-4. **Custom preset selection lost on page reload** — users cannot persist custom preset choices across sessions
-5. **CSV import incomplete flag detection is incorrect** — checks wrong column
+Key findings:
+1. **Crash when loading custom presets with missing phase types** (CR-01)
+2. **Custom presets not restored after page reload due to initialization order** (CR-02)
+3. **Fragile form mode detection via DOM style property** (WR-01)
+4. **Missing null check on phase lookup creates undefined references** (WR-02)
 
-These issues must be resolved before shipping this feature.
+These issues must be resolved before shipping.
 
 ---
 
 ## Critical Issues
 
-### CR-01: CSV Import Parsing Fails – Quoted Fields Not Unquoted
+### CR-01: Undefined Phase Crash in buildActivePhases()
 
-**File:** `index.html:2470`
+**File:** `index.html:1747-1758`
 
-**Issue:** 
-
-The CSV export function (lines 2352–2359) quotes all fields using the `escape` function:
-```javascript
-const escape = v => '"' + String(v).replace(/"/g, '""') + '"';
-const rows = [["date", "duration", "cycles", "preset"].map(escape).join(",")];
-```
-
-This produces CSV like:
-```
-"2024-01-15T10:30:45.123Z","5:30","5","relax"
-```
-
-However, the CSV import at line 2470 does NOT unquote fields:
-```javascript
-const cols = lines[i].split(',').map(c => c.trim());
-```
-
-This leaves `cols[0]` as `'"2024-01-15T10:30:45.123Z"'` (including literal quote characters). When parsed:
-- Line 2478–2479: `durationStr.split(':')` on `'"5:30"'` produces `['"5', '30"']`
-- `parseInt('"5', 10)` returns `NaN`
-- Line 2485: `!Number.isFinite(durationMs)` is true, so entry is skipped
-- **Result:** All imported history entries are silently discarded
-
-**Fix:**
-```javascript
-const cols = lines[i].split(',').map(c => {
-  c = c.trim();
-  // Unquote CSV-escaped fields
-  if (c.startsWith('"') && c.endsWith('"')) {
-    c = c.slice(1, -1).replace(/""/g, '"');  // Remove outer quotes, unescape doubled quotes
-  }
-  return c;
-});
-```
-
----
-
-### CR-02: Undefined Phase Crash When "Hold2" Phase Used in Custom Preset
-
-**File:** `index.html:1747–1758`
-
-**Issue:**
-
-Custom presets use four phase types: `["Inhale", "Hold", "Exhale", "Hold2"]` (line 1992).
-
-When a custom preset is loaded, `buildActivePhases()` attempts to find a matching base phase in `PRESETS.relax`:
+**Issue:** When loading a custom preset, the code looks up phase types in PRESETS.relax without null checking:
 
 ```javascript
 const basePhase = PRESETS.relax.find(bp => bp.name === p.type);
 return {
   name: p.type,
   durationSec: p.durationSec,
-  breathR: basePhase.breathR,        // ← CRASH HERE if basePhase is undefined
+  breathR: basePhase.breathR,        // CRASH if basePhase undefined
   theme: basePhase.theme,
   cue: basePhase.cue,
   hint: basePhase.hint
 };
 ```
 
-However, `PRESETS.relax` (lines 1527–1532) defines phases with these names:
-```javascript
-{ name: "Inhale", ... },
-{ name: "Hold", ... },
-{ name: "Exhale", ... },
-{ name: "Hold", ... }  // ← No "Hold2" phase
-```
+If the phase type `p.type` doesn't exist in PRESETS.relax (e.g., "Hold2", which is defined in PRESET_PHASE_TYPES at line 1992 but NOT in PRESETS), `basePhase` will be `undefined`. Accessing `.breathR` on undefined throws `TypeError: Cannot read property 'breathR' of undefined`, crashing the entire app.
 
 **Crash Scenario:**
-1. User creates custom preset with "Hold2" phase enabled
-2. User saves and selects the custom preset
-3. Calls to `buildActivePhases()` search for phase named "Hold2" in `PRESETS.relax`
-4. `.find()` returns `undefined`
-5. Accessing `undefined.breathR` throws: `TypeError: Cannot read property 'breathR' of undefined`
+1. User creates custom preset with "Hold2" phase selected (line 1992 defines this type)
+2. User selects the custom preset
+3. `buildActivePhases()` searches PRESETS.relax for phase named "Hold2"
+4. Not found (PRESETS.relax only has "Inhale", "Hold", "Exhale", "Hold")
+5. `basePhase` is undefined
+6. Accessing `basePhase.breathR` crashes the app
 
 **Fix:**
-
-Update phase lookup to handle the second hold phase correctly:
 
 ```javascript
 const basePhase = PRESETS.relax.find(bp => {
   // "Hold2" should map to the second "Hold" phase
   const searchName = p.type === "Hold2" ? "Hold" : p.type;
   return bp.name === searchName;
-}) || PRESETS.relax.find(bp => bp.name === "Hold");  // Fallback
+});
 
 if (!basePhase) {
-  console.error(`Phase type "${p.type}" not found in base presets`);
-  return null;  // Skip this phase or use safe default
+  // Fallback to first phase in relax preset to gracefully handle mismatches
+  const fallbackPhase = PRESETS.relax[0];
+  return {
+    name: p.type,
+    durationSec: p.durationSec,
+    breathR: fallbackPhase.breathR,
+    theme: fallbackPhase.theme,
+    cue: fallbackPhase.cue,
+    hint: fallbackPhase.hint
+  };
+}
+
+return {
+  name: p.type,
+  durationSec: p.durationSec,
+  breathR: basePhase.breathR,
+  theme: basePhase.theme,
+  cue: basePhase.cue,
+  hint: basePhase.hint
+};
+```
+
+---
+
+### CR-02: Custom Preset Selection Lost on Page Reload
+
+**File:** `index.html:2195-2225, 3329-3331`
+
+**Issue:** Custom presets are never restored from localStorage because of initialization order.
+
+The init sequence (lines 3329-3331):
+```javascript
+loadSettings();        // ← Called FIRST
+loadCustomPresets();   // ← Called SECOND
+renderCustomPresets();
+```
+
+In `loadSettings()` (line 2209):
+```javascript
+if (data.preset && data.preset in PRESETS) {
+  activePresetKey = data.preset;  // Only restores built-in presets
+  // ...
 }
 ```
 
-Alternatively, update `PRESETS` to rename the second hold phase to "Hold2" for consistency.
+When a user saves a custom preset (e.g., `"custom-1624123456"`) and reloads the page:
 
----
+1. `loadSettings()` runs first, before custom presets are loaded
+2. Line 2209 checks: `"custom-1624123456" in PRESETS` → **false**
+3. The condition fails, so `activePresetKey` remains `"relax"` (initial value at line 1631)
+4. `loadCustomPresets()` runs second, loading the custom preset into memory
+5. But it's too late—`activePresetKey` is already set to "relax"
+6. The custom preset exists in localStorage but is never selected
 
-## Warnings
+**Result:** Users lose their custom preset selection across page reloads, appearing as data loss.
 
-### WR-01: XSS Vulnerability – Unescaped Custom Preset Names in History Display
-
-**File:** `index.html:2306`
-
-**Issue:**
-
-Custom preset names are user-supplied input (via `#presetNameInput` at line 1493). The preset name is not sanitized before being stored (saved at line 2091).
-
-When rendering history (line 2306), the preset name is interpolated directly into HTML:
+**Fix:** Swap initialization order and update logic:
 
 ```javascript
-return `<div class="historyItem"${rowStyle}>
-  <span><span style="color: ${presetColor};">&#9679;</span> ${presetName} &bull; ...`;
-```
-
-**Attack Scenario:**
-1. User creates custom preset named: `<img src=x onerror="alert('XSS')">`
-2. User completes a session with this preset
-3. History entry renders with unescaped HTML, executing the script
-
-Elsewhere in the code (line 1866), preset names are correctly rendered using `.textContent`, which escapes HTML. The history display should do the same.
-
-**Fix:**
-
-Either:
-1. Escape the preset name before insertion:
-```javascript
-const presetNameEscaped = presetName
-  .replace(/&/g, '&amp;')
-  .replace(/</g, '&lt;')
-  .replace(/>/g, '&gt;')
-  .replace(/"/g, '&quot;')
-  .replace(/'/g, '&#39;');
-// Then use in template:
-// `... ${presetNameEscaped} &bull;`
-```
-
-2. Or, build the history list using DOM methods instead of HTML templates:
-```javascript
-const itemEl = document.createElement("div");
-itemEl.className = "historyItem";
-const spanEl = document.createElement("span");
-spanEl.textContent = `${presetName} • ${formatDuration(s.durationMs)} ...`;
-itemEl.appendChild(spanEl);
-```
-
----
-
-### WR-02: Custom Preset Selection Lost on Page Reload
-
-**File:** `index.html:2209–2223`
-
-**Issue:**
-
-User's selected custom preset is not restored after a page reload.
-
-**Root Cause:**
-- At line 2631: `let activePresetKey = "relax"` (default)
-- At initialization (line 2329): `loadSettings()` is called
-- At line 2209: `if (data.preset && data.preset in PRESETS)` — this only checks **built-in** presets
-- Custom preset IDs (like `"custom-1234567890"`) are NOT in `PRESETS`, so they fail this check
-- At line 2330: `loadCustomPresets()` is called (too late — custom presets not yet loaded)
-- Result: `activePresetKey` remains `"relax"`, custom preset selection is lost
-
-**Data Flow:**
-```
-activePresetKey initialized to "relax"
-  ↓
-loadSettings() checks: if (data.preset in PRESETS) { /* only built-in presets */ }
-  ↓
-Custom preset IDs fail the check → activePresetKey stays "relax"
-  ↓
-loadCustomPresets() called (too late to restore)
-  ↓
-Custom preset button rendered but not marked active
-```
-
-**Fix:**
-
-Restore custom preset selection by:
-1. Moving `loadCustomPresets()` BEFORE `loadSettings()`:
-```javascript
-loadCustomPresets();  // Load first
-loadSettings();       // Then load settings (can now access customPresets)
+// ====== Init (no cue on load) ======
+loadCustomPresets();   // Load FIRST
+loadSettings();        // Then restore settings (can now check customPresets)
 renderCustomPresets();
 // ... rest
 ```
 
-2. Then update `loadSettings()` to check both sources:
+Then update `loadSettings()` to check custom presets:
+
 ```javascript
 if (data.preset) {
   if (data.preset in PRESETS) {
     // Built-in preset
     activePresetKey = data.preset;
     activePhases = PRESETS[activePresetKey].map(p => ({...p}));
+    const saved = savedDurations[data.preset];
+    if (Array.isArray(saved)) {
+      saved.forEach((sec, i) => {
+        if (i < activePhases.length && Number.isFinite(sec) && sec >= DURATION_RANGE.min && sec <= DURATION_RANGE.max) {
+          activePhases[i] = { ...activePhases[i], durationSec: sec };
+        }
+      });
+    }
   } else if (customPresets.some(p => p.id === data.preset)) {
-    // Custom preset exists — just set the key; buildActivePhases() will handle it
+    // Custom preset exists - set key, buildActivePhases() will handle it
     activePresetKey = data.preset;
   }
-  // If preset is deleted, activePresetKey stays "relax" (safe fallback)
+  // If preset doesn't exist, activePresetKey stays "relax" (safe fallback)
 }
 ```
 
 ---
 
+## Warnings
+
+### WR-01: Fragile Form Mode Detection via DOM Style
+
+**File:** `index.html:2076-2078`
+
+**Issue:** Edit vs. create mode is detected by checking if the delete button's inline style is not "none":
+
+```javascript
+const presetDeleteBtn = document.getElementById("presetDeleteBtn");
+const isEditMode = presetDeleteBtn.style.display !== "none";
+```
+
+This is fragile because:
+1. The delete button's display state is an implementation detail that could change
+2. The condition relies on inline styles, which may not reflect the element's actual display state (affected by CSS, parent rules, media queries)
+3. Very difficult to test and maintain
+4. Couples form logic to UI implementation details
+
+**Better approach:** Store mode explicitly when opening the dialog:
+
+```javascript
+function openEditDialog(preset) {
+  presetNameInput.value = preset.name;
+  // ... pre-fill logic ...
+  presetBuilderDialog._isEditMode = true;
+  presetBuilderDialog._editingPresetId = preset.id;
+  presetBuilderDialog.showModal();
+}
+
+newPresetBtn.addEventListener("click", () => {
+  presetNameInput.value = "";
+  // ... init form ...
+  presetBuilderDialog._isEditMode = false;
+  presetBuilderDialog._editingPresetId = null;
+  presetBuilderDialog.showModal();
+});
+
+presetBuilderForm.addEventListener("submit", e => {
+  e.preventDefault();
+  // ... validation ...
+  
+  if (presetBuilderDialog._isEditMode) {
+    const presetId = presetBuilderDialog._editingPresetId;
+    // ... update logic ...
+  } else {
+    // ... create logic ...
+  }
+});
+```
+
+---
+
+### WR-02: Missing Null Check on basePhase Access
+
+**File:** `index.html:1749-1756`
+
+**Issue:** Related to CR-01. The phase lookup doesn't validate success before accessing properties. This violates the project's error handling principle: "all optional APIs fail silently with try/catch or capability checks. No throw anywhere."
+
+A missing phase type should degrade gracefully, not crash.
+
+The code assumes the phase type will always be found in PRESETS.relax without checking for null/undefined. When the assumption fails, the app crashes instead of falling back to a safe default.
+
+See CR-01 for the complete fix.
+
+---
+
+### WR-03: Long-Press Event Handler with Passive Listeners
+
+**File:** `index.html:1880-1903`
+
+**Issue:** The long-press handler registers with `{ passive: true }`, which prevents `preventDefault()` from working, but the code inside the timeout tries to call it:
+
+```javascript
+btn.addEventListener("touchstart", e => {
+  longPressTimer = setTimeout(() => {
+    e.preventDefault();  // Won't work because listener is passive
+    btn.style.transform = "scale(0.97)";
+    openEditDialog(preset);
+  }, 300);
+}, { passive: true });
+```
+
+The `e.preventDefault()` call is ineffective because:
+1. The listener is passive (can't prevent default)
+2. The call happens inside a setTimeout, outside the event handler scope
+
+While the preset edit functionality still works (because openEditDialog doesn't depend on preventDefault), this indicates confused intent and violates the principle of clarity.
+
+**Fix:** Remove ineffective preventDefault and simplify:
+
+```javascript
+let longPressTimer = null;
+btn.addEventListener("touchstart", e => {
+  longPressTimer = setTimeout(() => {
+    openEditDialog(preset);
+  }, 300);
+}, { passive: true });
+
+btn.addEventListener("touchend", () => {
+  if (longPressTimer) {
+    clearTimeout(longPressTimer);
+    longPressTimer = null;
+    btn.style.transform = "";
+  }
+}, { passive: true });
+```
+
+---
+
+### WR-04: Phase Type Schema Mismatch Between UI and PRESETS
+
+**File:** `index.html:1992, 1527-1532`
+
+**Issue:** PRESET_PHASE_TYPES (line 1992) defines four phase types:
+
+```javascript
+const PRESET_PHASE_TYPES = ["Inhale", "Hold", "Exhale", "Hold2"];
+```
+
+But PRESETS.relax (lines 1527-1532) only has three unique phase names:
+
+```javascript
+{ name: "Inhale", durationSec: 4, ... },
+{ name: "Hold",   durationSec: 2, ... },
+{ name: "Exhale", durationSec: 8, ... },
+{ name: "Hold",   durationSec: 2, ... }  // Second "Hold", not "Hold2"
+```
+
+The "Hold2" type exists in the UI but not in the template data. Users can select "Hold2" in the form, and it will be stored in custom presets, but when loading, the lookup fails (see CR-01).
+
+**Fix:** Either rename the second Hold phase in PRESETS to "Hold2", or update PRESET_PHASE_TYPES to use the correct name. The cleaner approach is to align PRESET_PHASE_TYPES with actual phase names:
+
+```javascript
+const PRESET_PHASE_TYPES = ["Inhale", "Hold", "Exhale", "Hold"];  // Match PRESETS structure
+```
+
+Then, in the form rendering and phase management, distinguish between the two "Hold" phases by index, not name.
+
+---
+
 ## Info
 
-### IN-01: CSV Import Incomplete Flag Detection Uses Wrong Column
+### IN-01: Edit Icon Style Overrides CSS Unnecessarily
 
-**File:** `index.html:2497`
+**File:** `index.html:1869-1877`
 
-**Issue:**
+**Issue:** The edit icon is created with inline style properties:
 
-The CSV export (lines 2354–2360) outputs only 4 columns: `[date, duration, cycles, preset]`.
-
-The import logic at line 2497 tries to detect an "incomplete" flag:
 ```javascript
-const incomplete = cols.length > 3 && cols[3].toLowerCase().includes("incomplete");
+editIcon.style.marginLeft = "4px";
+editIcon.style.opacity = "0";
+editIcon.style.transition = "opacity 80ms ease";
+editIcon.style.pointerEvents = "none";
 ```
 
-This checks if the **4th column (preset)** contains the word "incomplete". This is incorrect because:
-1. The preset column contains preset names like `"relax"` or custom preset IDs, not status flags
-2. If a preset name happens to contain "incomplete", the flag will be set incorrectly
-3. The export does not save the incomplete flag (see line 2500–2504, incomplete is only set if mis-detected)
+CSS already defines some of these (lines 198-206):
 
-**Impact:** Sessions imported from CSV will incorrectly mark some as incomplete, or conversely, truly incomplete sessions won't be flagged.
-
-**Fix:**
-
-Either:
-1. Add the incomplete flag to the CSV export:
-```javascript
-rows.push([s.date, duration, s.cycles, s.preset || "relax", s.incomplete ? "Incomplete" : ""].map(escape).join(","));
+```css
+.editIcon {
+  opacity: 0;
+  transition: opacity 80ms ease;
+  /* marginLeft and pointerEvents not in CSS */
+}
 ```
 
-2. And update the import header validation:
-```javascript
-const hasExpectedHeader = 
-  headerLine.includes("date") &&
-  headerLine.includes("duration") &&
-  headerLine.includes("cycles");
-  // Don't require "incomplete" — it's optional
+Mixing inline styles with CSS makes maintenance harder and violates DRY. The styles should be consolidated in the stylesheet.
+
+**Fix:** Move all styles to CSS:
+
+```css
+.editIcon {
+  opacity: 0;
+  transition: opacity 80ms ease;
+  font-size: 0.9em;
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  cursor: pointer;
+  margin-left: 4px;
+  pointer-events: none;
+}
 ```
 
-3. And fix the incomplete detection to use the 5th column:
+Remove inline style assignments from the JavaScript.
+
+---
+
+### IN-02: Button State Properties (_deleteConfirmed, _currentPresetId)
+
+**File:** `index.html:1974-1975, 2082, 2132`
+
+**Issue:** The delete button stores state using private properties on the DOM element:
+
 ```javascript
-const incomplete = cols.length > 4 && cols[4].toLowerCase().includes("incomplete");
+deleteBtn._deleteConfirmed = false;
+deleteBtn._currentPresetId = preset.id;
 ```
 
-Or, remove the incomplete flag from CSV import/export entirely and accept the limitation that CSV exports only capture core fields.
+While functional in JavaScript, storing application state on DOM elements is non-standard and makes the code harder to understand. It couples state management to the UI.
+
+This is not a bug (JavaScript allows this), but it's a code smell that indicates the state should be managed separately.
+
+**Better approach:** Use a separate state object or pass the preset ID as an argument to the callback.
 
 ---
 
