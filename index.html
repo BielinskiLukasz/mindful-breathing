@@ -152,8 +152,8 @@
     }
 
     @keyframes idlePulse {
-      0%, 100% { width: 48px; height: 48px; opacity: 0.12; }
-      50%       { width: 108px; height: 108px; opacity: 0.22; }
+      0%, 100% { width: 20%; height: 20%; opacity: 0.12; }
+      50%       { width: 45%; height: 45%; opacity: 0.22; }
     }
 
     .breathCircle.idle {
@@ -1411,6 +1411,7 @@
     const sessionBarFill = document.getElementById("sessionBarFill");
     const doneOverlay = document.getElementById("doneOverlay");
     const breathCircleEl = document.getElementById("breathCircle");
+    const ringWrapEl = breathCircleEl.closest(".ringWrap");
     const elapsedEl = document.getElementById("elapsed");
     const nextPhaseEl = document.getElementById("nextPhase");
     const phaseHintEl = document.getElementById("phaseHint");
@@ -1915,7 +1916,8 @@
 
       const [bFrom, bTo] = getPhase().breathR;
       const bT = bFrom + progress01 * (bTo - bFrom);
-      const bPx = Math.round(24 + bT * 146);
+      const ringPx = ringWrapEl.offsetWidth || 240;
+      const bPx = Math.round((0.1 + bT * 0.608) * ringPx);
       breathCircleEl.style.width = `${bPx}px`;
       breathCircleEl.style.height = `${bPx}px`;
 
