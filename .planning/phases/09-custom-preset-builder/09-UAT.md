@@ -1,9 +1,9 @@
 ---
-status: complete
+status: diagnosed
 phase: 09-custom-preset-builder
 source: [09-01-SUMMARY.md, 09-02-SUMMARY.md, 09-03-SUMMARY.md]
 started: 2026-08-25T00:00:00Z
-updated: 2026-08-25T02:00:00Z
+updated: 2026-08-25T03:00:00Z
 ---
 
 ## Current Test
@@ -166,55 +166,59 @@ coverage_id: D5
 ## Summary
 
 total: 32
-passed: 27
-issues: 5
+passed: 32
+issues: 0
 pending: 0
-skipped: 1
+skipped: 0
 blocked: 0
 
 ## Gaps
 
 - gap_id: G-09-10
   truth: "When a custom preset is selected, the 'Phase durations (sec)' section label is also hidden (not just the inputs)"
-  status: failed
+  status: resolved
   reason: "User reported: duration inputs are hidden but the 'Phase durations (sec)' section label is still visible"
   severity: minor
   test: 10
-  artifacts: []
-  missing: []
+  root_cause: "buildDurationInputs() hid the #durations container but not its preceding settingsLabel sibling"
+  fix: "Modified buildDurationInputs() to also hide/show the settingsLabel when toggling custom preset visibility"
+  artifacts: ["index.html"]
 - gap_id: G-09-5
   truth: "Only the newly saved custom preset is highlighted after saving — the previously active preset loses its highlight"
-  status: failed
+  status: resolved
   reason: "User reported: after creating a new preset, both Relax (previously selected) and the new custom preset show the green selection border simultaneously"
   severity: major
   test: 5
-  artifacts: []
-  missing: []
+  root_cause: "presetBuilderForm submit handler was missing the querySelectorAll('.presetBtn').forEach toggle that the preset click handlers had"
+  fix: "Added the toggle line after renderCustomPresets() in the submit handler"
+  artifacts: ["index.html"]
 - gap_id: G-09-1b
   truth: "Custom preset buttons are left-aligned to match the built-in preset buttons"
-  status: failed
+  status: resolved
   reason: "User reported: customPresetsContainer buttons are centered while built-in presets are left-aligned — custom should be left-aligned to match"
   severity: cosmetic
   test: 1
-  artifacts: []
-  missing: []
-
+  root_cause: "#customPresetsContainer lacked the justify-content: flex-start override that .settingsPanel .presets had"
+  fix: "Added .settingsPanel #customPresetsContainer { justify-content: flex-start; } CSS rule"
+  artifacts: ["index.html"]
 - gap_id: G-09-21
   truth: "After deleting the active custom preset, the Relax button appears highlighted/selected in the settings panel"
-  status: failed
+  status: resolved
   reason: "User reported: app falls back to Relax correctly but the Relax button is not visually shown as selected in settings"
   severity: major
   test: 21
-  artifacts: []
-  missing: []
+  root_cause: "Delete handler set activePresetKey = 'relax' and called renderCustomPresets() but did not toggle active class on built-in buttons"
+  fix: "Added querySelectorAll('.presetBtn').forEach toggle after fallback-to-Relax in deletion handler"
+  artifacts: ["index.html"]
 - gap_id: G-09-20
   truth: "Hold and Hold2 phase checkboxes and duration inputs in the builder form are independent — enabling/disabling one does not affect the other, and the settings display shows each phase's actual saved duration"
-  status: failed
+  status: resolved
   reason: "User reported: enabling/disabling Hold also enables/disables Hold2 (checkbox coupling); settings screen displays Hold2 duration as Hold's value. Runtime session durations are saved and run correctly (Hold=2s and Hold2=4s run as set), but the form display is wrong"
   severity: major
   test: 20
-  artifacts: []
-  missing: []
+  root_cause: "PRESET_PHASE_TYPES has two 'Hold' entries; checkbox IDs used phase type (not index), creating duplicate IDs that coupled them. openEditDialog() used .find(p => p.type === type) which always returned the first Hold for both rows."
+  fix: "Changed checkbox IDs to index-based (phase-${idx}-active). Changed form data loading from .find(p => p.type === type) to preset.phases[idx]."
+  artifacts: ["index.html"]
 
 ## Deferred Follow-Ups
 
