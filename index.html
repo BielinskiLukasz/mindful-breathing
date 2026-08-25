@@ -1380,6 +1380,7 @@
     <div class="infoOverlay" id="streakOverlay" role="dialog" aria-modal="true" aria-labelledby="streakPanelTitle">
       <div class="infoPanel" id="streakPanel">
         <h2 class="infoTitle" id="streakPanelTitle">Your Streak</h2>
+        <button class="infoCloseBtn" id="streakCloseBtn" title="Close streak" aria-label="Close streak">×</button>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
           <div style="text-align: center;">
             <div style="font-size: clamp(10px, 1vw + 7px, 12px); letter-spacing: 0.07em; text-transform: uppercase; color: var(--panelSubtext); margin-bottom: 6px;">Current</div>
@@ -3461,11 +3462,13 @@
      ******************************************************************/
     const streakOverlay = document.getElementById("streakOverlay");
     const streakBtn = document.getElementById("streakBtn");
+    const streakCloseBtn = document.getElementById("streakCloseBtn");
 
     function openStreak() {
       streakOverlay.classList.add("visible");
       openPanelElement = streakOverlay;
       updateStreakPanel();
+      streakCloseBtn.focus();
     }
 
     function closeStreak() {
@@ -3475,6 +3478,7 @@
     }
 
     streakBtn.addEventListener("click", openStreak);
+    streakCloseBtn.addEventListener("click", closeStreak);
     streakOverlay.addEventListener("click", e => {
       if (e.target === streakOverlay) closeStreak();
     });
