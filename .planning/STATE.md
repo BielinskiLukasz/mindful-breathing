@@ -3,24 +3,24 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Landscape Polish, Custom Presets & Streaks
 current_phase: 10
-current_phase_name: streak-tracking
-status: phase_complete_verified
-stopped_at: Phase 09 gap closure verification complete
-last_updated: "2026-08-25T17:48:23.615Z"
+status: milestone_complete
+stopped_at: Phase 10 streak-tracking complete — all 4 phases done
+last_updated: "2026-08-25T00:00:00Z"
 last_activity: 2026-08-25
-last_activity_desc: Phase 10 execution started
 progress:
   total_phases: 4
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 12
-  completed_plans: 11
-  percent: 75
+  completed_plans: 12
+  percent: 100
+current_phase_name: streak-tracking
+last_activity_desc: Phase 10 complete — v1.1 milestone ready for ship
 ---
 
 # Project State: Mindful Breathing v1.1
 
-**Milestone:** v1.1 — Landscape Polish, Custom Presets & Streaks — In Progress  
-**Last Updated:** 2026-08-24
+**Milestone:** v1.1 — Landscape Polish, Custom Presets & Streaks — **COMPLETE (all 4 phases done)**  
+**Last Updated:** 2026-08-25
 
 ---
 
@@ -29,21 +29,21 @@ progress:
 See: .planning/PROJECT.md (updated 2026-07-04)
 
 **Core value:** Reliable, uninterrupted breathing guidance with verifiable history  
-**Current focus:** Phase 10 — streak-tracking
+**Current focus:** v1.1 milestone complete — ready for `/gsd-complete-milestone`
 **Stack:** Vanilla JS, single-file HTML, localStorage persistence, no dependencies
 
 ---
 
 ## Current Position
 
-Phase: 10 (streak-tracking) — EXECUTING
+Phase: 10
 
 **Main plans:** 3/3 executed  
 **Gap closure plans:** 3/3 executed & verified (09-04, 09-05, 09-06)  
 **Total Phase 09 plans:** 6/6 complete
 
 **Verification status:** 18/18 gap-closure must-haves verified  
-**Last activity:** 2026-08-25 — Completed quick task 260825-uo5: Fix streak button UI + timezone-safe date arithmetic
+**Last activity:** 2026-08-25
 
 ### Quick Tasks Completed
 
@@ -61,16 +61,11 @@ Progress: [██████████] 100% (Phase 09 complete)
 
 Recent decisions affecting current work (full log in PROJECT.md Key Decisions):
 
-- [v1.0]: `background` shorthand animates `--bg` CSS custom property; `background-color` sub-property does not
-- [v1.0]: `height: auto; min-height: 100vh` for compact landscape overrides `height: 100vh` so tall phones can scroll
-- [v1.1 Phase 7]: `fullscreenBtn` moved into `.cornerControls` as last child — top-right clear in landscape (D-01)
-- [v1.1 Phase 7]: Duplicate `#landscapeInfo` DOM elements (not CSS-only) for cycle/elapsed in landscape (D-05)
-- [v1.1 Phase 7]: `position: absolute; top: 50%; transform: translateY(-50%)` for exact controls centering (D-07)
-- [v1.1 Phase 7]: `@media (hover: hover) and (pointer: fine)` hover guard — `transition` on base state for smooth leave (D-08)
-- [v1.1 Phase 7]: Countdown `@keyframes countdownPop` easing approved as `ease` — no change needed (D-09)
-- [v1.1 Phase 9]: Error clearing on form resubmit prevents message carryover; 3-second timeout ensures readability
-- [v1.1 Phase 9]: Data-attribute comparison (b.dataset.preset) handles DOM rebuilds; object identity fails after renderCustomPresets()
-- [v1.1 Phase 9]: Remove pointerEvents blocker from edit icon; e.stopPropagation() in click handler prevents bubbling
+- [v1.1 Phase 10]: `toLocaleDateString('en-CA')` returns YYYY-MM-DD in user's local timezone, preventing UTC boundary mismatch for daily streak windows
+- [v1.1 Phase 10]: Two-tier longest streak — computeStreak() from capped history (14 entries), maybeUpdateLongestStreak() persists high-water mark in localStorage
+- [v1.1 Phase 10]: Break on first gap in streak walk — current streak = active days only; older isolated streaks do not inflate it (CR-01 fix)
+- [v1.1 Phase 10]: Flame-only button (no number) — post-execution UX decision by user; streak number visible in panel
+- [v1.1 Phase 10]: streakOverlay reuses .infoOverlay/.infoPanel CSS — zero new CSS, same ARIA and accessibility pattern
 
 ### Pending Todos
 
@@ -109,12 +104,13 @@ None.
 
 **Resume file:** None
 
-Last session: 2026-08-24T00:00:00Z  
-Stopped at: Phase 09 gap closure verification complete
+Last session: 2026-08-25T00:00:00Z  
+Stopped at: Phase 10 streak-tracking complete — UAT passed (6/6), VERIFICATION.md created, phase transitioned
 
 **Next Steps:**
 
-1. Phase 10 (Streak Tracking) — next planned phase per ROADMAP.md
+1. `/gsd-complete-milestone` — all 4 phases done, v1.1 milestone ready for ship
+2. (Optional) `/gsd-secure-phase 10` — security enforcement is enabled; SECURITY.md not yet created for phase 10
 
 ## Performance Metrics
 

@@ -3,7 +3,7 @@
 ## Current State
 
 **Shipped:** v1.0 — Bug Fixes & Visual Polish (2026-07-04)  
-**Current milestone:** v1.1 — Landscape Polish, Custom Presets & Streaks (Phase 9 complete — streak tracking next)
+**Current milestone:** v1.1 — Landscape Polish, Custom Presets & Streaks (All 4 phases complete — milestone ready for ship)
 
 ## Current Milestone: v1.1 — Landscape Polish, Custom Presets & Streaks
 
@@ -65,11 +65,21 @@ Reliable, uninterrupted breathing guidance with verifiable history — users nee
 
 ### Active
 
+None — all v1.1 requirements validated.
+
+### Previously Active (now validated)
+
 - ✓ **PRESET-01**: User can create a custom preset with a name and 2–4 named phases — Validated in Phase 9: custom-preset-builder
 - ✓ **PRESET-02**: User can select a custom preset and start a breathing session — Validated in Phase 9: custom-preset-builder
 - ✓ **PRESET-03**: Custom presets persist across browser sessions (localStorage) — Validated in Phase 9: custom-preset-builder
 - ✓ **PRESET-04**: User can edit existing custom presets — Validated in Phase 9: custom-preset-builder
 - ✓ **PRESET-05**: User can delete a custom preset with confirmation, with fallback to Relax — Validated in Phase 9: custom-preset-builder
+- ✓ **STREAK-01**: User sees current daily streak on a flame button in the corner controls — Validated in Phase 10: streak-tracking
+- ✓ **STREAK-02**: Longest-ever streak persists across reloads even as history ages off — Validated in Phase 10: streak-tracking
+- ✓ **STREAK-03**: Today status tile shows contextual text based on session state — Validated in Phase 10: streak-tracking
+- ✓ **STREAK-04**: Total sessions count excludes incomplete sessions, updates after each session — Validated in Phase 10: streak-tracking
+- ✓ **STREAK-05**: Streak panel opens/closes with overlay, Escape key, and close button; focus managed correctly — Validated in Phase 10: streak-tracking
+- ✓ **STREAK-06**: Streak badge dims at opacity 0.45 when streak is 0, full opacity when ≥ 1 — Validated in Phase 10: streak-tracking
 
 ### Out of Scope
 
@@ -141,6 +151,12 @@ Codebase: single `index.html` file (~2,500 lines) with clear internal sections. 
 | `cycleCount >= 2` for incomplete save threshold (v1.0) | cycleCount starts at 1; increments after each full cycle; ≥2 = at least 1 done | ✓ Good — correct semantics for "incomplete" |
 | Incomplete save in toggleBtn handler only (v1.0) | stop() and reset() stay unmodified; no duplicate entries on pause/resume cycles | ✓ Good — clean isolation |
 | Stop renamed to Pause (v1.0) | Reflects actual behavior — session is paused, Resume/Start follows | ✓ Good — accurate UX language |
+| `toLocaleDateString('en-CA')` for streak dates (v1.1 Phase 10) | Returns YYYY-MM-DD in user's local timezone, avoiding UTC boundary mismatch for daily streak windows | ✓ Good — no off-by-one on day boundaries |
+| Two-tier longest streak (v1.1 Phase 10) | computeStreak() returns longest from capped history (14 entries); maybeUpdateLongestStreak() persists high-water mark — history cap doesn't erase all-time longest | ✓ Good — correct semantics across history rotation |
+| Break on first gap in computeStreak() (v1.1 Phase 10) | Current streak ends at first gap walking backward from today; older isolated streaks do not inflate current value | ✓ Good — fixed CR-01 bug; current = active streak only |
+| Badge opacity 0.45 for zero streak (v1.1 Phase 10) | Dimmed state signals inactivity without hiding the button; consistent with other optional-state indicators in UI | ✓ Good — discoverable year-round |
+| Flame-only streak button (no number in badge) (v1.1 Phase 10) | Post-execution UX decision by user — badge text omitted to keep the button minimal; streak number visible in panel | ✓ Good — intentional, confirmed via UAT |
+| streakOverlay reuses .infoOverlay/.infoPanel CSS (v1.1 Phase 10) | Zero new CSS needed; same open/close behavior, ARIA, and accessibility pattern as info and settings panels | ✓ Good — consistency at no cost |
 
 ## Phases
 
@@ -153,6 +169,15 @@ Codebase: single `index.html` file (~2,500 lines) with clear internal sections. 
 **v1.0 (Shipped 2026-07-04)** — see `.planning/milestones/v1.0-ROADMAP.md`
 
 **Phase 6: Bug Fixes & Visual Polish** ✓ Complete — `.planning/phases/06/`
+
+**v1.1 Phases (In Progress — all 4 complete, milestone ready for ship):**
+
+| Phase | Name | Status |
+|-------|------|--------|
+| 7 | landscape-polish | ✓ Complete |
+| 8 | micro-interactions-accessibility | ✓ Complete |
+| 9 | custom-preset-builder | ✓ Complete |
+| 10 | streak-tracking | ✓ Complete |
 
 ## Evolution
 
@@ -172,4 +197,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-07-04 after v1.0 milestone*
+*Last updated: 2026-08-25 after v1.1 Phase 10 (streak-tracking) — all v1.1 phases complete, milestone ready for ship*
