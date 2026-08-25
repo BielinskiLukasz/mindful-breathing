@@ -1326,6 +1326,7 @@
           <circle cx="12" cy="12" r="3"/>
         </svg>
       </button>
+      <button class="iconToggle" id="streakBtn" title="View your streak" aria-label="View your streak"><span id="streakBadge">🔥 0</span></button>
       <button class="infoBtn" id="infoBtn" title="Keyboard shortcuts & notes" aria-label="Toggle info panel">
         <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="8" cy="8" r="6.5"/>
@@ -1373,6 +1374,30 @@
           </ul>
         </div>
         <p id="appVersionEl" class="infoPanelVersion"></p>
+      </div>
+    </div>
+
+    <div class="infoOverlay" id="streakOverlay" role="dialog" aria-modal="true" aria-labelledby="streakPanelTitle">
+      <div class="infoPanel" id="streakPanel">
+        <h2 class="infoTitle" id="streakPanelTitle">Your Streak</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+          <div style="text-align: center;">
+            <div style="font-size: clamp(10px, 1vw + 7px, 12px); letter-spacing: 0.07em; text-transform: uppercase; color: var(--panelSubtext); margin-bottom: 6px;">Current</div>
+            <div id="streakCurrentValue" style="font-size: clamp(20px, 3vw + 12px, 28px); color: var(--accent); font-weight: 500;">🔥 0</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: clamp(10px, 1vw + 7px, 12px); letter-spacing: 0.07em; text-transform: uppercase; color: var(--panelSubtext); margin-bottom: 6px;">Longest</div>
+            <div id="streakLongestValue" style="font-size: clamp(20px, 3vw + 12px, 28px); color: var(--accent); font-weight: 500;">🏆 0</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: clamp(10px, 1vw + 7px, 12px); letter-spacing: 0.07em; text-transform: uppercase; color: var(--panelSubtext); margin-bottom: 6px;">Today</div>
+            <div id="streakTodayValue" style="font-size: clamp(12px, 1.5vw + 8px, 16px); color: var(--panelText);">No sessions yet</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: clamp(10px, 1vw + 7px, 12px); letter-spacing: 0.07em; text-transform: uppercase; color: var(--panelSubtext); margin-bottom: 6px;">Total Sessions</div>
+            <div id="streakTotalValue" style="font-size: clamp(20px, 3vw + 12px, 28px); color: var(--accent); font-weight: 500;">0</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1529,7 +1554,16 @@
       statusRunning: "Running",
       statusStopped: "Stopped",
       btnStart: "Start",
-      btnStop: "Pause"
+      btnStop: "Pause",
+      streakBtnTitle: "View your streak",
+      streakPanelTitle: "Your Streak",
+      streakCurrentLabel: "Current",
+      streakLongestLabel: "Longest",
+      streakTodayLabel: "Today",
+      streakTotalLabel: "Total Sessions",
+      streakDoneToday: "Done today",
+      streakNotYet: "Not yet — keep the streak alive",
+      streakNoSessionsYet: "No sessions yet"
     });
 
     // Phase sequence: 2s Pause -> 4s Inhale -> 2s Pause -> 8s Exhale
@@ -1643,6 +1677,7 @@
     let activePresetKey = "relax";
     let savedDurations = {};
     let customPresets = [];
+    let longestStreak = 0;
 
     // Countdown
     let isCountingDown = false;
@@ -2225,6 +2260,7 @@
           durations: savedDurations,
           maxHistoryEntries: maxHistoryEntries,
           isDarkMode: isDarkMode,
+          longestStreak: longestStreak,
         }));
       } catch (_) {}
     }
@@ -2239,6 +2275,7 @@
         if (data.goal) goalInput.value = data.goal;
         if (data.durations && typeof data.durations === "object") savedDurations = data.durations;
         maxHistoryEntries = data.maxHistoryEntries ?? 1000;
+        longestStreak = typeof data.longestStreak === "number" ? data.longestStreak : 0;
         // Theme preference: default to dark (isDarkMode = true) if not saved
         isDarkMode = typeof data.isDarkMode === "boolean" ? data.isDarkMode : true;
         applyThemeColors(isDarkMode ? DARK_THEME : LIGHT_THEME);
@@ -2764,6 +2801,9 @@
       saveHistory({ date: new Date().toISOString(), durationMs: totalSessionMs, cycles: getGoal(), preset: activePresetKey });
       renderHistory();
       renderSessionBar();
+      updateStreakBadge();
+      updateStreakPanel();
+      maybeUpdateLongestStreak();
       document.getElementById("doneTime").textContent = `Total time: ${formatDuration(totalSessionMs)}`;
       doneOverlay.classList.add("visible");
     }
@@ -2898,6 +2938,68 @@
       return m > 0 ? `${m} min ${s % 60} sec` : `${s} sec`;
     }
 
+    function computeStreak(history) {
+      if (!Array.isArray(history) || history.length === 0) return { current: 0, longest: 0 };
+
+      // Extract unique local dates and sort descending
+      const dates = new Set();
+      for (const entry of history) {
+        if (entry.date && !entry.incomplete) {
+          const d = new Date(entry.date).toLocaleDateString('en-CA');
+          dates.add(d);
+        }
+      }
+
+      if (dates.size === 0) return { current: 0, longest: 0 };
+
+      const sortedDates = Array.from(dates).sort().reverse();
+      const today = new Date().toLocaleDateString('en-CA');
+
+      let current = 0;
+      let longest = 0;
+      let streak = 0;
+
+      // Walk backward from today
+      let checkDate = today;
+      let isFirstIteration = true;
+
+      for (const date of sortedDates) {
+        if (isFirstIteration) {
+          // Check if today or yesterday starts the streak
+          const dayDiff = Math.floor((new Date(today) - new Date(date)) / 86400000);
+          if (dayDiff <= 1) {
+            streak = 1;
+            current = 1;
+          } else {
+            // Today has no session; streak starts from 0
+            current = 0;
+            break;
+          }
+          isFirstIteration = false;
+        } else {
+          // Check if date is consecutive from previous
+          const prevDate = new Date(checkDate);
+          prevDate.setDate(prevDate.getDate() - 1);
+          const prevDateStr = prevDate.toLocaleDateString('en-CA');
+
+          if (date === prevDateStr) {
+            streak++;
+            current = Math.max(current, streak);
+          } else {
+            // Gap found; reset streak count but track longest
+            longest = Math.max(longest, streak);
+            streak = 1; // Start new streak from this date
+            current = Math.max(current, 1);
+          }
+        }
+        checkDate = date;
+      }
+
+      longest = Math.max(longest, streak);
+
+      return { current, longest };
+    }
+
     function getElapsedDisplay() {
       const ms = isRunning ? totalSessionMs + (Date.now() - sessionResumeTs) : totalSessionMs;
       if (ms < 1000) return "";
@@ -2956,6 +3058,9 @@
           incomplete: true
         });
         renderHistory();
+        updateStreakBadge();
+        updateStreakPanel();
+        maybeUpdateLongestStreak();
       }
       currentPhaseIndex = 0;
       cycleCount = 1;
@@ -3246,6 +3351,86 @@
     });
 
     /******************************************************************
+     *  STREAK FUNCTIONS
+     ******************************************************************/
+    function updateStreakBadge() {
+      try {
+        const raw = localStorage.getItem(HISTORY_KEY);
+        const history = raw ? JSON.parse(raw) : [];
+        const { current } = computeStreak(history);
+        const streakBadgeEl = document.getElementById("streakBadge");
+        if (streakBadgeEl) {
+          streakBadgeEl.textContent = `🔥 ${current}`;
+        }
+        const streakBtn = document.getElementById("streakBtn");
+        if (streakBtn) {
+          streakBtn.style.opacity = current === 0 ? "0.45" : "1.0";
+        }
+      } catch (_) {}
+    }
+
+    function updateStreakPanel() {
+      try {
+        const raw = localStorage.getItem(HISTORY_KEY);
+        const history = raw ? JSON.parse(raw) : [];
+        const { current, longest } = computeStreak(history);
+
+        // Compare with persisted longest streak
+        const displayLongest = Math.max(longest, longestStreak);
+
+        // Count sessions for today
+        const today = new Date().toLocaleDateString('en-CA');
+        let todayCount = 0;
+        for (const entry of history) {
+          if (entry.date && !entry.incomplete) {
+            const d = new Date(entry.date).toLocaleDateString('en-CA');
+            if (d === today) todayCount++;
+          }
+        }
+
+        // Count total sessions (excluding incomplete)
+        let totalCount = 0;
+        for (const entry of history) {
+          if (!entry.incomplete) totalCount++;
+        }
+
+        // Update DOM elements
+        const currentEl = document.getElementById("streakCurrentValue");
+        if (currentEl) currentEl.textContent = `🔥 ${current}`;
+
+        const longestEl = document.getElementById("streakLongestValue");
+        if (longestEl) longestEl.textContent = `🏆 ${displayLongest}`;
+
+        const todayEl = document.getElementById("streakTodayValue");
+        if (todayEl) {
+          if (todayCount > 0) {
+            todayEl.textContent = `Done today (${todayCount} session${todayCount !== 1 ? 's' : ''})`;
+          } else if (current >= 1) {
+            todayEl.textContent = UI.streakNotYet;
+          } else {
+            todayEl.textContent = UI.streakNoSessionsYet;
+          }
+        }
+
+        const totalEl = document.getElementById("streakTotalValue");
+        if (totalEl) totalEl.textContent = totalCount;
+      } catch (_) {}
+    }
+
+    function maybeUpdateLongestStreak() {
+      try {
+        const raw = localStorage.getItem(HISTORY_KEY);
+        const history = raw ? JSON.parse(raw) : [];
+        const { current } = computeStreak(history);
+
+        if (current > longestStreak) {
+          longestStreak = current;
+          saveSettings();
+        }
+      } catch (_) {}
+    }
+
+    /******************************************************************
      *  INFO PANEL
      ******************************************************************/
     const infoOverlay = document.getElementById("infoOverlay");
@@ -3266,6 +3451,29 @@
     infoCloseBtn.addEventListener("click", closeInfo);
     infoOverlay.addEventListener("click", e => {
       if (e.target === infoOverlay) closeInfo();
+    });
+
+    /******************************************************************
+     *  STREAK PANEL
+     ******************************************************************/
+    const streakOverlay = document.getElementById("streakOverlay");
+    const streakBtn = document.getElementById("streakBtn");
+
+    function openStreak() {
+      streakOverlay.classList.add("visible");
+      openPanelElement = streakOverlay;
+      updateStreakPanel();
+    }
+
+    function closeStreak() {
+      streakOverlay.classList.remove("visible");
+      openPanelElement = null;
+      streakBtn.focus();
+    }
+
+    streakBtn.addEventListener("click", openStreak);
+    streakOverlay.addEventListener("click", e => {
+      if (e.target === streakOverlay) closeStreak();
     });
 
     /******************************************************************
@@ -3351,6 +3559,7 @@
           if (isCountingDown) { e.preventDefault(); cancelCountdown(); }
           else if (openPanelElement === infoOverlay) { e.preventDefault(); closeInfo(); }
           else if (openPanelElement === settingsOverlay) { e.preventDefault(); closeSettings(); }
+          else if (openPanelElement === streakOverlay) { e.preventDefault(); closeStreak(); }
           break;
         case "Space":
           if (anyPanelOpen) return;
@@ -3384,6 +3593,8 @@
     updateModeIndicator();
     buildDurationInputs();
     renderHistory();
+    updateStreakBadge();
+    updateStreakPanel();
     render(0, getPhase().durationSec);
     updateStatusUI();
     breathCircleEl.classList.add("idle");
