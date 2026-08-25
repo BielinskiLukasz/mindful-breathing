@@ -1,5 +1,5 @@
 ---
-status: complete
+status: diagnosed
 phase: 09-custom-preset-builder
 source: [09-01-SUMMARY.md, 09-02-SUMMARY.md, 09-03-SUMMARY.md]
 started: 2026-08-01T00:00:00Z
@@ -186,136 +186,204 @@ blocked: 0
   reason: "User reported: error message stays visible even after typing a name — only clears on second valid save, not on input"
   severity: major
   test: 3
-  artifacts: []
-  missing: []
+  root_cause: "presetNameError is not cleared at the start of the submit handler — add presetNameError.style.display='none' at line 2062, right after e.preventDefault()"
+  artifacts:
+    - path: "index.html"
+      issue: "Submit handler (line 2062) does not clear error element before re-validating"
+  missing:
+    - "Clear presetNameError at the top of the submit handler"
 - gap_id: G-09-3b
   truth: "Validation error for fewer than 2 phases stays visible until user fixes the issue"
   status: failed
   reason: "User reported: 'At least 2 phases required' error appears and disappears in under 1 second — user cannot read it"
   severity: major
   test: 3
-  artifacts: []
-  missing: []
+  root_cause: "setTimeout at line 2081 hides phaseCountError after only 400ms — change to 3000ms"
+  artifacts:
+    - path: "index.html"
+      issue: "Line 2081: setTimeout duration is 400ms, too short to read"
+  missing:
+    - "Change timeout from 400ms to 3000ms at line 2081"
 - gap_id: G-09-4a
   truth: "Selecting a custom preset deactivates the previously selected preset (only one preset highlighted at a time)"
   status: failed
   reason: "User reported: previous selected mode is also highlighted after saving a new custom preset; both remain highlighted on reopening settings"
   severity: major
   test: 4
-  artifacts: []
-  missing: []
+  root_cause: "Lines 2964 and 2987 use stale button reference (b === btn) to toggle active class. After renderCustomPresets() recreates buttons, btn is the old DOM element — the toggle removes the active class that renderCustomPresets() just applied. Fix: replace with b.dataset.preset === activePresetKey"
+  artifacts:
+    - path: "index.html"
+      issue: "Line 2987 (and 2964): b === btn comparison uses stale button reference after DOM rebuild"
+  missing:
+    - "Change both occurrences to: b.classList.toggle('active', b.dataset.preset === activePresetKey)"
 - gap_id: G-09-4b
   truth: "The active preset name shown in the UI (outside settings) matches the user-given name (e.g. 'Morning Flow')"
   status: failed
   reason: "User reported: after closing settings, mode name shows internal ID 'custom-1785770816888' instead of the user-given name"
   severity: major
   test: 4
-  artifacts: []
-  missing: []
+  root_cause: "updateModeIndicator() at line 1735 falls back to displaying activePresetKey directly when not found in MODE_LABELS. Custom preset IDs like 'custom-1787579261523' are not in MODE_LABELS so the raw ID is shown. Fix: look up the preset's .name property in customPresets[]"
+  artifacts:
+    - path: "index.html"
+      issue: "Line 1735: MODE_LABELS[activePresetKey] || activePresetKey — falls back to raw ID for custom presets"
+  missing:
+    - "Add lookup: const custom = customPresets.find(p => p.id === activePresetKey); el.textContent = custom ? custom.name : activePresetKey"
 - gap_id: G-09-5a
   truth: "Custom preset button appears highlighted/active when selected after switching away from it and back"
   status: failed
   reason: "User reported: selecting another mode then re-selecting the custom preset — it is selected (functionally) but the button is not highlighted"
   severity: major
   test: 5
-  artifacts: []
-  missing: []
+  root_cause: "Same as G-09-4a — stale button reference at lines 2964/2987"
+  artifacts:
+    - path: "index.html"
+      issue: "Lines 2964, 2987: stale button reference in active class toggle"
+  missing:
+    - "Same fix as G-09-4a"
 - gap_id: G-09-5b
   truth: "When preset buttons wrap to a second row, there is visible margin/gap between the rows"
   status: failed
   reason: "User reported: second row of mode buttons sticks to the first row with no margin between them"
   severity: cosmetic
   test: 5
-  artifacts: []
-  missing: []
+  root_cause: "#customPresetsContainer has no CSS — no margin-top, no flexbox layout defined"
+  artifacts:
+    - path: "index.html"
+      issue: "#customPresetsContainer missing CSS (margin-top, flex, gap)"
+  missing:
+    - "Add CSS: #customPresetsContainer { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }"
 - gap_id: G-09-6a
   truth: "Selected custom preset button shows active highlight (green box) immediately on selection"
   status: failed
   reason: "User reported: no green box showing that I select it when trying to select a custom preset"
   severity: major
   test: 6
-  artifacts: []
-  missing: []
+  root_cause: "Same as G-09-4a — stale button reference at lines 2964/2987"
+  artifacts:
+    - path: "index.html"
+      issue: "Lines 2964, 2987: stale button reference in active class toggle"
+  missing:
+    - "Same fix as G-09-4a"
 - gap_id: G-09-6b
   truth: "After closing the settings panel, the active preset displays the user-given name (e.g. 'Morning Flow'), not the internal ID"
   status: failed
   reason: "User reported: after closing windows, shows 'custom-1787579261523' instead of the name provided"
   severity: major
   test: 6
-  artifacts: []
-  missing: []
+  root_cause: "Same as G-09-4b — updateModeIndicator() at line 1735 falls back to raw activePresetKey"
+  artifacts:
+    - path: "index.html"
+      issue: "Line 1735: same as G-09-4b"
+  missing:
+    - "Same fix as G-09-4b"
 - gap_id: G-09-6c
   truth: "Visible margin/gap exists between the built-in preset row and the customPresetsContainer div"
   status: failed
   reason: "User reported: no margin between presets and customPresetsContainer divs"
   severity: cosmetic
   test: 6
-  artifacts: []
-  missing: []
+  root_cause: "Same as G-09-5b — #customPresetsContainer has no CSS"
+  artifacts:
+    - path: "index.html"
+      issue: "#customPresetsContainer missing CSS"
+  missing:
+    - "Same fix as G-09-5b"
 - gap_id: G-09-9
   truth: "Clicking the edit icon (✎) on a custom preset button opens the edit dialog (desktop)"
   status: failed
   reason: "User reported: icon is there but it not working on desktop — long-press on mobile DOES work (confirmed test 22)"
   severity: major
   test: 9
-  artifacts: []
-  missing: []
+  root_cause: "Line 1882 sets editIcon.style.pointerEvents='none' to avoid interfering with button clicks, but this also blocks the click listener attached at line 1922. Remove the pointerEvents='none' line — the existing e.stopPropagation() at line 1924 already prevents bubbling to the preset selection handler"
+  artifacts:
+    - path: "index.html"
+      issue: "Line 1882: editIcon.style.pointerEvents = 'none' blocks the click listener at line 1922"
+  missing:
+    - "Remove line 1882 (editIcon.style.pointerEvents = 'none')"
 - gap_id: G-09-10
   truth: "Edit dialog opens pre-filled with preset name, phase checkboxes, durations, and Delete button visible (desktop click)"
   status: failed
   reason: "User reported: nothing happens after clicking edit icon on desktop — dialog never opens via click"
   severity: major
   test: 10
-  artifacts: []
-  missing: []
+  root_cause: "Same as G-09-9 — pointerEvents:none at line 1882 blocks click"
+  artifacts:
+    - path: "index.html"
+      issue: "Line 1882: same as G-09-9"
+  missing:
+    - "Same fix as G-09-9"
 - gap_id: G-09-11
   truth: "Edit dialog opens pre-filled with all saved preset data via desktop click"
   status: failed
   reason: "User reported: edit dialog doesn't appear after clicking edit icon on desktop"
   severity: major
   test: 11
-  artifacts: []
-  missing: []
+  root_cause: "Same as G-09-9"
+  artifacts:
+    - path: "index.html"
+      issue: "Line 1882: same as G-09-9"
+  missing:
+    - "Same fix as G-09-9"
 - gap_id: G-09-12
   truth: "Editing a preset renames its button and updates active phases immediately, persisting after reload"
   status: failed
   reason: "User reported: edit dialog doesn't appear via desktop click — cannot test edit save flow on desktop"
   severity: major
   test: 12
-  artifacts: []
-  missing: []
+  root_cause: "Same as G-09-9 — blocked by pointerEvents:none"
+  artifacts:
+    - path: "index.html"
+      issue: "Line 1882: same as G-09-9"
+  missing:
+    - "Same fix as G-09-9"
 - gap_id: G-09-13
   truth: "Editing the active preset rebuilds phases immediately without needing to reselect"
   status: failed
   reason: "User reported: edit dialog doesn't appear via desktop click — cannot test edit save flow on desktop"
   severity: major
   test: 13
-  artifacts: []
-  missing: []
+  root_cause: "Same as G-09-9 — blocked by pointerEvents:none"
+  artifacts:
+    - path: "index.html"
+      issue: "Line 1882: same as G-09-9"
+  missing:
+    - "Same fix as G-09-9"
 - gap_id: G-09-20a
   truth: "Edit dialog can be opened via the edit icon click on desktop (WR-01 mode detection)"
   status: failed
   reason: "User reported: can only open via + button on desktop — edit icon click does not open dialog; mobile long-press confirmed working (test 22)"
   severity: major
   test: 20
-  artifacts: []
-  missing: []
+  root_cause: "Same as G-09-9 — pointerEvents:none at line 1882 blocks click"
+  artifacts:
+    - path: "index.html"
+      issue: "Line 1882: same as G-09-9"
+  missing:
+    - "Same fix as G-09-9"
 - gap_id: G-09-20b
   truth: "Preset builder dialog is centered on screen (matches settings panel positioning)"
   status: failed
   reason: "User reported: dialog appears in top-left corner instead of centered like the settings dialog"
   severity: cosmetic
   test: 20
-  artifacts: []
-  missing: []
+  root_cause: "#presetBuilderDialog CSS (lines 235-243) has no centering — only margin:24px which doesn't center a <dialog> element"
+  artifacts:
+    - path: "index.html"
+      issue: "Lines 235-243: #presetBuilderDialog missing position:fixed + top/left/transform centering"
+  missing:
+    - "Add to CSS: position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%)"
 - gap_id: G-09-23
   truth: "After deleting a custom preset and falling back to Relax, the Relax button appears highlighted/active in the settings screen"
   status: failed
   reason: "User reported: app falls back to Relax functionally but Relax is not shown as selected in the settings screen"
   severity: major
   test: 23
-  artifacts: []
-  missing: []
+  root_cause: "Cascade of G-09-4a — stale button reference at lines 2964/2987. Built-in Relax button is not recreated by renderCustomPresets(), and the active-class toggle still uses b===btn which fails for the Relax button"
+  artifacts:
+    - path: "index.html"
+      issue: "Lines 2964, 2987: stale button reference affects built-in presets too"
+  missing:
+    - "Same fix as G-09-4a — both occurrences must be changed"
 
 ## Deferred Follow-Ups
 
