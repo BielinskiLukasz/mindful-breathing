@@ -2945,8 +2945,12 @@
       const dates = new Set();
       for (const entry of history) {
         if (entry.date && !entry.incomplete) {
-          const d = new Date(entry.date).toLocaleDateString('en-CA');
-          dates.add(d);
+          const dateObj = new Date(entry.date);
+          // Validate that dateObj is a valid Date
+          if (dateObj instanceof Date && !isNaN(dateObj)) {
+            const d = dateObj.toLocaleDateString('en-CA');
+            dates.add(d);
+          }
         }
       }
 
