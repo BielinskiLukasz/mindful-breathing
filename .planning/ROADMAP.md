@@ -222,7 +222,7 @@ Plans:
 **Goal:** Fix two critical integration gaps identified in v1.1 audit: (1) preset builder dialog cancel event not handled causing keyboard shortcuts to block after Escape, (2) streak display not updated after import operations
 **Requirements**: A11Y-01, HIST-12
 **Depends on:** Phase 10
-**Plans:** 1 plan
+**Plans:** 1/1 plans executed
 
 Plans:
 
