@@ -5,14 +5,14 @@ milestone_name: Landscape Polish, Custom Presets & Streaks
 current_phase: 10
 status: milestone_complete
 stopped_at: Phase 10 streak-tracking complete — all 4 phases done
-last_updated: "2026-08-25T00:00:00Z"
+last_updated: "2026-08-25T21:12:11.901Z"
 last_activity: 2026-08-25
 progress:
-  total_phases: 4
+  total_phases: 5
   completed_phases: 4
   total_plans: 12
   completed_plans: 12
-  percent: 100
+  percent: 80
 current_phase_name: streak-tracking
 last_activity_desc: Phase 10 complete — v1.1 milestone ready for ship
 ---
@@ -77,6 +77,10 @@ None.
 
 ---
 
+### Roadmap Evolution
+
+- Phase 10.1 inserted after Phase 10: Close gap: A11Y-01 — preset builder cancel event + streak badge after import (URGENT)
+
 ## Phase 09 Completion Summary
 
 ### Gap Closure Plans Verified
@@ -109,8 +113,9 @@ Stopped at: Phase 10 streak-tracking complete — UAT passed (6/6), VERIFICATION
 
 **Next Steps:**
 
-1. `/gsd-complete-milestone` — all 4 phases done, v1.1 milestone ready for ship
-2. (Optional) `/gsd-secure-phase 10` — security enforcement is enabled; SECURITY.md not yet created for phase 10
+1. `/gsd-plan-phase 10.1` — urgent gap closure: A11Y-01 preset builder cancel event + streak badge after import
+2. `/gsd-complete-milestone` — after phase 10.1 is done, all phases complete, v1.1 milestone ready for ship
+3. (Optional) `/gsd-secure-phase 10` — security enforcement is enabled; SECURITY.md not yet created for phase 10
 
 ## Performance Metrics
 

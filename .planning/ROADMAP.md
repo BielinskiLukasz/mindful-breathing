@@ -216,3 +216,14 @@ Plans:
 ---
 
 **Last updated:** 2026-08-24 — Phase 9 gap closure plans 04-06 verified complete (3/3 plans, focus trap fix applied)
+
+### Phase 10.1: Close gap: A11Y-01 — preset builder cancel event + streak badge after import (INSERTED)
+
+**Goal:** [Urgent work - to be planned]
+**Requirements**: TBD
+**Depends on:** Phase 10
+**Plans:** 0 plans
+
+Plans:
+
+- [ ] TBD (run /gsd-plan-phase 10.1 to break down)
