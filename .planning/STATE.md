@@ -43,7 +43,13 @@ Phase: 10 (streak-tracking) — EXECUTING
 **Total Phase 09 plans:** 6/6 complete
 
 **Verification status:** 18/18 gap-closure must-haves verified  
-**Last activity:** 2026-08-25 — Phase 10 execution started
+**Last activity:** 2026-08-25 — Completed quick task 260825-uo5: Fix streak button UI + timezone-safe date arithmetic
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260825-uo5 | Fix streak button UI (flame-only) + timezone-safe computeStreak date arithmetic | 2026-08-25 | — | [260825-uo5-fix-streak-button-ui-show-only-flame-emo](.planning/quick/260825-uo5-fix-streak-button-ui-show-only-flame-emo/) |
 
 Progress: [██████████] 100% (Phase 09 complete)
 

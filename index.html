@@ -1326,7 +1326,7 @@
           <circle cx="12" cy="12" r="3"/>
         </svg>
       </button>
-      <button class="iconToggle" id="streakBtn" title="View your streak" aria-label="View your streak"><span id="streakBadge">🔥 0</span></button>
+      <button class="iconToggle" id="streakBtn" title="View your streak" aria-label="View your streak"><span id="streakBadge">🔥</span></button>
       <button class="infoBtn" id="infoBtn" title="Keyboard shortcuts & notes" aria-label="Toggle info panel">
         <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="8" cy="8" r="6.5"/>
@@ -2960,6 +2960,12 @@
       const sortedDates = Array.from(dates).sort().reverse();
       const today = new Date().toLocaleDateString('en-CA');
 
+      // Parse 'YYYY-MM-DD' as local midnight (not UTC) to avoid off-by-one in UTC- timezones
+      function parseLocal(str) {
+        const [y, m, d] = str.split('-').map(Number);
+        return new Date(y, m - 1, d);
+      }
+
       let current = 0;
       let longest = 0;
       let streak = 0;
@@ -2971,7 +2977,7 @@
       for (const date of sortedDates) {
         if (isFirstIteration) {
           // Check if today or yesterday starts the streak
-          const dayDiff = Math.floor((new Date(today) - new Date(date)) / 86400000);
+          const dayDiff = Math.round((parseLocal(today) - parseLocal(date)) / 86400000);
           if (dayDiff <= 1) {
             streak = 1;
             current = 1;
@@ -2983,7 +2989,7 @@
           isFirstIteration = false;
         } else {
           // Check if date is consecutive from previous
-          const prevDate = new Date(checkDate);
+          const prevDate = parseLocal(checkDate);
           prevDate.setDate(prevDate.getDate() - 1);
           const prevDateStr = prevDate.toLocaleDateString('en-CA');
 
@@ -3364,7 +3370,7 @@
         const { current } = computeStreak(history);
         const streakBadgeEl = document.getElementById("streakBadge");
         if (streakBadgeEl) {
-          streakBadgeEl.textContent = `🔥 ${current}`;
+          streakBadgeEl.textContent = "🔥";
         }
         const streakBtn = document.getElementById("streakBtn");
         if (streakBtn) {
