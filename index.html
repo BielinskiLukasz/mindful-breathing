@@ -2057,6 +2057,11 @@
     const presetNameError = document.getElementById("presetNameError");
     const phaseCountError = document.getElementById("phaseCountError");
 
+    presetBuilderDialog.addEventListener("cancel", () => {
+      openPanelElement = null;
+      document.getElementById("newPresetBtn")?.focus();
+    });
+
     const PRESET_PHASE_TYPES = ["Inhale", "Hold", "Exhale", "Hold"];
 
     function initBuilderForm() {
@@ -2501,6 +2506,9 @@
           if (existing.length > maxHistoryEntries) existing.length = maxHistoryEntries;
           localStorage.setItem(HISTORY_KEY, JSON.stringify(existing));
           renderHistory();
+          updateStreakBadge();
+          updateStreakPanel();
+          maybeUpdateLongestStreak();
           sessionStorage.setItem("historyPage", "1");
           let message;
           if (importedCount === 0 && invalidCount === 0 && dupCount > 0) {
@@ -2607,6 +2615,9 @@
           if (existing.length > maxHistoryEntries) existing.length = maxHistoryEntries;
           localStorage.setItem(HISTORY_KEY, JSON.stringify(existing));
           renderHistory();
+          updateStreakBadge();
+          updateStreakPanel();
+          maybeUpdateLongestStreak();
           sessionStorage.setItem("historyPage", "1");
 
           const message = "Imported " + importedCount + " sessions" + (skipCount > 0 ? ", " + skipCount + " skipped" : "");
