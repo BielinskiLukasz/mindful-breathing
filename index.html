@@ -2078,6 +2078,7 @@
     presetBuilderForm.addEventListener("submit", e => {
       e.preventDefault();
       presetNameError.style.display = "none";
+      phaseCountError.style.display = "none";
 
       const name = presetNameInput.value.trim();
       const rows = Array.from(phaseRowsContainer.querySelectorAll(".phaseRow"));
@@ -2251,6 +2252,10 @@
           } else if (customPresets.some(p => p.id === data.preset)) {
             // Custom preset exists - set key, buildActivePhases() will handle it
             activePresetKey = data.preset;
+            // Clear active class from built-in presets when loading a custom preset
+            presetsEl.querySelectorAll(".presetBtn").forEach(b =>
+              b.classList.toggle("active", false)
+            );
           }
           // If preset doesn't exist, activePresetKey stays "relax" (safe fallback)
         }
