@@ -2060,6 +2060,7 @@
 
     presetBuilderForm.addEventListener("submit", e => {
       e.preventDefault();
+      presetNameError.style.display = "none";
 
       const name = presetNameInput.value.trim();
       const rows = Array.from(phaseRowsContainer.querySelectorAll(".phaseRow"));
@@ -2078,7 +2079,7 @@
       if (activePhaseTypes.length < 2) {
         phaseCountError.textContent = "Select at least 2 phases";
         phaseCountError.style.display = "block";
-        setTimeout(() => phaseCountError.style.display = "none", 400);
+        setTimeout(() => phaseCountError.style.display = "none", 3000);
         return;
       }
 
