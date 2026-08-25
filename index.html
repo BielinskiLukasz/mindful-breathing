@@ -2058,6 +2058,11 @@
     const phaseCountError = document.getElementById("phaseCountError");
 
     presetBuilderDialog.addEventListener("cancel", () => {
+      const deleteBtn = document.getElementById("presetDeleteBtn");
+      deleteBtn._deleteConfirmed = false;
+      deleteBtn.textContent = "Delete";
+      deleteBtn.style.background = "";
+      deleteBtn.style.color = "";
       openPanelElement = null;
       document.getElementById("newPresetBtn")?.focus();
     });
