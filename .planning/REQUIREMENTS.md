@@ -68,22 +68,22 @@
 
 ### Streak Tracking
 
-- [ ] **STREAK-01**: User can see their current consecutive-day streak (number of calendar days with at least one completed session)
+- [x] **STREAK-01**: User can see their current consecutive-day streak (number of calendar days with at least one completed session)
   - **Acceptance**: Streak counts calendar days (local timezone); a day with ≥1 non-incomplete session increments the streak; missing a day resets it to 0
 
-- [ ] **STREAK-02**: User can see their longest-ever consecutive-day streak in the streak panel
+- [x] **STREAK-02**: User can see their longest-ever consecutive-day streak in the streak panel
   - **Acceptance**: Longest streak is computed from full session history and displayed alongside the current streak
 
-- [ ] **STREAK-03**: User can see whether they have completed a session today
+- [x] **STREAK-03**: User can see whether they have completed a session today
   - **Acceptance**: Streak panel displays "Done today" (with today's session count) or "Not yet — keep the streak alive" based on today's history
 
-- [ ] **STREAK-04**: User can see their total completed session count in the streak panel
+- [x] **STREAK-04**: User can see their total completed session count in the streak panel
   - **Acceptance**: Count excludes incomplete sessions; updates immediately after each completed session
 
-- [ ] **STREAK-05**: Streak panel opens via a dedicated button that matches the info-panel interaction pattern (button → overlay/panel toggle)
+- [x] **STREAK-05**: Streak panel opens via a dedicated button that matches the info-panel interaction pattern (button → overlay/panel toggle)
   - **Acceptance**: Streak button and panel follow the same open/close, positioning, and dismiss behavior as the info panel button
 
-- [ ] **STREAK-06**: Streak button displays the current streak count as a glanceable badge (e.g. flame icon + "5")
+- [x] **STREAK-06**: Streak button displays the current streak count as a glanceable badge (e.g. flame icon + "5")
   - **Acceptance**: Badge reflects the current streak at page load and updates after each completed session; shows "0" or is visually muted when streak is 0
 
 ---
@@ -129,12 +129,12 @@
 | PRESET-03 | Phase 9 | Complete |
 | PRESET-04 | Phase 9 | Complete |
 | PRESET-05 | Phase 9 | Complete |
-| STREAK-01 | Phase 10 | Pending |
-| STREAK-02 | Phase 10 | Pending |
-| STREAK-03 | Phase 10 | Pending |
-| STREAK-04 | Phase 10 | Pending |
-| STREAK-05 | Phase 10 | Pending |
-| STREAK-06 | Phase 10 | Pending |
+| STREAK-01 | Phase 10 | Complete |
+| STREAK-02 | Phase 10 | Complete |
+| STREAK-03 | Phase 10 | Complete |
+| STREAK-04 | Phase 10 | Complete |
+| STREAK-05 | Phase 10 | Complete |
+| STREAK-06 | Phase 10 | Complete |
 
 **Coverage:** 7/22 v1 requirements complete (32%) — 22/22 requirements mapped to phases
 
