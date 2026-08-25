@@ -189,10 +189,10 @@ Plans:
   3. Streak increments for each consecutive calendar day (local timezone) with at least one non-incomplete session and resets to 0 after any missed day
   4. Streak panel opens and dismisses via the same button-to-overlay interaction pattern as the existing info panel
 
-**Plans**: 1 plan
+**Plans**: 1/1 plans executed
 Plans:
 
-- [ ] 10-01-PLAN.md — Streak foundation: button, panel, computeStreak(), badge update, persistence, and saveHistory() hooks
+- [x] 10-01-PLAN.md — Streak foundation: button, panel, computeStreak(), badge update, persistence, and saveHistory() hooks
 
 **UI hint**: yes
 
@@ -211,7 +211,7 @@ Plans:
 | 7. Landscape Layout & UX Polish | v1.1 | 2/2 | Complete | 2026-07-14 |
 | 8. Accessibility & CSV Import | v1.1 | 3/3 | Complete | 2026-07-29 |
 | 9. Custom Preset Builder | v1.1 | 6/6 | Complete | 2026-08-24 |
-| 10. Streak Tracking | v1.1 | 0/TBD | Not started | - |
+| 10. Streak Tracking | v1.1 | 1/1 | In Progress|  |
 
 ---
 
