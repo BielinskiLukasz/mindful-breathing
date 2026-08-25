@@ -219,11 +219,11 @@ Plans:
 
 ### Phase 10.1: Close gap: A11Y-01 — preset builder cancel event + streak badge after import (INSERTED)
 
-**Goal:** [Urgent work - to be planned]
-**Requirements**: TBD
+**Goal:** Fix two critical integration gaps identified in v1.1 audit: (1) preset builder dialog cancel event not handled causing keyboard shortcuts to block after Escape, (2) streak display not updated after import operations
+**Requirements**: A11Y-01, HIST-12
 **Depends on:** Phase 10
-**Plans:** 0 plans
+**Plans:** 1 plan
 
 Plans:
 
-- [ ] TBD (run /gsd-plan-phase 10.1 to break down)
+- [x] 10.1-01-PLAN.md — Add cancel event listener to preset builder dialog; add streak update calls after CSV/JSON import
