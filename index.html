@@ -972,6 +972,7 @@
     }
 
     .settingsPanel .presets { justify-content: flex-start; margin-bottom: 0; }
+    .settingsPanel #customPresetsContainer { justify-content: flex-start; }
     .settingsPanel .durations { justify-content: flex-start; margin: 0; }
     .settingsPanel .goalRow { justify-content: flex-start; margin-top: 0; }
 
@@ -1812,13 +1813,20 @@
 
     function buildDurationInputs() {
       const durationsSection = document.getElementById("durations");
+      const durationsLabel = durationsSection.previousElementSibling;
 
       // Hide duration inputs if custom preset is active (D-15)
       if (activePresetKey.startsWith("custom-")) {
         durationsSection.style.display = "none";
+        if (durationsLabel && durationsLabel.classList.contains("settingsLabel")) {
+          durationsLabel.style.display = "none";
+        }
         return;
       } else {
         durationsSection.style.display = "";
+        if (durationsLabel && durationsLabel.classList.contains("settingsLabel")) {
+          durationsLabel.style.display = "";
+        }
       }
 
       durationsEl.innerHTML = "";
@@ -1966,7 +1974,7 @@
 
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
-        checkbox.id = `phase-${type}-active`;
+        checkbox.id = `phase-${idx}-active`;
         checkbox.checked = isActive;
 
         const label = document.createElement("label");
@@ -2024,7 +2032,7 @@
 
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
-        checkbox.id = `phase-${type}-active`;
+        checkbox.id = `phase-${idx}-active`;
         checkbox.checked = true; // Default: all phases active
 
         const label = document.createElement("label");
@@ -2144,6 +2152,7 @@
 
       saveCustomPresets();
       renderCustomPresets();
+      document.querySelectorAll(".presetBtn").forEach(b => b.classList.toggle("active", b.dataset.preset === activePresetKey));
       buildDurationInputs();
 
       presetBuilderDialog.close();
@@ -2192,6 +2201,7 @@
 
           saveCustomPresets();
           renderCustomPresets();
+          document.querySelectorAll(".presetBtn").forEach(b => b.classList.toggle("active", b.dataset.preset === activePresetKey));
           buildDurationInputs();
           saveSettings();
         }
