@@ -164,8 +164,12 @@ Plans:
   4. User can delete a custom preset with a confirmation step; if the deleted preset was active, the app falls back to the first built-in preset
   5. Custom presets survive page reload and browser restart (stored under a dedicated localStorage key)
 
-**Plans**: 3/3 plans executed
+**Plans**: 4/6 plans executed
 Plans:
+
+- [x] 09-04-PLAN.md
+- [ ] 09-05-PLAN.md
+- [ ] 09-06-PLAN.md
 
 - [x] 09-01-PLAN.md — CONFIG + Storage Foundation: CUSTOM_PRESETS_KEY constant, loadCustomPresets(), saveCustomPresets()
 - [x] 09-02-PLAN.md — Tracer: Builder dialog form, create/save/select custom preset end-to-end, duration inputs visibility
@@ -202,7 +206,7 @@ Plans:
 | 6. Bug Fixes & Visual Polish | v1.0 | 2/2 | Complete | 2026-07-04 |
 | 7. Landscape Layout & UX Polish | v1.1 | 2/2 | Complete | 2026-07-14 |
 | 8. Accessibility & CSV Import | v1.1 | 3/3 | Complete | 2026-07-29 |
-| 9. Custom Preset Builder | v1.1 | 3/3 | Complete    | 2026-07-31 |
+| 9. Custom Preset Builder | v1.1 | 4/6 | In Progress|  |
 | 10. Streak Tracking | v1.1 | 0/TBD | Not started | - |
 
 ---
