@@ -219,6 +219,14 @@
       }
     }
 
+    #customPresetsContainer {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
     #clearConfirmDialog {
       border: 1px solid var(--accentSoft);
       border-radius: 12px;
@@ -1732,7 +1740,14 @@
 
     function updateModeIndicator() {
       const el = document.getElementById("modeIndicator");
-      if (el) el.textContent = MODE_LABELS[activePresetKey] || activePresetKey;
+      if (el) {
+        if (activePresetKey in MODE_LABELS) {
+          el.textContent = MODE_LABELS[activePresetKey];
+        } else {
+          const custom = customPresets.find(p => p.id === activePresetKey);
+          el.textContent = custom ? custom.name : activePresetKey;
+        }
+      }
     }
 
     function buildActivePhases() {
@@ -2962,7 +2977,7 @@
       reset();
       saveSettings();
 
-      document.querySelectorAll(".presetBtn").forEach(b => b.classList.toggle("active", b === btn));
+      document.querySelectorAll(".presetBtn").forEach(b => b.classList.toggle("active", b.dataset.preset === activePresetKey));
     });
 
     // Custom presets container also handles clicks
@@ -2985,7 +3000,7 @@
         reset();
         saveSettings();
 
-        document.querySelectorAll(".presetBtn").forEach(b => b.classList.toggle("active", b === btn));
+        document.querySelectorAll(".presetBtn").forEach(b => b.classList.toggle("active", b.dataset.preset === activePresetKey));
       });
     }
 
