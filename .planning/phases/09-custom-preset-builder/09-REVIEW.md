@@ -1,166 +1,79 @@
 ---
 phase: 09-custom-preset-builder
-reviewed: 2026-07-31T00:00:00Z
+reviewed: 2026-08-24T12:30:00Z
 depth: standard
 files_reviewed: 1
 files_reviewed_list:
   - index.html
 findings:
-  critical: 2
-  warning: 4
-  info: 2
-  total: 8
+  critical: 1
+  warning: 1
+  info: 1
+  total: 3
 status: issues_found
 ---
 
 # Phase 09: Code Review Report
 
-**Reviewed:** 2026-07-31
+**Reviewed:** 2026-08-24
 **Depth:** standard
 **Files Reviewed:** 1
 **Status:** issues_found
 
 ## Summary
 
-The custom preset builder adds significant functionality but contains critical bugs that cause crashes, data loss, and fragile code patterns. The implementation lacks proper null checking, has initialization order issues, and relies on fragile DOM state detection for control flow.
-
-Key findings:
-1. **Crash when loading custom presets with missing phase types** (CR-01)
-2. **Custom presets not restored after page reload due to initialization order** (CR-02)
-3. **Fragile form mode detection via DOM style property** (WR-01)
-4. **Missing null check on phase lookup creates undefined references** (WR-02)
-
-These issues must be resolved before shipping.
+Reviewed the gap closure changes to the custom preset builder UI for plans 09-04, 09-05, and 09-06. The implementation correctly handles validation message display, dialog centering, and edit icon click prevention. However, a critical bug was identified in preset active state initialization when custom presets are loaded, and a warning-level UX inconsistency exists in error message clearing during form submission.
 
 ---
 
 ## Critical Issues
 
-### CR-01: Undefined Phase Crash in buildActivePhases()
+### CR-01: Active Preset Class Not Cleared When Custom Preset Loads on Init
 
-**File:** `index.html:1747-1758`
+**File:** `index.html:2251-2254`
 
-**Issue:** When loading a custom preset, the code looks up phase types in PRESETS.relax without null checking:
+**Issue:** When a custom preset is loaded from localStorage during page initialization, the built-in preset buttons (especially "Relax") retain their default `active` class from the HTML. The `loadSettings()` function only toggles the active class on built-in preset buttons when a built-in preset is loaded, not when a custom preset is loaded.
 
-```javascript
-const basePhase = PRESETS.relax.find(bp => bp.name === p.type);
-return {
-  name: p.type,
-  durationSec: p.durationSec,
-  breathR: basePhase.breathR,        // CRASH if basePhase undefined
-  theme: basePhase.theme,
-  cue: basePhase.cue,
-  hint: basePhase.hint
-};
-```
+**Evidence:**
+- HTML line 1386: `<button class="presetBtn active" data-preset="relax">Relax</button>` — hardcoded active state
+- Lines 2248-2250: Built-in buttons are toggled only inside the `if (data.preset in PRESETS)` block
+- Lines 2251-2254: Custom preset branch does NOT toggle the built-in buttons:
+  ```javascript
+  } else if (customPresets.some(p => p.id === data.preset)) {
+    activePresetKey = data.preset;
+    // ← No active class toggling here
+  }
+  ```
+- Line 3365: `renderCustomPresets()` is called after `loadSettings()`, which re-renders custom presets and adds active class to the matching button, but never removes the active class from the relax button
 
-If the phase type `p.type` doesn't exist in PRESETS.relax (e.g., "Hold2", which is defined in PRESET_PHASE_TYPES at line 1992 but NOT in PRESETS), `basePhase` will be `undefined`. Accessing `.breathR` on undefined throws `TypeError: Cannot read property 'breathR' of undefined`, crashing the entire app.
-
-**Crash Scenario:**
-1. User creates custom preset with "Hold2" phase selected (line 1992 defines this type)
-2. User selects the custom preset
-3. `buildActivePhases()` searches PRESETS.relax for phase named "Hold2"
-4. Not found (PRESETS.relax only has "Inhale", "Hold", "Exhale", "Hold")
-5. `basePhase` is undefined
-6. Accessing `basePhase.breathR` crashes the app
+**Impact:** Users who have a custom preset as their last active preset will see both the custom preset button AND the Relax button with the `active` class styling when the page loads. This creates visual confusion about which preset is actually active. The active state becomes correct only after the user interacts with a preset button (because the click handlers at lines 2982 and 3005 properly toggle all buttons).
 
 **Fix:**
-
 ```javascript
-const basePhase = PRESETS.relax.find(bp => {
-  // "Hold2" should map to the second "Hold" phase
-  const searchName = p.type === "Hold2" ? "Hold" : p.type;
-  return bp.name === searchName;
-});
-
-if (!basePhase) {
-  // Fallback to first phase in relax preset to gracefully handle mismatches
-  const fallbackPhase = PRESETS.relax[0];
-  return {
-    name: p.type,
-    durationSec: p.durationSec,
-    breathR: fallbackPhase.breathR,
-    theme: fallbackPhase.theme,
-    cue: fallbackPhase.cue,
-    hint: fallbackPhase.hint
-  };
-}
-
-return {
-  name: p.type,
-  durationSec: p.durationSec,
-  breathR: basePhase.breathR,
-  theme: basePhase.theme,
-  cue: basePhase.cue,
-  hint: basePhase.hint
-};
-```
-
----
-
-### CR-02: Custom Preset Selection Lost on Page Reload
-
-**File:** `index.html:2195-2225, 3329-3331`
-
-**Issue:** Custom presets are never restored from localStorage because of initialization order.
-
-The init sequence (lines 3329-3331):
-```javascript
-loadSettings();        // ← Called FIRST
-loadCustomPresets();   // ← Called SECOND
-renderCustomPresets();
-```
-
-In `loadSettings()` (line 2209):
-```javascript
-if (data.preset && data.preset in PRESETS) {
-  activePresetKey = data.preset;  // Only restores built-in presets
-  // ...
+// Lines 2251-2254, add active class toggling for custom presets:
+} else if (customPresets.some(p => p.id === data.preset)) {
+  // Custom preset exists - set key, buildActivePhases() will handle it
+  activePresetKey = data.preset;
+  // Clear active class from built-in presets when loading a custom preset
+  presetsEl.querySelectorAll(".presetBtn").forEach(b =>
+    b.classList.toggle("active", false)
+  );
 }
 ```
 
-When a user saves a custom preset (e.g., `"custom-1624123456"`) and reloads the page:
-
-1. `loadSettings()` runs first, before custom presets are loaded
-2. Line 2209 checks: `"custom-1624123456" in PRESETS` → **false**
-3. The condition fails, so `activePresetKey` remains `"relax"` (initial value at line 1631)
-4. `loadCustomPresets()` runs second, loading the custom preset into memory
-5. But it's too late—`activePresetKey` is already set to "relax"
-6. The custom preset exists in localStorage but is never selected
-
-**Result:** Users lose their custom preset selection across page reloads, appearing as data loss.
-
-**Fix:** Swap initialization order and update logic:
-
-```javascript
-// ====== Init (no cue on load) ======
-loadCustomPresets();   // Load FIRST
-loadSettings();        // Then restore settings (can now check customPresets)
-renderCustomPresets();
-// ... rest
-```
-
-Then update `loadSettings()` to check custom presets:
-
+Alternatively, always toggle built-in buttons to ensure consistency:
 ```javascript
 if (data.preset) {
   if (data.preset in PRESETS) {
-    // Built-in preset
     activePresetKey = data.preset;
-    activePhases = PRESETS[activePresetKey].map(p => ({...p}));
-    const saved = savedDurations[data.preset];
-    if (Array.isArray(saved)) {
-      saved.forEach((sec, i) => {
-        if (i < activePhases.length && Number.isFinite(sec) && sec >= DURATION_RANGE.min && sec <= DURATION_RANGE.max) {
-          activePhases[i] = { ...activePhases[i], durationSec: sec };
-        }
-      });
-    }
+    // ... existing logic ...
   } else if (customPresets.some(p => p.id === data.preset)) {
-    // Custom preset exists - set key, buildActivePhases() will handle it
     activePresetKey = data.preset;
   }
-  // If preset doesn't exist, activePresetKey stays "relax" (safe fallback)
+  // Always update built-in preset buttons (moved outside the if/else)
+  presetsEl.querySelectorAll(".presetBtn").forEach(b =>
+    b.classList.toggle("active", b.dataset.preset === activePresetKey)
+  );
 }
 ```
 
@@ -168,211 +81,81 @@ if (data.preset) {
 
 ## Warnings
 
-### WR-01: Fragile Form Mode Detection via DOM Style
+### WR-01: phaseCountError Not Cleared on Form Submit
 
-**File:** `index.html:2076-2078`
+**File:** `index.html:2078-2080`
 
-**Issue:** Edit vs. create mode is detected by checking if the delete button's inline style is not "none":
+**Issue:** The form submit handler clears `presetNameError` at the start of submission (line 2080), but does not clear `phaseCountError`. The `phaseCountError` message is set to auto-clear after 3000ms (line 2099), but if the user fails validation, quickly fixes the input, and resubmits before 3 seconds have passed, the old error message will still be visible during the new validation attempt.
 
+**Evidence:**
+- Line 2080: Only `presetNameError.style.display = "none"` is cleared on submit
+- Line 2099: `phaseCountError` has a 3-second auto-clear timeout
+- Lines 1953-1954 (openEditDialog): Both errors ARE cleared when opening edit dialog:
+  ```javascript
+  presetNameError.style.display = "none";
+  phaseCountError.style.display = "none";
+  ```
+- Lines 2051-2052 (newPresetBtn): Both errors ARE cleared when opening new preset form
+
+**Impact:** Inconsistent error message handling creates a poor UX. The presetNameError behavior (stays visible until next submit) differs from phaseCountError (auto-clears after 3 sec). If a user encounters a phase count validation error and quickly corrects it, the old error message persists, making the form appear broken or confusing.
+
+**Fix:**
 ```javascript
-const presetDeleteBtn = document.getElementById("presetDeleteBtn");
-const isEditMode = presetDeleteBtn.style.display !== "none";
-```
-
-This is fragile because:
-1. The delete button's display state is an implementation detail that could change
-2. The condition relies on inline styles, which may not reflect the element's actual display state (affected by CSS, parent rules, media queries)
-3. Very difficult to test and maintain
-4. Couples form logic to UI implementation details
-
-**Better approach:** Store mode explicitly when opening the dialog:
-
-```javascript
-function openEditDialog(preset) {
-  presetNameInput.value = preset.name;
-  // ... pre-fill logic ...
-  presetBuilderDialog._isEditMode = true;
-  presetBuilderDialog._editingPresetId = preset.id;
-  presetBuilderDialog.showModal();
-}
-
-newPresetBtn.addEventListener("click", () => {
-  presetNameInput.value = "";
-  // ... init form ...
-  presetBuilderDialog._isEditMode = false;
-  presetBuilderDialog._editingPresetId = null;
-  presetBuilderDialog.showModal();
-});
-
 presetBuilderForm.addEventListener("submit", e => {
   e.preventDefault();
-  // ... validation ...
+  presetNameError.style.display = "none";
+  phaseCountError.style.display = "none";  // Add this line
   
-  if (presetBuilderDialog._isEditMode) {
-    const presetId = presetBuilderDialog._editingPresetId;
-    // ... update logic ...
-  } else {
-    // ... create logic ...
-  }
+  const name = presetNameInput.value.trim();
+  const rows = Array.from(phaseRowsContainer.querySelectorAll(".phaseRow"));
+  const activePhaseTypes = rows.filter(row => row.querySelector("input[type='checkbox']").checked);
+  // ... rest of validation
 });
 ```
-
----
-
-### WR-02: Missing Null Check on basePhase Access
-
-**File:** `index.html:1749-1756`
-
-**Issue:** Related to CR-01. The phase lookup doesn't validate success before accessing properties. This violates the project's error handling principle: "all optional APIs fail silently with try/catch or capability checks. No throw anywhere."
-
-A missing phase type should degrade gracefully, not crash.
-
-The code assumes the phase type will always be found in PRESETS.relax without checking for null/undefined. When the assumption fails, the app crashes instead of falling back to a safe default.
-
-See CR-01 for the complete fix.
-
----
-
-### WR-03: Long-Press Event Handler with Passive Listeners
-
-**File:** `index.html:1880-1903`
-
-**Issue:** The long-press handler registers with `{ passive: true }`, which prevents `preventDefault()` from working, but the code inside the timeout tries to call it:
-
-```javascript
-btn.addEventListener("touchstart", e => {
-  longPressTimer = setTimeout(() => {
-    e.preventDefault();  // Won't work because listener is passive
-    btn.style.transform = "scale(0.97)";
-    openEditDialog(preset);
-  }, 300);
-}, { passive: true });
-```
-
-The `e.preventDefault()` call is ineffective because:
-1. The listener is passive (can't prevent default)
-2. The call happens inside a setTimeout, outside the event handler scope
-
-While the preset edit functionality still works (because openEditDialog doesn't depend on preventDefault), this indicates confused intent and violates the principle of clarity.
-
-**Fix:** Remove ineffective preventDefault and simplify:
-
-```javascript
-let longPressTimer = null;
-btn.addEventListener("touchstart", e => {
-  longPressTimer = setTimeout(() => {
-    openEditDialog(preset);
-  }, 300);
-}, { passive: true });
-
-btn.addEventListener("touchend", () => {
-  if (longPressTimer) {
-    clearTimeout(longPressTimer);
-    longPressTimer = null;
-    btn.style.transform = "";
-  }
-}, { passive: true });
-```
-
----
-
-### WR-04: Phase Type Schema Mismatch Between UI and PRESETS
-
-**File:** `index.html:1992, 1527-1532`
-
-**Issue:** PRESET_PHASE_TYPES (line 1992) defines four phase types:
-
-```javascript
-const PRESET_PHASE_TYPES = ["Inhale", "Hold", "Exhale", "Hold2"];
-```
-
-But PRESETS.relax (lines 1527-1532) only has three unique phase names:
-
-```javascript
-{ name: "Inhale", durationSec: 4, ... },
-{ name: "Hold",   durationSec: 2, ... },
-{ name: "Exhale", durationSec: 8, ... },
-{ name: "Hold",   durationSec: 2, ... }  // Second "Hold", not "Hold2"
-```
-
-The "Hold2" type exists in the UI but not in the template data. Users can select "Hold2" in the form, and it will be stored in custom presets, but when loading, the lookup fails (see CR-01).
-
-**Fix:** Either rename the second Hold phase in PRESETS to "Hold2", or update PRESET_PHASE_TYPES to use the correct name. The cleaner approach is to align PRESET_PHASE_TYPES with actual phase names:
-
-```javascript
-const PRESET_PHASE_TYPES = ["Inhale", "Hold", "Exhale", "Hold"];  // Match PRESETS structure
-```
-
-Then, in the form rendering and phase management, distinguish between the two "Hold" phases by index, not name.
 
 ---
 
 ## Info
 
-### IN-01: Edit Icon Style Overrides CSS Unnecessarily
+### IN-01: Inconsistent Error Message Clearing Strategy
 
-**File:** `index.html:1869-1877`
+**File:** `index.html:2078-2099`
 
-**Issue:** The edit icon is created with inline style properties:
+**Issue:** Two different error clearing strategies are used in the form:
+- `presetNameError`: Set to display:block on validation failure, manually cleared only on next submit
+- `phaseCountError`: Set to display:block on validation failure, automatically cleared after 3000ms timeout
 
-```javascript
-editIcon.style.marginLeft = "4px";
-editIcon.style.opacity = "0";
-editIcon.style.transition = "opacity 80ms ease";
-editIcon.style.pointerEvents = "none";
-```
+This inconsistency could confuse developers maintaining the code and may lead to similar bugs in future error handling. The gap closure plan 09-04 extended the phaseCountError timeout to 3000ms but didn't address whether it should also be cleared at submit start like presetNameError.
 
-CSS already defines some of these (lines 198-206):
+**Suggestion:** Define a consistent error clearing pattern. Either:
+1. All errors auto-clear after a timeout (simpler for users, errors disappear automatically)
+2. All errors stay visible and are manually cleared on next submit (more explicit, requires user to re-engage)
 
-```css
-.editIcon {
-  opacity: 0;
-  transition: opacity 80ms ease;
-  /* marginLeft and pointerEvents not in CSS */
-}
-```
-
-Mixing inline styles with CSS makes maintenance harder and violates DRY. The styles should be consolidated in the stylesheet.
-
-**Fix:** Move all styles to CSS:
-
-```css
-.editIcon {
-  opacity: 0;
-  transition: opacity 80ms ease;
-  font-size: 0.9em;
-  display: inline-block;
-  position: relative;
-  top: 1px;
-  cursor: pointer;
-  margin-left: 4px;
-  pointer-events: none;
-}
-```
-
-Remove inline style assignments from the JavaScript.
+Current approach mixes both, which is harder to predict and maintain.
 
 ---
 
-### IN-02: Button State Properties (_deleteConfirmed, _currentPresetId)
+## Reviewed Areas (Gap Closure Plans)
 
-**File:** `index.html:1974-1975, 2082, 2132`
+**✓ 09-04 (Validation Message UX):** Mostly correct implementation
+- presetNameError is cleared at submit start (line 2080)
+- phaseCountError timeout extended to 3000ms (line 2099)
+- ⚠️ phaseCountError should also be cleared at submit start (see WR-01)
 
-**Issue:** The delete button stores state using private properties on the DOM element:
+**✓ 09-05 (Preset Selection UI):** Correctly implemented
+- Active class toggling via `data-preset` attribute (lines 2889, 2982, 3005)
+- Custom preset name displayed correctly (line 2890)
+- CSS container gap set to 8px (line 224)
+- ⚠️ Initial active state fails when custom preset loads (see CR-01)
 
-```javascript
-deleteBtn._deleteConfirmed = false;
-deleteBtn._currentPresetId = preset.id;
-```
-
-While functional in JavaScript, storing application state on DOM elements is non-standard and makes the code harder to understand. It couples state management to the UI.
-
-This is not a bug (JavaScript allows this), but it's a code smell that indicates the state should be managed separately.
-
-**Better approach:** Use a separate state object or pass the preset ID as an argument to the callback.
+**✓ 09-06 (Edit Icon Click):** Correctly implemented
+- Edit icon click handler uses `e.stopPropagation()` to prevent button selection (line 1941)
+- Dialog positioned with fixed + transform (lines 244-247)
+- No `pointerEvents: none` blocking interactions
+- Click handler prevents default and stops propagation properly (lines 1940-1941)
 
 ---
 
-_Reviewed: 2026-07-31_
+_Reviewed: 2026-08-24_
 _Reviewer: Claude (gsd-code-reviewer)_
 _Depth: standard_
