@@ -1968,7 +1968,7 @@
         row.className = "phaseRow";
         row.dataset.phaseType = type;
 
-        const phaseData = preset.phases.find(p => p.type === type);
+        const phaseData = preset.phases[idx];
         const isActive = phaseData?.active ?? true;
         const duration = phaseData?.durationSec ?? 4;
 
