@@ -49,7 +49,7 @@ Phase: 10 (streak-tracking) — EXECUTING
 
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
-| 260825-uo5 | Fix streak button UI (flame-only) + timezone-safe computeStreak date arithmetic | 2026-08-25 | — | [260825-uo5-fix-streak-button-ui-show-only-flame-emo](.planning/quick/260825-uo5-fix-streak-button-ui-show-only-flame-emo/) |
+| 260825-uo5 | Fix streak button UI (flame-only) + timezone-safe computeStreak date arithmetic | 2026-08-25 | 0fa263a | [260825-uo5-fix-streak-button-ui-show-only-flame-emo](.planning/quick/260825-uo5-fix-streak-button-ui-show-only-flame-emo/) |
 
 Progress: [██████████] 100% (Phase 09 complete)
 
