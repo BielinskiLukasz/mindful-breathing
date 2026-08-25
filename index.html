@@ -2986,10 +2986,9 @@
             streak++;
             current = Math.max(current, streak);
           } else {
-            // Gap found; reset streak count but track longest
+            // Gap found; current streak is broken
             longest = Math.max(longest, streak);
-            streak = 1; // Start new streak from this date
-            current = Math.max(current, 1);
+            break;
           }
         }
         checkDate = date;
