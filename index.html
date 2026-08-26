@@ -2063,7 +2063,7 @@
       deleteBtn.textContent = "Delete";
       deleteBtn.style.background = "";
       deleteBtn.style.color = "";
-      openPanelElement = null;
+      closeSettings();
       document.getElementById("newPresetBtn")?.focus();
     });
 
@@ -2126,7 +2126,7 @@
       deleteBtn.style.background = "";
       deleteBtn.style.color = "";
       presetBuilderDialog.close();
-      openPanelElement = null;
+      closeSettings();
     });
 
     presetBuilderForm.addEventListener("submit", e => {
@@ -2202,7 +2202,7 @@
       buildDurationInputs();
 
       presetBuilderDialog.close();
-      openPanelElement = null;
+      closeSettings();
       saveSettings();
     });
 
@@ -2253,7 +2253,7 @@
         }
 
         presetBuilderDialog.close();
-        openPanelElement = null;
+        closeSettings();
       }
     });
 
