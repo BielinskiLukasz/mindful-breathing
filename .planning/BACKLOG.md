@@ -2,8 +2,8 @@
 
 Ideas and scope items captured outside the active roadmap. Anything here is *not* in v1 — it has either been deferred by explicit decision, surfaced during UAT, or earmarked for a later milestone. Items graduate to a `ROADMAP.md` phase when picked up (`/gsd-review-backlog` to promote, `/gsd-phase add` to materialize).
 
-Last updated: 2026-07-15 (added B-025 through B-032 from requirements triage)
-Last assigned ID: **B-032** — next new item must be **B-033**
+Last updated: 2026-08-26 (added B-033–B-034 from v1.1 milestone audit tech debt)
+Last assigned ID: **B-034** — next new item must be **B-035**
 
 ---
 
@@ -473,6 +473,47 @@ Promoted during 2026-07-10 backlog review. Include in v1.1 milestone planning.
 - Test matrix: VoiceOver + Safari on iPhone SE (smallest supported screen), VoiceOver + Safari on macOS, NVDA + Chrome on Windows.
 - Focus management: after the start countdown, confirm focus is not trapped or lost; after session ends, confirm focus returns to the Start button.
 - Cross-reference B-019 implementation notes — fixes here may be additive patches on top of that work rather than rewrites.
+
+---
+
+---
+
+### B-033 · v1.1 audit documentation cleanup
+
+**Status:** captured · not scheduled
+**Earliest sensible slot:** next available cleanup pass; no code changes required
+
+**What:** Update four stale documentation artifacts left over from the v1.1 milestone audit:
+1. Add `requirements-completed` frontmatter to `07-01-SUMMARY.md` (or `07-02-SUMMARY.md`) listing LAYOUT-02 through UX-02.
+2. Add `requirements-completed` frontmatter to `10-01-SUMMARY.md` listing STREAK-01 through STREAK-06.
+3. Update `REQUIREMENTS.md` checkboxes: mark LAYOUT-02 through UX-02 as `[x]` (currently `[ ]` even though traceability says Complete).
+4. Update `REQUIREMENTS.md` checkboxes and traceability status for A11Y-02 and A11Y-03 from `[ ]` / "Pending" to `[x]` / "Complete".
+
+**Why:** The audit 3-source cross-reference scored 13/22 requirements as "partial" solely due to missing SUMMARY.md frontmatter fields. All 13 are verified satisfied in VERIFICATION.md. Fixing the docs promotes them to fully satisfied and keeps the audit trail accurate for future milestones.
+
+**Implementation notes:**
+- Pure documentation edit — no `index.html` changes.
+- Also update `REQUIREMENTS.md` header line "7/22 v1 requirements complete (32%)" to reflect actual state.
+- Captured from: `.planning/v1.1-MILESTONE-AUDIT.md` tech debt section.
+
+---
+
+### B-034 · Fix preset builder Cancel button focus path
+
+**Status:** captured · not scheduled
+**Earliest sensible slot:** next UX polish pass; small isolated fix
+
+**What:** When the user clicks the Cancel button on the preset builder dialog, focus should return to `newPresetBtn` (consistent with the Escape key path). Currently it lands on `settingsBtn` because the click handler calls `closeSettings()` after `presetBuilderDialog.close()`, which fires the `cancel` event — the event handler focuses `newPresetBtn` but the subsequent `closeSettings()` call in the click handler overwrites that focus with `settingsBtn`.
+
+Fix: remove the `closeSettings()` call from the Cancel button click handler at line ~2129. The `cancel` event (fired by `presetBuilderDialog.close()`) already calls `closeSettings()` and `newPresetBtn.focus()` — the second call is redundant and overrides the intended focus destination.
+
+**Why:** Inconsistent focus return is a minor A11Y-01 violation. Keyboard users pressing Cancel land on an unexpected control; screen reader users hear an unexpected element announced. The Escape path works correctly and should serve as the reference.
+
+**Implementation notes:**
+- Affected file: `index.html`, line ~2129 (Cancel button click handler).
+- Verify with keyboard-only testing: Tab to Cancel button → Enter → confirm focus is on `newPresetBtn` and settings overlay is hidden.
+- No test for Escape path regression needed — that path does not touch the click handler.
+- Captured from: `.planning/v1.1-MILESTONE-AUDIT.md` integration warning (A11Y-01).
 
 ---
 
