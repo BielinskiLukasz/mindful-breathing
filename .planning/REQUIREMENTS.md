@@ -35,7 +35,7 @@
 
 ### Accessibility
 
-- [ ] **A11Y-01**: User can navigate all interactive controls using keyboard only (Tab, Shift+Tab, Enter, Space)
+- [x] **A11Y-01**: User can navigate all interactive controls using keyboard only (Tab, Shift+Tab, Enter, Space)
   - **Acceptance**: All buttons, toggles, preset selectors, and sliders are reachable and activatable via keyboard in a logical order
 
 - [ ] **A11Y-02**: Interactive elements have ARIA labels and semantic HTML attributes for screen reader compatibility
@@ -46,7 +46,7 @@
 
 ### History Data
 
-- [ ] **HIST-12**: User can import session history from a CSV file previously exported from the app
+- [x] **HIST-12**: User can import session history from a CSV file previously exported from the app
   - **Acceptance**: Import accepts the app's own CSV export format; valid rows are merged (dedup by date); invalid rows are skipped with feedback; existing sessions are not overwritten
 
 ### Custom Preset Builder
@@ -120,10 +120,10 @@
 | LAYOUT-06 | Phase 7 | Complete |
 | UX-01 | Phase 7 | Complete |
 | UX-02 | Phase 7 | Complete |
-| A11Y-01 | Phase 8 | Pending |
+| A11Y-01 | Phase 8 | Complete |
 | A11Y-02 | Phase 8 | Pending |
 | A11Y-03 | Phase 8 | Pending |
-| HIST-12 | Phase 8 | Pending |
+| HIST-12 | Phase 8 | Complete |
 | PRESET-01 | Phase 9 | Complete |
 | PRESET-02 | Phase 9 | Complete |
 | PRESET-03 | Phase 9 | Complete |
