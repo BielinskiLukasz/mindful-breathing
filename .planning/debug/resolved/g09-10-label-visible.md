@@ -1,8 +1,8 @@
 ---
-status: awaiting_human_verify
+status: resolved
 trigger: "G-09-10 — 'Phase durations (sec)' section label remains visible when a custom preset is selected (inputs are correctly hidden, but the label is not)"
 created: 2026-08-25T02:00:00Z
-updated: 2026-08-25T02:10:00Z
+updated: 2026-08-27T00:00:00Z
 ---
 
 ## Current Focus
@@ -10,7 +10,7 @@ updated: 2026-08-25T02:10:00Z
 hypothesis: "The buildDurationInputs() function hides the #durations element when a custom preset is active, but does not hide the parent settingsGroup's settingsLabel sibling. The label remains visible as an orphaned heading."
 test: "Read HTML structure and buildDurationInputs() function logic in index.html + applied fix + verified in code"
 expecting: "Function should hide both the durations container AND the label when custom-* preset is selected"
-next_action: "AWAITING USER VERIFICATION - Please test the fix manually or confirm ready to commit"
+next_action: resolved
 
 ## Symptoms
 
@@ -33,5 +33,11 @@ reproduction: 1) Create a custom preset and select it. 2) Open settings panel. 3
 
 root_cause: "buildDurationInputs() function hides the #durations container when a custom preset is active, but fails to hide the preceding settingsLabel sibling. The label 'Phase durations (sec)' remains visible as an orphaned heading."
 fix: "Modified buildDurationInputs() to also hide/show the durationsLabel (previousElementSibling) when toggling custom preset visibility. Added safeguard to check that the previous element is indeed a settingsLabel before applying display:none."
-verification: "Created custom preset, selected it, opened settings panel, confirmed label is now hidden along with inputs"
+fix_commit: "b5fa8f1 fix(09): resolve 5 custom preset bugs from UAT"
+verification: "User verified in browser — with a custom preset active, the label is hidden; switching to a built-in preset (Relax/Box/4-7-8) makes the label reappear."
 files_changed: ["index.html"]
+
+## Blameless Postmortem
+
+why_not_caught: "No gate existed for this class of DOM sibling visibility bug — the label and its controlled container are sibling elements with no shared wrapper, so hiding one does not affect the other. No automated test covered the custom-preset settings-panel visibility path."
+guard: "Manual UAT checklist item G-09-10 caught this; a future automated UI test for settings panel visibility with custom preset active would prevent regression."
