@@ -222,8 +222,9 @@ Plans:
 **Goal:** Fix two critical integration gaps identified in v1.1 audit: (1) preset builder dialog cancel event not handled causing keyboard shortcuts to block after Escape, (2) streak display not updated after import operations
 **Requirements**: A11Y-01, HIST-12
 **Depends on:** Phase 10
-**Plans:** 1/1 plans executed
+**Plans:** 2 plans (1 executed, 1 gap closure)
 
 Plans:
 
 - [x] 10.1-01-PLAN.md — Add cancel event listener to preset builder dialog; add streak update calls after CSV/JSON import
+- [ ] 10.1-02-PLAN.md — Fix stranded settings overlay on all four preset builder close paths (G-10.1-1, G-10.1-5)
