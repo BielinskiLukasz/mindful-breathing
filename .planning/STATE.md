@@ -43,13 +43,14 @@ Phase: 10.1 (close-gap-a11y-01-preset-builder-cancel-event-streak-badge-a) — E
 **Total Phase 09 plans:** 6/6 complete
 
 **Verification status:** 18/18 gap-closure must-haves verified  
-**Last activity:** 2026-08-25 — Phase 10.1 execution started
+**Last activity:** 2026-08-26 — Completed quick task 260826-tih: fix hover transition merge + :active guard
 
 ### Quick Tasks Completed
 
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 260825-uo5 | Fix streak button UI (flame-only) + timezone-safe computeStreak date arithmetic | 2026-08-25 | 0fa263a | [260825-uo5-fix-streak-button-ui-show-only-flame-emo](.planning/quick/260825-uo5-fix-streak-button-ui-show-only-flame-emo/) |
+| 260826-tih | Fix WR-01 + WR-02: merge hover transitions, guard :active from :hover override | 2026-08-26 | 64b1f28 | [260826-tih-fix-two-code-review-warnings-in-index-ht](.planning/quick/260826-tih-fix-two-code-review-warnings-in-index-ht/) |
 
 Progress: [██████████] 100% (Phase 09 complete)
 
