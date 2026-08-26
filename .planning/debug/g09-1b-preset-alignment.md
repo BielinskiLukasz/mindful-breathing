@@ -1,8 +1,8 @@
 ---
-status: verifying
+status: resolved
 trigger: "G-09-1b — customPresetsContainer buttons are centered while built-in preset buttons are left-aligned"
 created: 2026-08-25T02:00:00Z
-updated: 2026-08-25T02:00:00Z
+updated: 2026-08-27T00:00:00Z
 ---
 
 ## Current Focus
