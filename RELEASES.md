@@ -1,5 +1,42 @@
 # Release Notes
 
+## 🟩 **v1.1.0**
+📅 *Release date: 2026‑08‑27*
+🔖 Commit: `db2bb8b`
+👤 Author: @BielinskiLukasz
+
+### **What's Changed**
+- Landscape layout polish, keyboard accessibility, custom breathing presets, and streak tracking
+
+### **Added**
+- **Custom presets** — full preset builder in the settings panel: name, select active phases, set per-phase durations; edit and delete with two-step confirmation
+- **Streak tracking** — flame button opens a streak panel showing current streak and longest streak, calculated from session history; persisted to localStorage
+- **CSV import** — import session history from CSV (complements existing JSON import/export)
+- **Keyboard focus indicators** — visible focus rings on all interactive elements for keyboard navigation
+- **Panel focus management** — Tab and Shift+Tab trap focus inside open panels; keyboard shortcuts are suppressed while a form field has focus
+- **Aria-live announcements** — session start/stop and phase status text announced to screen readers
+- **App loading screen icon** — JPEG icon displayed during PWA splash/load
+
+### **Changed**
+- **Landscape layout** — ring, controls, and history panel restructured with JS-driven orientation sync; uniform hover states across all buttons and icon controls
+- **Streak button** — shows flame emoji only (no text) to keep the icon bar uncluttered
+
+### **Fixed**
+- Breath circle (`#breathCircle`) now scales proportionally with `ringWrap` in all orientations — was fixed-size in landscape
+- Hover transition conflict — `:active` inset shadow no longer overridden by `:hover` on rapid tap; transitions merged into a single rule
+- Custom preset selection persistence on page reload (state was reset to built-in default)
+- Hold/Hold2 phase form data loaded by index — was keyed by name, causing wrong values when both hold phases exist
+- Preset builder escape key handling and delete confirmation state reset on dismiss
+- Streak panel close button and focus management added; UTC date arithmetic corrected to prevent off-by-one streak miscounts
+- Streak badge going stale after JSON import — now refreshes immediately
+- Five UAT-found custom preset bugs resolved post-launch (active class clearing, error display, dialog centering, edit icon click, pointer-events blocking)
+- Three CSS/A11Y tech debt items: hover state regressions on quick-fix branch, `aria-live` missing from status text
+
+### **Full Changelog**
+**Full Changelog**: https://github.com/BielinskiLukasz/mindful-breathing/compare/v1.0.0...v1.1.0
+
+---
+
 ## 🟩 **v1.0.0**  
 📅 *Release date: 2026‑07‑04*  
 🔖 Commit: `7174f86`  
