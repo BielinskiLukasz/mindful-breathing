@@ -1,7 +1,7 @@
 # Requirements: Mindful Breathing v1.1
 
 **Milestone:** v1.1 — Landscape Polish, Custom Presets & Streaks  
-**Status:** Planning  
+**Status:** Complete  
 **Created:** 2026-07-10
 
 ---
@@ -10,27 +10,27 @@
 
 ### Landscape Layout
 
-- [ ] **LAYOUT-02**: User sees fullscreen button positioned below the breathing ring in landscape orientation (not in the top-right corner overlay)
+- [x] **LAYOUT-02**: User sees fullscreen button positioned below the breathing ring in landscape orientation (not in the top-right corner overlay)
   - **Acceptance**: Fullscreen button renders in the left column below the SVG ring in landscape; top-right corner controls are unchanged
 
-- [ ] **LAYOUT-03**: Start and Reset buttons are vertically centered within the right column in landscape orientation
+- [x] **LAYOUT-03**: Start and Reset buttons are vertically centered within the right column in landscape orientation
   - **Acceptance**: Controls row is aligned to the vertical midpoint of the right column, not top-aligned or bottom-aligned
 
-- [ ] **LAYOUT-04**: Session info row (cycle count and elapsed duration) appears below the breathing ring in the left column in landscape orientation
+- [x] **LAYOUT-04**: Session info row (cycle count and elapsed duration) appears below the breathing ring in the left column in landscape orientation
   - **Acceptance**: Info row renders beneath the ring in the left column; right column is unaffected
 
-- [ ] **LAYOUT-05**: The 2-column landscape grid has no overlapping components at any common viewport size (320px–2560px wide)
+- [x] **LAYOUT-05**: The 2-column landscape grid has no overlapping components at any common viewport size (320px–2560px wide)
   - **Acceptance**: No component clips, overflows, or overlaps another at 600px, 768px, 1024px, and 1440px landscape viewports
 
-- [ ] **LAYOUT-06**: Compact landscape layout breakpoint uses viewport height (≤500px) not width as the trigger condition
+- [x] **LAYOUT-06**: Compact landscape layout breakpoint uses viewport height (≤500px) not width as the trigger condition
   - **Acceptance**: `@media (orientation: landscape) and (max-height: 500px)` (or equivalent) activates compact layout; width-based queries do not trigger it
 
 ### UX Polish
 
-- [ ] **UX-01**: Interactive controls (buttons, toggles) display a visually distinct hover state on pointer devices
+- [x] **UX-01**: Interactive controls (buttons, toggles) display a visually distinct hover state on pointer devices
   - **Acceptance**: All clickable controls show a hover style change (background, border, brightness, or scale) on `pointer: fine` devices; touch devices are unaffected
 
-- [ ] **UX-02**: Countdown timer digits animate with a smooth transition between number changes
+- [x] **UX-02**: Countdown timer digits animate with a smooth transition between number changes
   - **Acceptance**: Each digit change during the 3-second countdown has a visible transition (fade, slide, or scale); no abrupt jump
 
 ### Accessibility
@@ -38,10 +38,10 @@
 - [x] **A11Y-01**: User can navigate all interactive controls using keyboard only (Tab, Shift+Tab, Enter, Space)
   - **Acceptance**: All buttons, toggles, preset selectors, and sliders are reachable and activatable via keyboard in a logical order
 
-- [ ] **A11Y-02**: Interactive elements have ARIA labels and semantic HTML attributes for screen reader compatibility
+- [x] **A11Y-02**: Interactive elements have ARIA labels and semantic HTML attributes for screen reader compatibility
   - **Acceptance**: Buttons have `aria-label` or visible text; dynamic state changes (running/stopped, phase name) are announced via `aria-live` or equivalent
 
-- [ ] **A11Y-03**: All interactive elements display a visible focus indicator when focused via keyboard
+- [x] **A11Y-03**: All interactive elements display a visible focus indicator when focused via keyboard
   - **Acceptance**: `:focus-visible` outline is present and meets minimum 3:1 contrast against adjacent background on all interactive elements
 
 ### History Data
@@ -83,8 +83,8 @@
 - [x] **STREAK-05**: Streak panel opens via a dedicated button that matches the info-panel interaction pattern (button → overlay/panel toggle)
   - **Acceptance**: Streak button and panel follow the same open/close, positioning, and dismiss behavior as the info panel button
 
-- [x] **STREAK-06**: Streak button displays the current streak count as a glanceable badge (e.g. flame icon + "5")
-  - **Acceptance**: Badge reflects the current streak at page load and updates after each completed session; shows "0" or is visually muted when streak is 0
+- [x] **STREAK-06**: Streak button displays a glanceable badge indicating whether a streak is active
+  - **Acceptance**: Badge shows 🔥 emoji with full opacity when streak ≥ 1, muted opacity (0.45) when streak is 0; updates at page load and after each completed session. Full streak count visible in streak panel. *(Design updated via Quick Task 260825-uo5: flame-only — button 34×34px too narrow for "🔥 N" text)*
 
 ---
 
@@ -121,8 +121,8 @@
 | UX-01 | Phase 7 | Complete |
 | UX-02 | Phase 7 | Complete |
 | A11Y-01 | Phase 8 | Complete |
-| A11Y-02 | Phase 8 | Pending |
-| A11Y-03 | Phase 8 | Pending |
+| A11Y-02 | Phase 8 | Complete |
+| A11Y-03 | Phase 8 | Complete |
 | HIST-12 | Phase 8 | Complete |
 | PRESET-01 | Phase 9 | Complete |
 | PRESET-02 | Phase 9 | Complete |
@@ -136,9 +136,9 @@
 | STREAK-05 | Phase 10 | Complete |
 | STREAK-06 | Phase 10 | Complete |
 
-**Coverage:** 7/22 v1 requirements complete (32%) — 22/22 requirements mapped to phases
+**Coverage:** 22/22 v1 requirements complete (100%)
 
 ---
 
 *Created: 2026-07-10 — v1.1 milestone planning*  
-*Traceability updated: 2026-07-10 — roadmap finalized*
+*Traceability updated: 2026-08-27 — milestone audit complete; all requirements satisfied*
