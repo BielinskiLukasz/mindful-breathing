@@ -26,11 +26,11 @@ current_phase: 10.1
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-07-04)
+See: .planning/PROJECT.md (updated 2026-08-27)
 
 **Core value:** Reliable, uninterrupted breathing guidance with verifiable history  
-**Current focus:** Phase 10.1 — Close gap: A11Y-01 — preset builder cancel event + streak badge after import
-**Stack:** Vanilla JS, single-file HTML, localStorage persistence, no dependencies
+**Current focus:** Awaiting v1.2 — start with `/gsd-new-milestone`
+**Stack:** Vanilla JS, single-file HTML (~3,641 lines), localStorage persistence, no dependencies
 
 ---
 

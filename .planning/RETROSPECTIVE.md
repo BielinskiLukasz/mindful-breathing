@@ -99,6 +99,58 @@
 
 ---
 
+## Milestone: v1.1 — Landscape Polish, Custom Presets & Streaks
+
+**Shipped:** 2026-08-27  
+**Phases:** 5 (7–10.1) | **Plans:** 14 | **Sessions:** ~20 | **Commits:** 174 | **Duration:** 54 days
+
+### What Was Built
+
+- 2-column landscape grid: fullscreen button below ring; session info in left column; controls at 50% column height; height-based compact breakpoint (LAYOUT-02–06)
+- Full keyboard accessibility: :focus-visible indicators, logical tab order, ARIA labels, aria-live screen reader announcements (A11Y-01–03)
+- CSV session history import alongside existing JSON import; focus trap and keyboard-shortcut-guard pattern shared across all 4 panel types (HIST-12)
+- Custom preset builder: create, name, edit, delete custom presets; persist in localStorage; appear in selector alongside built-ins (PRESET-01–05)
+- Daily streak tracking: flame badge in corner controls; streak panel with current/longest/today status/total tiles; two-tier longest-streak persistence across history rotation (STREAK-01–06)
+
+### What Worked
+
+- Phase 9 gap-closure workflow (09-04, 09-05, 09-06) systematically resolved 23 cross-phase integration gaps — having an enumerated gap list made execution straightforward rather than exploratory
+- `toLocaleDateString('en-CA')` for streak dates solved UTC boundary mismatch cleanly; the locale returns YYYY-MM-DD in the user's local timezone without any date library
+- Two-tier longest streak (compute from capped history + persist high-water mark separately) correctly handles the history rotation problem — elegant split of concerns
+- streakOverlay reusing `.infoOverlay/.infoPanel` CSS required zero new CSS and got focus-trap + ARIA for free
+- Phase 10.1 inserted urgently as a gap-closure phase after Phase 10 UAT — the GSD workflow's phase-insert pattern handled the unplanned work cleanly without disrupting the plan history
+- Milestone audit (`/gsd-audit-milestone`) before close caught open debug sessions and unarchived quick tasks — clean-up was targeted rather than a sweep
+
+### What Was Inefficient
+
+- Two debug sessions (g09-5, g09-21) had their fixes already in code but session `.md` files still showed non-resolved statuses — required audit to surface the mismatch; sessions should be closed immediately when the fix is committed
+- Two v0.6 quick tasks (light-mode-panels-ring, light-theme-css-fix) remained unarchived as "incomplete" in the audit; they were `status: done` in SUMMARY.md but the scanner sees unarchived = incomplete regardless of status field; required `audit-open acknowledge` to clear
+- Phases 7+8 VERIFICATION.md used pre-v1.1 schema (`status: complete`/`verified` vs `passed`) — init.manager misreported them as unverified; caused an override_closeout that wasn't warranted by actual gaps; schema migration on pre-existing VERIFICATIONs would have prevented this
+- 54 days for the milestone suggests scope growth mid-stream: Phase 9 (custom presets) grew to 6 plans with gap-closure passes; Phase 10.1 was entirely unplanned. Better scoping of custom presets upfront would have compressed the timeline.
+
+### Patterns Established
+
+- **Debug session lifecycle:** Close (`status: resolved`) the session the moment the fix is committed — not at UAT, not at milestone close. If the bug is verified in code, the session is resolved.
+- **Quick task archive status:** `status: done` in SUMMARY.md does NOT clear the artifact scanner — it reads "unarchived" for all dirs in `.planning/quick/`. Either pass `--archive-quick` to `milestone.complete` or use `audit-open acknowledge` for done-but-unarchived tasks.
+- **Streak date locale pattern:** `new Date().toLocaleDateString('en-CA')` returns `YYYY-MM-DD` in user's local timezone — use this for any daily-boundary comparison in localStorage.
+- **Two-tier stat persistence:** When a stat uses capped/rolling storage, persist the high-water mark separately (e.g., `mb_longest_streak`) so history rotation doesn't erase the all-time record.
+- **Gap-closure phase insert:** When Phase N UAT reveals integration gaps, insert Phase N.1 as a gap-closure phase. The GSD workflow tracks it cleanly as a sub-phase rather than polluting Phase N with scope growth.
+
+### Key Lessons
+
+1. **Close debug sessions when the fix lands, not at milestone close** — two sessions spent the entire milestone in limbo with `status: awaiting_human_verify` after their bugs were fixed in code. If the fix is in and verified by grep/read, update `status: resolved` in the frontmatter immediately.
+2. **`status: done` in quick task SUMMARY.md ≠ cleared from artifact scanner** — the scanner flags all unarchived `.planning/quick/` dirs regardless of content. Done quick tasks accumulate silently; they surface only at the next audit. Either archive them at completion (via milestone.complete `--archive-quick`) or acknowledge at close.
+3. **VERIFICATION.md schema evolves — old phases need migration** — Phases 7+8 used an older schema (`status: complete`) that init.manager didn't recognize, causing false unverified reports. When the schema changes, update existing VERIFICATION.md files or add a fallback in the checker; stale schemas create misleading closeout friction.
+4. **Phase 9 scope grew 3x in gap closure** — the original 3 plans grew to 6 when UAT surfaced 23 integration gaps. For complex feature phases (multi-state UI like the preset builder), plan an explicit integration/gap-closure plan as Plan N upfront rather than treating gap closure as a surprise.
+
+### Cost Observations
+
+- Model mix: Sonnet 4.6 (all sessions)
+- Sessions: ~20 across 54 days (including Phase 9 extended gap closure)
+- Notable: Phase 9 is the most complex phase in the project's history — 6 plans, 23 gaps closed, multi-state dialog UI. Streak tracking (Phase 10 + 10.1) delivered STREAK-01–06 in 3 plans total, demonstrating that well-bounded features with clear edge cases execute efficiently.
+
+---
+
 ## Cross-Milestone Trends
 
 ### Process Evolution
@@ -109,6 +161,7 @@
 | v0.5 | 1 | 8 | Bug-heavy milestone; introduced DURATION_RANGE and micro-interaction patterns |
 | v0.6 | 2 | 3 | Fastest execution; introduced CSS Grid pattern and native dialog pattern |
 | v1.0 | 1 | 2 | Smallest milestone; first verified_closeout with blocking UAT gate |
+| v1.1 | 5 | 14 | Largest milestone; complex custom preset builder; streak tracking; gap-closure phase pattern |
 
 ### Cumulative Quality
 
@@ -118,6 +171,7 @@
 | v0.5 | override_closeout | 1 (vibration) | 0 |
 | v0.6 | override_closeout | 15 manual items | 3 (startup, icon, history) |
 | v1.0 | verified_closeout | 0 | 0 |
+| v1.1 | override_closeout | 2 acknowledged quick tasks (done, unarchived) | 0 |
 
 ### Top Lessons (Verified Across Milestones)
 
@@ -125,3 +179,5 @@
 2. **Well-scoped requirements produce fast execution** — v0.5 averaged ~8 plans; v0.6 averaged 1.5; v1.0 averaged 1 plan per 2 requirements. Fewer, more focused plans win.
 3. **Reusing existing patterns beats inventing new ones** — `#storageWarning` flash reused for import feedback, `<dialog>` native behavior reused for clear confirmation. Zero new surface area.
 4. **Human UAT as a blocking gate eliminates deferred debt** — v0.6 carried 15 unchecked items into milestone close; v1.0 ran 5 targeted tests before close and had zero debt.
+5. **Close debug sessions when the fix commits, not at milestone close** — v1.1 had 2 sessions linger for the entire milestone after their bugs were fixed; the milestone audit had to surface them. Session resolution is a commit-time action.
+6. **`status: done` in a quick task SUMMARY.md does not clear the artifact scanner** — done ≠ archived. Unarchived quick tasks accumulate and surface at close; archive them at completion or acknowledge at close.
