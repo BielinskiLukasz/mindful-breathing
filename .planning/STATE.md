@@ -6,7 +6,7 @@ current_phase: 10.1
 status: milestone_complete
 stopped_at: Phase 10.1 complete — all phases complete
 last_updated: "2026-08-26T20:05:04.449Z"
-last_activity: 2026-08-26
+last_activity: 2026-08-27
 state_head: c33a6e4b3dade77e2ada1d3127fc4e9e01239465
 progress:
   total_phases: 5
@@ -50,6 +50,7 @@ Phase: 10.1
 |---|-------------|------|--------|-----------|
 | 260825-uo5 | Fix streak button UI (flame-only) + timezone-safe computeStreak date arithmetic | 2026-08-25 | 0fa263a | [260825-uo5-fix-streak-button-ui-show-only-flame-emo](.planning/quick/260825-uo5-fix-streak-button-ui-show-only-flame-emo/) |
 | 260826-tih | Fix WR-01 + WR-02: merge hover transitions, guard :active from :hover override | 2026-08-26 | 64b1f28 | [260826-tih-fix-two-code-review-warnings-in-index-ht](.planning/quick/260826-tih-fix-two-code-review-warnings-in-index-ht/) |
+| 260827-hit | Fix three CSS/A11Y tech debt items: WR-01, WR-02, Phase 08 statusText aria-live | 2026-08-27 | 8737732 | [260827-hit-fix-three-css-a11y-tech-debt-items-wr-01](.planning/quick/260827-hit-fix-three-css-a11y-tech-debt-items-wr-01/) |
 
 Progress: [██████████] 100% (Phase 09 complete)
 
