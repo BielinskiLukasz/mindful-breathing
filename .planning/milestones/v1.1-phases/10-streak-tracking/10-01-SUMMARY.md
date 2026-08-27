@@ -173,7 +173,7 @@ All Phase 10 streak requirements addressed and working end-to-end:
 | **STREAK-03** | ✅ | Today status reads "Done today", "Not yet — keep the streak alive", or "No sessions yet" based on context |
 | **STREAK-04** | ✅ | Total sessions count excludes incomplete, updates immediately after session complete |
 | **STREAK-05** | ✅ | Streak panel follows info-panel pattern: button → overlay toggle with Escape dismiss and focus return |
-| **STREAK-06** | ✅ | Badge shows flame + number, opacity 0.45 when 0, full when ≥ 1; updates on page load and session complete |
+| **STREAK-06** | ✅ | Badge shows flame-only (no number) — number is visible in the panel; opacity 0.45 when streak is 0, full when ≥ 1; updates on page load and session complete |
 
 ## Next Steps
 

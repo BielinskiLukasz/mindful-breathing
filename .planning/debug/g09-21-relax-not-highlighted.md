@@ -1,8 +1,8 @@
 ---
-status: awaiting_human_verify
+status: resolved
 trigger: "G-09-21 — After deleting the active custom preset, the app falls back to Relax but the Relax button is not visually highlighted/selected in the settings panel"
 created: 2026-08-25T02:00:00Z
-updated: 2026-08-25T02:00:00Z
+updated: 2026-08-27T10:00:00Z
 ---
 
 ## Current Focus

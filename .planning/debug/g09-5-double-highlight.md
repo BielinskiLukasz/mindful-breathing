@@ -1,8 +1,8 @@
 ---
-status: verifying
+status: resolved
 trigger: "G-09-5 — After saving a new custom preset, both the previously-selected built-in preset and the new custom preset show the active highlight simultaneously"
 created: 2026-08-25T02:00:00Z
-updated: 2026-08-25T02:06:00Z
+updated: 2026-08-27T10:00:00Z
 ---
 
 ## Current Focus

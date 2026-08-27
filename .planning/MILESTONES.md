@@ -1,5 +1,24 @@
 # Milestones — Mindful Breathing
 
+## v1.1 Landscape Polish, Custom Presets & Streaks (Shipped: 2026-08-27)
+
+**Phases completed:** 5 phases, 14 plans, 25 tasks  
+**Timeline:** 2026-07-04 → 2026-08-27 (54 days, 174 commits)  
+**Codebase:** ~3,641 lines (single index.html)  
+**Closeout type:** override_closeout  
+**Known verification overrides:** 2 newly acknowledged, 0 carried forward from a prior close (see STATE.md Deferred Items)  
+**Override reason:** Phases 7+8 use pre-v1.1 VERIFICATION.md schema (`status: complete`/`verified` vs `passed`); all 5 phases confirmed verified in milestone audit (22/22 requirements, 47/47 integration links). Two v0.6 quick tasks acknowledged as already-done unarchived tasks.
+
+**Key accomplishments:**
+
+- Overlap-free 2-column landscape grid with fullscreen button below ring, session info in left column, controls at 50% column height
+- Full keyboard accessibility: :focus-visible indicators, logical tab order, ARIA labels, aria-live screen reader announcements
+- CSV session history import with merge/dedup; focus trap and keyboard-shortcut-guard shared by all 4 panel types
+- Custom preset builder: create, name, edit, delete; persist in localStorage; appear in selector alongside built-ins
+- Daily streak tracking with flame badge, streak panel (current/longest/today status/total), and localStorage-persisted longest streak
+
+---
+
 Historical record of shipped versions.
 
 ---

@@ -2,6 +2,10 @@
 quick_id: 20260630-light-theme-css-fix
 date: 2026-06-30
 status: done
+audit_acknowledged:
+  milestone: v1.1
+  at: 2026-08-27
+  status: done
 ---
 
 # Summary

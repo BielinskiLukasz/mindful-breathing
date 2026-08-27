@@ -1,25 +1,13 @@
-# Mindful Breathing v1.0 — Shipped
+# Mindful Breathing v1.1 — Shipped
 
 ## Current State
 
-**Shipped:** v1.0 — Bug Fixes & Visual Polish (2026-07-04)  
-**Current milestone:** v1.1 — Landscape Polish, Custom Presets & Streaks (All 4 phases complete — milestone ready for ship)
-
-## Current Milestone: v1.1 — Landscape Polish, Custom Presets & Streaks
-
-**Goal:** Finish the landscape layout, add a custom preset builder, and introduce streak tracking for daily habit formation.
-
-**Target features:**
-- Landscape layout: fullscreen button repositioned, controls vertically centered, session info below ring, grid overlaps eliminated, height-based breakpoint logic
-- Micro-interactions: button hover states, countdown timing animations
-- Accessibility: keyboard focus states, logical tab navigation, ARIA labels
-- History data: CSV import from exported files
-- Custom preset builder: user can create, name, edit, and delete custom presets with arbitrary phases and durations
-- Streak tracking: current daily streak and longest-ever streak computed from session history
+**Shipped:** v1.1 — Landscape Polish, Custom Presets & Streaks (2026-08-27)  
+**Next:** v1.2 — TBD (start with `/gsd-new-milestone`)
 
 ## What This Is
 
-A minimalist guided breathing app that helps users practice controlled breathing exercises with visual feedback, audio cues, and session history tracking. The app features a personalized light/dark theme, responsive design optimized for mobile-to-4K displays, polished micro-interactions (ring flash, button feedback, gesture hint, error flash), and session history with export/import and incomplete-session tracking. The app runs offline with no dependencies, delivering distraction-free breathing sessions on any modern browser.
+A minimalist guided breathing app that helps users practice controlled breathing exercises with visual feedback, audio cues, and session history tracking. Features personalized light/dark theming, responsive design from mobile to 4K, custom breathing preset builder, daily streak tracking, full keyboard and screen reader accessibility, polished micro-interactions, and session history with export/import. Runs offline with no dependencies on any modern browser.
 
 ## Core Value
 
@@ -61,53 +49,61 @@ Reliable, uninterrupted breathing guidance with verifiable history — users nee
 - ✓ **LAYOUT-01**: Compact landscape layout uses height-based detection for tall phones — v1.0
 - ✓ **VISUAL-01**: Background color transitions smoothly (220ms) when phase changes — v1.0
 - ✓ **TRACK-01**: User can view incomplete sessions in history with cycle count and elapsed time — v1.0
-- ✓ **INFO-01**: App version number (v1.0) displayed in info panel footer — v1.0
+- ✓ **INFO-01**: App version number displayed in info panel footer — v1.0
+- ✓ **LAYOUT-02**: Fullscreen button below ring in left column in landscape — v1.1
+- ✓ **LAYOUT-03**: Start/Reset buttons vertically centered in right column in landscape — v1.1
+- ✓ **LAYOUT-04**: Session info row (cycle count, elapsed) below ring in left column in landscape — v1.1
+- ✓ **LAYOUT-05**: No overlapping grid components at any common viewport size — v1.1
+- ✓ **LAYOUT-06**: Compact landscape breakpoint uses viewport height (≤500px) not width — v1.1
+- ✓ **UX-01**: Interactive controls display a visually distinct hover state on pointer devices — v1.1
+- ✓ **UX-02**: Countdown timer digits animate with smooth transition between number changes — v1.1
+- ✓ **A11Y-01**: Full keyboard navigation — all controls reachable via Tab/Enter/Space — v1.1
+- ✓ **A11Y-02**: ARIA labels and screen reader announcements for dynamic state changes — v1.1
+- ✓ **A11Y-03**: Visible :focus-visible indicators meeting 3:1 contrast on all interactive elements — v1.1
+- ✓ **HIST-12**: CSV session history import with merge/dedup and invalid-row feedback — v1.1
+- ✓ **PRESET-01**: User can create a custom preset with a name and 2–4 standard phases — v1.1
+- ✓ **PRESET-02**: Custom presets appear in selector alongside built-in presets — v1.1
+- ✓ **PRESET-03**: User can edit existing custom preset name, phases, and durations — v1.1
+- ✓ **PRESET-04**: User can delete a custom preset with confirmation; fallback to Relax — v1.1
+- ✓ **PRESET-05**: Custom presets persist in localStorage across browser sessions — v1.1
+- ✓ **STREAK-01**: Current consecutive-day streak visible via flame badge in corner controls — v1.1
+- ✓ **STREAK-02**: Longest-ever streak persists across reloads even as history ages off — v1.1
+- ✓ **STREAK-03**: Today status shows "Done today" or "Not yet" based on session history — v1.1
+- ✓ **STREAK-04**: Total sessions count excludes incomplete sessions; updates after each session — v1.1
+- ✓ **STREAK-05**: Streak panel opens/closes with same overlay pattern as info/settings panels — v1.1
+- ✓ **STREAK-06**: Streak badge: full opacity when streak ≥ 1, dimmed (0.45) when 0; count in panel — v1.1
 
 ### Active
 
-None — all v1.1 requirements validated.
-
-### Previously Active (now validated)
-
-- ✓ **PRESET-01**: User can create a custom preset with a name and 2–4 named phases — Validated in Phase 9: custom-preset-builder
-- ✓ **PRESET-02**: User can select a custom preset and start a breathing session — Validated in Phase 9: custom-preset-builder
-- ✓ **PRESET-03**: Custom presets persist across browser sessions (localStorage) — Validated in Phase 9: custom-preset-builder
-- ✓ **PRESET-04**: User can edit existing custom presets — Validated in Phase 9: custom-preset-builder
-- ✓ **PRESET-05**: User can delete a custom preset with confirmation, with fallback to Relax — Validated in Phase 9: custom-preset-builder
-- ✓ **STREAK-01**: User sees current daily streak on a flame button in the corner controls — Validated in Phase 10: streak-tracking
-- ✓ **STREAK-02**: Longest-ever streak persists across reloads even as history ages off — Validated in Phase 10: streak-tracking
-- ✓ **STREAK-03**: Today status tile shows contextual text based on session state — Validated in Phase 10: streak-tracking
-- ✓ **STREAK-04**: Total sessions count excludes incomplete sessions, updates after each session — Validated in Phase 10: streak-tracking
-- ✓ **STREAK-05**: Streak panel opens/closes with overlay, Escape key, and close button; focus managed correctly — Validated in Phase 10: streak-tracking
-- ✓ **STREAK-06**: Streak badge dims at opacity 0.45 when streak is 0, full opacity when ≥ 1 — Validated in Phase 10: streak-tracking
+None — awaiting v1.2 requirements.
 
 ### Out of Scope
 
 - Real-time sync to cloud — localStorage only
-- Mobile native app — web-first
-- Advanced analytics — simple session count and duration
+- Mobile native app — web-first approach
+- Advanced analytics — session count and duration covers the use case
 - Multiple user accounts — single-user per browser
-- Vibration API on Android — hidden as known limitation; Samsung/Android OS restriction; code retained for future re-enable
-- CSV import — RFC 4180 edge cases; JSON import covers use case safely (deferred to v1.1+)
-- Full accessibility (keyboard nav, ARIA, focus indicators) — deferred to v1.1+
+- Vibration API on Android — Samsung/Android OS blocks it; toggle hidden; code retained for future re-enable
+- Calendar heatmap for streak history — complexity not justified for v1.1; backlog item
+- Custom phase labels (arbitrary text) — fixed Inhale/Hold/Exhale/Hold2 covers all standard techniques
 
 ## Context
 
-**v1.0 shipped 2026-07-04.**
+**v1.1 shipped 2026-08-27.**
 
-Codebase: single `index.html` file (~2,500 lines) with clear internal sections. No build step, no dependencies, no transpilation. Deployed via GitHub Pages.
+Codebase: single `index.html` file (~3,641 lines) with clear labeled sections. No build step, no dependencies, no transpilation. Deployed via GitHub Pages.
 
-**v1.0 Changes:**
-- `transition: background 220ms ease` on body — CSS custom property `--bg` changes now animate (VISUAL-01)
-- `height: auto; min-height: 100vh` in compact landscape body — controls visible on tall phones without horizontal scroll (LAYOUT-01)
-- `APP_VERSION = "1.0"` constant injected into info panel footer as `v1.0` (INFO-01)
-- Incomplete session tracking: Pause saves `{incomplete: true}` when ≥1 full cycle completed; rendered at opacity 0.6 with italic "Incomplete" suffix (TRACK-01)
-- Stop button renamed to Pause — reflects actual behavior
+**v1.1 Changes (54 days, 174 commits, Phases 7–10.1):**
+- Landscape layout: 2-column grid with fullscreen below ring, session info in left column, controls at 50% column height; height-based compact breakpoint (LAYOUT-02–06)
+- UX: button hover states on pointer devices; countdown digit animation (UX-01, UX-02)
+- Full keyboard accessibility: :focus-visible indicators, logical tab order, ARIA labels, aria-live state announcements (A11Y-01–03)
+- CSV session history import alongside existing JSON import (HIST-12)
+- Custom preset builder: create/edit/delete custom presets; persist in localStorage; appear in selector alongside built-ins (PRESET-01–05)
+- Streak tracking: flame badge in corner controls, streak panel with 4 stats tiles, streak persists across history rotation (STREAK-01–06)
 
 **Known Limitations:**
 - Vibration API on Android: Samsung/Android OS blocks the API; toggle hidden (`display:none`); code retained
-- CSV import: deferred to v1.1 (RFC 4180 edge cases)
-- Accessibility: keyboard + screen reader support deferred to v1.1+
+- Full WCAG AAA compliance: AA is the target; AAA deferred
 
 ## Constraints
 
@@ -168,16 +164,7 @@ Codebase: single `index.html` file (~2,500 lines) with clear internal sections. 
 
 **v1.0 (Shipped 2026-07-04)** — see `.planning/milestones/v1.0-ROADMAP.md`
 
-**Phase 6: Bug Fixes & Visual Polish** ✓ Complete — `.planning/phases/06/`
-
-**v1.1 Phases (In Progress — all 4 complete, milestone ready for ship):**
-
-| Phase | Name | Status |
-|-------|------|--------|
-| 7 | landscape-polish | ✓ Complete |
-| 8 | micro-interactions-accessibility | ✓ Complete |
-| 9 | custom-preset-builder | ✓ Complete |
-| 10 | streak-tracking | ✓ Complete |
+**v1.1 (Shipped 2026-08-27)** — see `.planning/milestones/v1.1-ROADMAP.md`
 
 ## Evolution
 
@@ -197,4 +184,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-08-25 after v1.1 Phase 10 (streak-tracking) — all v1.1 phases complete, milestone ready for ship*
+*Last updated: 2026-08-27 after v1.1 milestone*
