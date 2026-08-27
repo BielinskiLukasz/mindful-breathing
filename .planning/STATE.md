@@ -1,106 +1,70 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: "### 📋 v1.0 — Bug Fixes & Visual Polish"
-current_phase: 06
-current_phase_name: COMPLETE
-status: complete
-stopped_at: Phase 6 verification complete — all 4 requirements implemented and verified
-last_updated: "2026-07-04T00:00:00.000Z"
-last_activity: 2026-07-04
-last_activity_desc: Phase 6 verified — VISUAL-01, LAYOUT-01, TRACK-01, INFO-01 all PASS; human UAT items documented
+milestone: v1.1
+milestone_name: Landscape Polish, Custom Presets & Streaks (in progress — Phases 7–10)
+status: Awaiting next milestone
+stopped_at: Phase 10.1 complete — all phases complete
+last_updated: "2026-08-27T12:45:50.777Z"
+last_activity: 2026-08-27
+last_activity_desc: Milestone v1.1 completed and archived
+state_head: f19f429e461ffe2fadafa4ac170d2fc53c973e14
 progress:
-  total_phases: 1
-  completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
-  percent: 100
+  total_phases: 5
+  completed_phases: 2
+  total_plans: 14
+  completed_plans: 14
+  percent: 40
+current_phase: 10.1
 ---
 
-# Project State: Mindful Breathing v1.0
+# Project State: Mindful Breathing v1.1
 
-**Milestone:** v1.0 — Bug Fixes & Visual Polish  
-**Last Updated:** 2026-07-04
+**Milestone:** v1.1 — Landscape Polish, Custom Presets & Streaks — **COMPLETE (all 4 phases done)**  
+**Last Updated:** 2026-08-25
 
 ---
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-07-03)
+See: .planning/PROJECT.md (updated 2026-08-27)
 
 **Core value:** Reliable, uninterrupted breathing guidance with verifiable history  
-**Current focus:** Phase 6 complete — all v1.0 requirements shipped  
-**Stack:** Vanilla JS, single-file HTML, localStorage persistence, no dependencies
+**Current focus:** Awaiting v1.2 — start with `/gsd-new-milestone`
+**Stack:** Vanilla JS, single-file HTML (~3,641 lines), localStorage persistence, no dependencies
 
 ---
 
 ## Current Position
 
-Phase: 06 — COMPLETE  
-Plan: 06-01 (Wave 1) COMPLETE, 06-02 (Wave 2) COMPLETE  
-Status: All plans executed and verified; human UAT items documented in 06-VERIFICATION.md  
-Last activity: 2026-07-04 — Phase 6 verification complete
+Phase: Milestone v1.1 complete
+Plan: —
+Status: Awaiting next milestone
+Last activity: 2026-08-27 — Milestone v1.1 completed and archived
 
-Progress: [██████████] 100%
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+
+Progress: [██████████] 100% (Phase 09 complete)
 
 ---
 
 ## Accumulated Context
 
-### Project Architecture
+### Decisions
 
-- Single `index.html` file (~2,487 lines) with clear internal sections
-- Sections: CONFIG, STATE, DOM, HELPERS, DURATION INPUTS, PERSISTENCE, SESSION HISTORY, WAKE LOCK, SOUND/VIBRATION, RENDER, PHASE ADVANCE, MAIN LOOP, CONTROLS, FULLSCREEN, KEYBOARD SHORTCUTS
-- No build step, no package manager, runs offline
-- Deployed via GitHub Pages
+Recent decisions affecting current work (full log in PROJECT.md Key Decisions):
 
-### v1.0 Shipped Features
-
-1. **Landscape media query fix** — `height: auto; min-height: 100vh;` in compact landscape body (LAYOUT-01)
-2. **Background transitions** — `transition: background 220ms ease` on body (VISUAL-01)
-3. **Unfinished session tracking** — `incomplete: true` flag on Stop; `opacity:0.6` + italic label in history (TRACK-01)
-4. **Version display** — `APP_VERSION = "1.0"` constant injected into info panel footer as "v1.0" (INFO-01)
-
-### Phase 6 Success Criteria — All Satisfied
-
-1. Landscape mode on tall phones (height ≤ 500px) displays correct compact layout without content overflow — VERIFIED
-2. Background color transitions smoothly (220ms) when phase changes instead of jumping abruptly — VERIFIED
-3. Unfinished sessions appear in history list with distinct "Incomplete" styling showing cycle count and elapsed time — VERIFIED
-4. App version (v1.0) is visible in the info panel footer — VERIFIED
-5. All existing features (light theme, export/import, controls) continue to work without regression — VERIFIED (code level; human UAT pending)
-
-### Previous Decisions (from v0.4–v0.6)
-
-See PROJECT.md Key Decisions table for full history. Key themes:
-
-- Single-file architecture proven lightweight and fast
-- localStorage for persistence — reliable for single-user
-- Vanilla JS only — runs anywhere with modern browser
-- CSS Grid `1fr 1fr` for landscape layout (v0.6)
-- WCAG AA contrast on light theme (v0.6)
-- Native `<dialog>` for clear confirmation (v0.6)
-
-### v1.0 Decisions
-
-- cycleCount >= 2 is the threshold for at least 1 full cycle completed — TRACK-01 (D-01)
-- `background` shorthand used in transition (not `background-color`) to animate CSS custom property changes reliably — VISUAL-01 (D-10, D-13)
-- `height: auto` + `min-height: 100vh` in compact landscape body overrides base `height: 100vh` — LAYOUT-01 (D-14, D-15)
-- `APP_VERSION` injected via JS at init — HTML element starts empty, constant is single source of truth — INFO-01 (D-16)
-
-### Known Limitations
-
-- **Vibration API on Android** — Samsung/Android OS blocks API; toggle hidden (`display:none`); code retained for future re-enable
-- **CSV import** — deferred to v1.1 (RFC 4180 edge cases); JSON import covers use case safely
-- **Accessibility (full)** — keyboard + screen reader support deferred to v1.1+
+- [v1.1 Phase 10]: `toLocaleDateString('en-CA')` returns YYYY-MM-DD in user's local timezone, preventing UTC boundary mismatch for daily streak windows
+- [v1.1 Phase 10]: Two-tier longest streak — computeStreak() from capped history (14 entries), maybeUpdateLongestStreak() persists high-water mark in localStorage
+- [v1.1 Phase 10]: Break on first gap in streak walk — current streak = active days only; older isolated streaks do not inflate it (CR-01 fix)
+- [v1.1 Phase 10]: Flame-only button (no number) — post-execution UX decision by user; streak number visible in panel
+- [v1.1 Phase 10]: streakOverlay reuses .infoOverlay/.infoPanel CSS — zero new CSS, same ARIA and accessibility pattern
 
 ### Pending Todos
 
-Human UAT for Phase 6 (documented in .planning/phases/06/06-VERIFICATION.md):
-1. Incomplete session history display in browser (TRACK-01)
-2. Background transition smoothness visual check (VISUAL-01)
-3. Compact landscape layout in Chrome DevTools device emulation (LAYOUT-01)
-4. App version display in info panel (INFO-01)
-5. Regression: all features functional in compact landscape (SC-5)
+None.
 
 ### Blockers/Concerns
 
@@ -108,33 +72,61 @@ None.
 
 ---
 
-## Session Continuity
+### Roadmap Evolution
 
-Last session: 2026-07-04T00:00:00.000Z  
-Stopped at: Phase 6 verification complete  
-Resume file: .planning/phases/06/06-VERIFICATION.md
+- Phase 10.1 inserted after Phase 10: Close gap: A11Y-01 — preset builder cancel event + streak badge after import (URGENT)
 
-**Next Steps:**
+## Phase 09 Completion Summary
 
-1. Run human UAT checklist in 06-VERIFICATION.md (5 browser tests)
-2. On UAT pass: run `/gsd-ship` or `/gsd-complete-milestone` to archive v1.0 and prepare v1.1
+### Gap Closure Plans Verified
+
+| Plan | Gap IDs | Status | Verified |
+|------|---------|--------|----------|
+| 09-04 | G-09-3a, G-09-3b | Complete | 2/2 truths verified |
+| 09-05 | G-09-4a/b, G-09-5a/b, G-09-6a/b/c, G-09-23 | Complete | 5/5 truths verified |
+| 09-06 | G-09-9/10/11/12/13/20a/b | Complete | 5/5 truths verified |
+
+**Total gaps closed:** 23 (all verified in codebase)
+
+### Key Fixes Applied
+
+✓ Form validation UX: Error messages clear on resubmit; phase count error visible for 3 seconds  
+✓ Preset selection: Active class toggling via data-attributes (not object identity)  
+✓ Custom preset names: Display user-given names instead of internal IDs  
+✓ Custom presets container: Proper CSS layout with margin-top spacing  
+✓ Edit icon: Pointer-events blocker removed; click handler now functional  
+✓ Dialog centering: Fixed positioning with translate(-50%, -50%) transform  
 
 ---
 
-*State initialized: 2026-07-03*  
-*Previous milestone: v0.6 shipped 2026-07-01*  
-*Current milestone: v1.0 started 2026-07-03, Phase 6 complete 2026-07-04*
+## Session Continuity
+
+**Resume file:** .planning/phases/10.1-close-gap-a11y-01-preset-builder-cancel-event-streak-badge-a/10.1-CONTEXT.md
+
+Last session: 2026-08-25T21:24:57.856Z
+Stopped at: Phase 10.1 complete — all phases complete
+
+**Next Steps:**
+
+1. `/gsd-plan-phase 10.1` — urgent gap closure: A11Y-01 preset builder cancel event + streak badge after import
+2. `/gsd-complete-milestone` — after phase 10.1 is done, all phases complete, v1.1 milestone ready for ship
+3. (Optional) `/gsd-secure-phase 10` — security enforcement is enabled; SECURITY.md not yet created for phase 10
+
+## Deferred Items
+
+Items acknowledged and deferred at milestone close, most recent first:
+
+| Category | Item | Status | Deferred At | Milestone |
+|----------|------|--------|-------------|-----------|
+| quick_tasks | light-mode-panels-ring | done | 2026-08-27 | v1.1 |
+| quick_tasks | light-theme-css-fix | done | 2026-08-27 | v1.1 |
 
 ## Performance Metrics
 
-| Phase | Plan | Duration | Notes |
-|-------|------|----------|-------|
-| Phase 06 P01 | 8 minutes | 3 tasks | 1 file |
-| Phase 06 P02 | 6 minutes | 2 tasks | 1 file |
+| Phase | Duration | Plans | Tasks | Gap Closures |
+|-------|----------|-------|-------|--------------|
+| Phase 09 | Main + 1 week UAT | 3 main + 3 gap | 12 main + 8 gap | 23 gaps closed |
 
-## Decisions
+## Operator Next Steps
 
-- [Phase 6]: cycleCount >= 2 is the threshold for at least 1 full cycle completed — TRACK-01 (D-01)
-- [Phase 6]: `background` shorthand in body transition (not `background-color`) — VISUAL-01 (D-10, D-13)
-- [Phase 6]: `height: auto` + `min-height: 100vh` overrides base `height: 100vh` in compact landscape — LAYOUT-01 (D-14, D-15)
-- [Phase 6]: APP_VERSION JS-injected at init, not hardcoded in HTML — INFO-01 (D-16)
+- Start the next milestone with /gsd-new-milestone

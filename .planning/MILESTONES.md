@@ -1,5 +1,24 @@
 # Milestones — Mindful Breathing
 
+## v1.1 Landscape Polish, Custom Presets & Streaks (Shipped: 2026-08-27)
+
+**Phases completed:** 5 phases, 14 plans, 25 tasks  
+**Timeline:** 2026-07-04 → 2026-08-27 (54 days, 174 commits)  
+**Codebase:** ~3,641 lines (single index.html)  
+**Closeout type:** override_closeout  
+**Known verification overrides:** 2 newly acknowledged, 0 carried forward from a prior close (see STATE.md Deferred Items)  
+**Override reason:** Phases 7+8 use pre-v1.1 VERIFICATION.md schema (`status: complete`/`verified` vs `passed`); all 5 phases confirmed verified in milestone audit (22/22 requirements, 47/47 integration links). Two v0.6 quick tasks acknowledged as already-done unarchived tasks.
+
+**Key accomplishments:**
+
+- Overlap-free 2-column landscape grid with fullscreen button below ring, session info in left column, controls at 50% column height
+- Full keyboard accessibility: :focus-visible indicators, logical tab order, ARIA labels, aria-live screen reader announcements
+- CSV session history import with merge/dedup; focus trap and keyboard-shortcut-guard shared by all 4 panel types
+- Custom preset builder: create, name, edit, delete; persist in localStorage; appear in selector alongside built-ins
+- Daily streak tracking with flame badge, streak panel (current/longest/today status/total), and localStorage-persisted longest streak
+
+---
+
 Historical record of shipped versions.
 
 ---
@@ -83,3 +102,26 @@ Historical record of shipped versions.
 ---
 
 *Historical record updated 2026-07-01 after v0.6 milestone*
+
+---
+
+## v1.0 — Bug Fixes & Visual Polish
+
+**Shipped:** 2026-07-04  
+**Phases:** 6 | **Plans:** 2 | **Tasks:** 5  
+**Closeout type:** verified_closeout (all 4 requirements shipped + 5/5 UAT browser tests passed)
+
+**Key Accomplishments:**
+
+1. Smooth 220ms background phase transition — `background` shorthand in body CSS transition animates `--bg` CSS custom property reliably; `background-color` sub-property fails to track it
+2. Compact landscape layout fixed for tall phones — `height: auto; min-height: 100vh` overrides `height: 100vh`, letting content scroll past the viewport while preserving full-height layout when short (UAT: iPhone 14 Pro Max 932×430px in Chrome DevTools)
+3. App version v1.0 in info panel footer — `APP_VERSION` constant in CONFIG, JS-injected into `#appVersionEl` at init; HTML element starts empty (single source of truth)
+4. Incomplete session tracking — Pause/Stop saves `{incomplete: true}` when `cycleCount >= 2` (at least 1 full cycle); rendered at opacity 0.6 with italic "Incomplete" suffix; backward compatible via falsy `undefined` for older entries
+5. Stop button renamed to Pause — reflects actual behavior; Resume/Start follows
+
+**Archive:** `.planning/milestones/v1.0-ROADMAP.md`  
+**Requirements:** `.planning/milestones/v1.0-REQUIREMENTS.md`
+
+---
+
+*Historical record updated 2026-07-04 after v1.0 milestone*

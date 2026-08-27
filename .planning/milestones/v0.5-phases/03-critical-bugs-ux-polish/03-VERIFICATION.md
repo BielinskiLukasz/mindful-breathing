@@ -1,45 +1,26 @@
 ---
 phase: 03-critical-bugs-ux-polish
 verified: 2026-06-06T00:00:00Z
-status: gaps_found
-score: 4/6 must-haves verified
+status: legacy
+score: 4/6 must-haves verified (at initial verification)
 overrides_applied: 0
 re_verification: false
+gaps_closed: 2026-06-29
 gaps:
   - truth: "Vibration fires reliably on Android devices at each phase transition"
-    status: failed
-    reason: "Testing on Samsung Galaxy A33 5G with Android 16 Chrome showed NO vibration at any phase transition (Inhale, Hold, Exhale, Hold2). All vibration feedback features are non-functional."
-    artifacts:
-      - path: "index.html"
-        issue: "vibrate() function is defined and called, but navigator.vibrate() is not firing on Android"
-        lines: "1667-1671, 1875-1876, 1697, 2023-2024"
-    missing:
-      - "Debug Android 16 vibration API permissions or compatibility issue"
-      - "Verify navigator.vibrate() is being called (add console logging)"
-      - "Test on additional Android devices to determine if device/OS/browser-specific"
-      - "Check if Vibration API needs special manifest.json permissions"
+    status: known_limitation
+    closed: "2026-06-29 via 03-08"
+    resolution: "Samsung Galaxy A33 5G (Android 16, Chrome) blocks Vibration API at OS level. vibeToggle hidden with display:none; code kept intact. Closed as known platform limitation, not a code bug."
 
   - truth: "Countdown audio pattern (3 pulses) plays during 3-second countdown"
-    status: failed
-    reason: "Test report shows 'Countdown audio also did not produce sound during testing'. The countdown function in showCountdown() triggers vibration (line 1876) but has NO audio beep calls. Start button beep works, but countdown pulses are missing."
-    artifacts:
-      - path: "index.html"
-        issue: "showCountdown() function (lines 1866-1893) has vibration on countdown but NO playBeep() calls for audio cues"
-        lines: "1873-1884"
-    missing:
-      - "Add playBeep() calls in countdown loop (matching vibrate(40) timing)"
-      - "Implement countdown audio pattern: 3 short beeps at 3s, 2s, 1s marks"
-      - "Test countdown audio on desktop and mobile"
+    status: fixed
+    closed: "2026-06-29 via 03-07"
+    resolution: "playBeep(350) calls added to showCountdown() loop at each countdown mark."
 
   - truth: "Intro/countdown screen can be dismissed or skipped by user"
-    status: failed
-    reason: "Test report notes: 'Intro screen cannot stop — 3-second intro/countdown plays without option to skip'. User must wait 3 seconds for countdown to complete."
-    artifacts:
-      - path: "index.html"
-        issue: "showCountdown() function does not provide skip/cancel button or keyboard shortcut during countdown"
-    missing:
-      - "Add skip button or ESC key handler during countdown overlay"
-      - "Allow user to dismiss countdown early"
+    status: fixed
+    closed: "2026-06-29 via 03-07"
+    resolution: "Skip button added to countdown overlay; cancelCountdown() wired to it."
 
 deferred: []
 
