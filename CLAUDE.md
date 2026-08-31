@@ -22,12 +22,15 @@ The entire application is a single file: `index.html` (~3,400 lines). All HTML, 
 | Section | What it does |
 |---|---|
 | **CONFIG** | Frozen constants: `PRESETS`, `SOUND`, `VIBRATION`, `RING`, `COUNTDOWN`, `SESSION`, `UI`, `QUOTES`, `DURATION_RANGE` |
-| **STATE** | Mutable globals: phase index, cycle count, elapsed time, `audioCtx`, wake lock handle |
+| **STATE** | Mutable globals: phase index, cycle count, elapsed time, `audioCtx`, wake lock handle, `longestStreak` |
 | **DOM** | Element references collected once at startup (e.g. `appEl`, `phaseEl`, `ringProgressEl`) |
-| **HELPERS** | `hexToRgba()`, `getPhase()`, `getGoal()`, theme application |
-| **DURATION INPUTS** | Per-phase timer sliders |
-| **PERSISTENCE** | `saveSettings()` / `loadSettings()` / `saveHistory()` via `localStorage` |
-| **SESSION HISTORY** | Save, load, and render past sessions (max 14 entries) |
+| **RING GEOMETRY** | Pre-calculates `CIRC` (circumference) from `RING` config; sets `strokeDasharray` once |
+| **HELPERS** | `hexToRgba()`, `getPhase()`, `getGoal()`, `buildActivePhases()`, theme application |
+| **DURATION INPUTS** | Per-phase duration inputs; `updateTimeEst()` recalculates estimated session length |
+| **PERSISTENCE** | `saveSettings()` / `loadSettings()` via `localStorage`; custom preset CRUD |
+| **SESSION HISTORY** | Save, load, and render past sessions; configurable cap (default 1,000) |
+| **CUSTOM PRESET RENDERING** | Renders user-defined presets in the settings panel |
+| **PRESET BUILDER** | `<dialog>`-based form for creating and editing custom presets |
 | **WAKE LOCK** | Screen Wake Lock API wrapper |
 | **SOUND/VIBRATION** | Web Audio API beeps + Vibration API haptics |
 | **RENDER** | SVG ring progress, countdown text, phase label |
@@ -35,6 +38,7 @@ The entire application is a single file: `index.html` (~3,400 lines). All HTML, 
 | **MAIN LOOP** | `requestAnimationFrame` loop (`loop()`) driving animation and phase transitions |
 | **CONTROLS** | `start()` / `stop()` / `reset()`, 3-second countdown overlay |
 | **FULLSCREEN** | Fullscreen API toggle |
+| **STREAK FUNCTIONS** | Computes current and longest streak from `HISTORY_KEY` entries; updates badge |
 | **KEYBOARD SHORTCUTS** | Space (start/stop), R (reset), F (fullscreen) |
 
 ### State machine
@@ -50,9 +54,11 @@ Each phase also carries its own `theme: { bg, bgLight, accent, accentLight }` fo
 ### Persistence
 
 Three localStorage keys (defined in CONFIG):
-- `STORAGE_KEY` (`mb_v1`) — settings: `soundEnabled`, `vibeEnabled`, `isDarkMode`, `savedDurations`
-- `HISTORY_KEY` (`mb_history`) — array of `{ date, durationMs, cycles }` objects (last 14 sessions)
-- `CUSTOM_PRESETS_KEY` (`mb_custom_presets`) — user-created custom presets
+- `STORAGE_KEY` (`mb_v1`) — settings: `sound`, `vibe`, `isDarkMode`, `savedDurations`, `goal`, `maxHistoryEntries`, `preset`, `longestStreak`
+- `HISTORY_KEY` (`mb_history`) — array of `{ date, durationMs, cycles, preset }` objects; capped at `maxHistoryEntries` (default 1,000)
+- `CUSTOM_PRESETS_KEY` (`mb_custom_presets`) — user-created custom presets array
+
+Streaks are computed from `HISTORY_KEY` on demand; `longestStreak` is cached in `STORAGE_KEY`.
 
 ## Key Constraints
 
@@ -78,7 +84,7 @@ https://bielinskilukasz.github.io/mindful-breathing/
 
 ## Project
 
-**Mindful Breathing v0.4**
+**Mindful Breathing v1.1.0**
 
 A minimalist guided breathing app that helps users practice controlled breathing exercises with visual feedback, sound/haptic cues, and session history tracking. The app runs offline with no dependencies, delivering distraction-free breathing sessions on any modern browser.
 
@@ -120,8 +126,6 @@ A minimalist guided breathing app that helps users practice controlled breathing
 <!-- GSD:conventions-end -->
 
 <!-- GSD:architecture-start source:ARCHITECTURE.md -->
-
-## Architecture
 
 ### Overall Pattern
 
