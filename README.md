@@ -1,7 +1,7 @@
 # Mindful Breathing
 
 ![Status](https://img.shields.io/badge/status-stable-brightgreen)
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-1.1.0-blue)
 ![HTML5](https://img.shields.io/badge/HTML-5-E34F26?logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS-3-1572B6?logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/ECMAScript-2023-F7DF1E?logo=javascript&logoColor=black)
@@ -53,7 +53,8 @@ No backend. No dependencies. No installation. Works fully offline.
 **Session management**
 - Session history — configurable cap (default 1 000 sessions), displayed with date, duration, cycle count, and preset
 - Incomplete session tracking — sessions paused after at least one full cycle are saved with an "Incomplete" label
-- Export as JSON or CSV, import from JSON (merge with dedup), and clear with a confirmation dialog
+- Export as JSON or CSV, import from JSON or CSV (merge with dedup), and clear with a confirmation dialog
+- Streak tracking — flame button opens a panel showing current and longest streak, calculated from session history
 
 **Platform & accessibility**
 - Installable PWA — works offline, add to home screen on mobile
@@ -149,6 +150,7 @@ The history panel footer exposes four data management controls:
 | **Export JSON** | Downloads `mb-sessions-YYYY-MM-DD.json` — all sessions, suitable for backup |
 | **Export CSV** | Downloads a spreadsheet with `date`, `duration` (M:SS), `cycles`, and `preset` columns |
 | **Import JSON** | Merges a previously exported file into existing history; duplicate dates are silently skipped |
+| **Import CSV** | Merges a previously exported CSV into existing history; duplicate dates are silently skipped |
 | **Clear** | Opens a native `<dialog>` confirmation before deleting all sessions; ESC and backdrop click cancel safely |
 
 Sessions interrupted after at least one complete cycle are saved to history with muted styling and an italic "Incomplete" label — partial progress is never silently discarded.
@@ -203,7 +205,7 @@ The `<script>` block is divided into labeled sections:
 | `HELPERS` | `hexToRgba()`, `getPhase()`, `getGoal()`, theme application |
 | `DURATION INPUTS` | Per-phase duration sliders |
 | `PERSISTENCE` | `saveSettings()` / `loadSettings()` / `saveHistory()` via localStorage |
-| `SESSION HISTORY` | Save, load, and render past sessions (max 14 entries) |
+| `SESSION HISTORY` | Save, load, and render past sessions; configurable cap (default 1 000) |
 | `WAKE LOCK` | Screen Wake Lock API wrapper |
 | `SOUND/VIBRATION` | Web Audio API beeps + Vibration API haptics |
 | `RENDER` | SVG ring progress, countdown text, phase label |
@@ -238,9 +240,7 @@ This project is a deliberate exercise in constraint-driven design:
 
 ## Roadmap
 
-Planned:
-
-- Streak tracking — current daily streak and longest-ever streak computed from session history
+Nothing planned for the next milestone yet.
 
 ---
 
