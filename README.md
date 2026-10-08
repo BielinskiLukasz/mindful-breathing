@@ -286,3 +286,5 @@ It also became an experiment in how far a single HTML file can go before it stop
 ## License
 
 Released under the [MIT License](LICENSE).
+
+<!-- agent connection test: 2026-10-08 -->
